@@ -1,0 +1,19 @@
+.sidebar{
+  background-color: whitesmoke;
+}
+.sidebar .active {
+  background-color: var(--primary-color); 
+  color: #fff; 
+  font-weight: bolder; 
+}
+.sidebar .active:hover{
+  background-color: var(--light-primary-color); 
+}
+
+.sidebar .active .MuiListItemIcon-root {
+  color: #fff; 
+}
+.sidebar-divider{
+  font-size: smaller;
+  font-style: oblique;
+}

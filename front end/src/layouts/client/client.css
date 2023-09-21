@@ -1,0 +1,30 @@
+/* Filter Category Product */
+a.nav-link.cate-filter {
+  font-weight: 500;
+  color: var(--primary-color);
+  padding: 5px 10px;
+}
+a.nav-link.cate-filter.active {
+  border: 2px solid none; /* Adjust the border style as needed */
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Override some Bootstrap pagination styles */
+ul.pagination li.page-item{
+  margin: 0px 2px;
+}
+ul.pagination li.page-item a.page-link {
+  color: var(--primary-color);
+  box-shadow: none ;
+  padding: 2px 9px;
+  border-radius: 20%;
+}
+ul.pagination li.page-item.active a.page-link {
+  color: white;
+}
+ul.pagination li.page-item a.page-link:hover {
+  background-color: var(--light-primary-color);
+  border: inherit;
+}
