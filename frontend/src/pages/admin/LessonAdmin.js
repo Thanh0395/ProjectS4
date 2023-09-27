@@ -30,28 +30,23 @@ function LessonAdmin(props) {
             field: 'actions', headerName: 'Actions', width: 180, headerAlign: 'center', align: 'center', renderCell: (params) => {
                 return (
                     <>
-                        <Button size='small' >
-                            <Link to={`detail/${params.row.id}`}>
-                                <Tooltip followCursor={true} title="Detail">
-                                    <VisibilityOutlined style={{ color: 'green' }} />
-                                </Tooltip>
-                            </Link>
-                        </Button>
-                        <Button size='small' >
-                            <Link to={`update/${params.row.id}`}>
-                                <Tooltip followCursor={true} title="Update">
-                                    <ModeEditOutlineOutlined style={{ color: 'blue' }} />
-                                </Tooltip>
-                            </Link>
-                        </Button>
-                        <Button
-                            onClick={(e) => onDeleteClick(e, params.row)}
-                            size='small'
-                        >
-                            <Tooltip followCursor={true} title="Delete">
+                        <Link to={`detail/${params.row.id}`} style={{ padding: "8px" }}>
+                            <Tooltip followCursor={true} title="Detail">
+                                <VisibilityOutlined style={{ color: 'green' }} />
+                            </Tooltip>
+                        </Link>
+
+                        <Link to={`update/${params.row.id}`} style={{ padding: "8px" }}>
+                            <Tooltip followCursor={true} title="Update">
+                                <ModeEditOutlineOutlined style={{ color: 'blue' }} />
+                            </Tooltip>
+                        </Link>
+
+                        <Link style={{ padding: "8px" }} onClick={(e) => onDeleteClick(e, params.row)}>
+                            <Tooltip followCursor={true} title="Delete" >
                                 <DeleteOutline style={{ color: 'red' }} />
                             </Tooltip>
-                        </Button>
+                        </Link>
                     </>
                 );
             }
@@ -83,7 +78,7 @@ function LessonAdmin(props) {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete?
+                        Are you sure you want to delete id: {selectedItem ? selectedItem.id : ''}?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -108,6 +103,7 @@ function LessonAdmin(props) {
                             columns={columns}
                             hideFooterSelectedRowCount={true}
                             disableRowSelectionOnClick
+                            checkboxSelection
                             onRowSelectionModelChange={
                                 (ids) => {
                                     const selectedIDs = new Set(ids);
@@ -123,7 +119,6 @@ function LessonAdmin(props) {
                                 },
                             }}
                             pageSizeOptions={[5, 10, 20]}
-                            checkboxSelection
                             slots={{
                                 toolbar: GridToolbar,
                             }}
