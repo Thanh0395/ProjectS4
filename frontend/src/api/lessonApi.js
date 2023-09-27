@@ -8,3 +8,11 @@ export const fetchLessonById = async (lessonId) => {
         throw error;
     }
 };
+export const fetchCategories = async () => {
+    try {
+        const response = await api.get(`/products/categories`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

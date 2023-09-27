@@ -125,7 +125,7 @@ function Register(props) {
                                         <Form.Control
                                             type="date"
                                             name="dob"
-                                            value={values.dob}
+                                            value={values.dob||''}
                                             onChange={handleChange}
                                             isInvalid={!!errors.dob}
                                         />

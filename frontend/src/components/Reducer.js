@@ -58,3 +58,16 @@ export const productReducer = (state, action) => {
             return state;
     }
 };
+
+export const userReducer = (state, action) => {
+    switch (action.type) {
+        case 'SET_LOADING':
+            return { ...state, isLoading: true, };
+        case 'SET_SUCCESS':
+            return { ...state, isLoading: false, user: action.payload };
+        case 'SET_ERROR':
+            return { ...state, isLoading: false, isError: true };
+        default:
+            return state;
+    }
+};

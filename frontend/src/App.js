@@ -4,10 +4,11 @@ import ClientLayout from "./layouts/client/ClientLayout";
 import AdminLayout from "./layouts/admin/AdminLayout";
 import HomePage from "./pages/HomePage";
 import AdminPage from "./pages/AdminPage";
+import { UserProvider } from './components/context/UserContext';
 import {
   Login, Register, NotFound,
-  Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin, 
-  LessonAdminCreate,LessonAdminDetail,LessonAdminUpdate,
+  Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin,
+  LessonAdminCreate, LessonAdminDetail, LessonAdminUpdate,
   ClientContact, ClientProducts, ClientDetailProduct, Home,
 } from "./pages"
 import { useEffect, useState } from "react";
@@ -53,45 +54,47 @@ function App() {
   // End Scroll TOP button
   return (
     <>
-      <Routes>
-        <Route path="/" element={<ClientLayout>   <HomePage />  </ClientLayout>}>
-          <Route exact path="" element={<Home />} />
-          <Route path="contact" element={<ClientContact />} />
-          <Route path="products/" >
-            <Route exact path="" >
-              <Route path="" element={<ClientProducts />}></Route>
-              <Route path="category/:category" element={<ClientProducts />}></Route>
+      <UserProvider>
+        <Routes>
+          <Route path="/" element={<ClientLayout>   <HomePage />  </ClientLayout>}>
+            <Route exact path="" element={<Home />} />
+            <Route path="contact" element={<ClientContact />} />
+            <Route path="products/" >
+              <Route exact path="" >
+                <Route path="" element={<ClientProducts />}></Route>
+                <Route path="category/:category" element={<ClientProducts />}></Route>
+              </Route>
+              <Route path="detail/:id" element={<ClientDetailProduct />} />
             </Route>
-            <Route path="detail/:id" element={<ClientDetailProduct />} />
           </Route>
-        </Route>
 
-        <Route path="/admin/" element={<AdminLayout>  <AdminPage />  </AdminLayout>}>
-          <Route exact path="" element={<Dashboard />} />
-          <Route path="lessons/" >
-            <Route path="" element={<LessonAdmin />} />
-            <Route path="detail/:id" element={<LessonAdminDetail />} />
-            <Route path="create" element={<LessonAdminCreate />} />
-            <Route path="update/:id" element={<LessonAdminUpdate />} />
+          <Route path="/admin/" element={<AdminLayout>  <AdminPage />  </AdminLayout>}>
+            <Route exact path="" element={<Dashboard />} />
+            <Route path="lessons/" >
+              <Route path="" element={<LessonAdmin />} />
+              <Route path="detail/:id" element={<LessonAdminDetail />} />
+              <Route path="create" element={<LessonAdminCreate />} />
+              <Route path="update/:id" element={<LessonAdminUpdate />} />
+            </Route>
+            <Route path="exams" element={<ExamAdmin />} />
+            <Route path="users" element={<UserAdmin />} />
+            <Route path="categories" element={<CategoryAdmin />} />
+            <Route path="tags" element={<TagAdmin />} />
+            <Route path="rewards" element={<RewardAdmin />} />
+            <Route path="achievements" element={<AchievementAdmin />} />
           </Route>
-          <Route path="exams" element={<ExamAdmin />} />
-          <Route path="users" element={<UserAdmin />} />
-          <Route path="categories" element={<CategoryAdmin />} />
-          <Route path="tags" element={<TagAdmin />} />
-          <Route path="rewards" element={<RewardAdmin />} />
-          <Route path="achievements" element={<AchievementAdmin />} />
-        </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
 
-      {/* Scroll TOP button */}
-      {showButton && (
-        <button onClick={scrollToTop} className="back-to-top">
-          <FaAngleUp></FaAngleUp>
-        </button>
-      )}
+        {/* Scroll TOP button */}
+        {showButton && (
+          <button onClick={scrollToTop} className="back-to-top">
+            <FaAngleUp></FaAngleUp>
+          </button>
+        )}
+      </UserProvider>
     </>
   );
 }
