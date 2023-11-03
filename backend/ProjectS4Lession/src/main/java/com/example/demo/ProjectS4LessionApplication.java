@@ -87,26 +87,26 @@ public class ProjectS4LessionApplication {
 				userService.addUserRole(15, 3);
 
 	        } 
-//	        if(!checkPostExist(postService)) {
-//				postService.createPost(
-//						new PostEntity(
-//								"video01", "image01", 100, 100, "title01", "content01", "lesson", new Timestamp(new java.util.Date().getTime())));
-//				postService.createPost(
-//						new PostEntity(
-//								"video02", "image02", 200, 200, "title02", "content02", "test", new Timestamp(new java.util.Date().getTime())));
-//				postService.createPost(
-//						new PostEntity(
-//								"video03", "image03", 300, 300, "title03", "content03", "lesson", new Timestamp(new java.util.Date().getTime())));
-//				postService.createPost(
-//						new PostEntity(
-//								"video04", "image04", 400, 400, "title04", "content04", "test", new Timestamp(new java.util.Date().getTime())));
-//				postService.createPost(
-//						new PostEntity(
-//								"video05", "image05", 500, 500, "title05", "content05", "lesson", new Timestamp(new java.util.Date().getTime())));
-//				postService.createPost(
-//						new PostEntity(
-//								"video06", "image06", 600, 600, "title06", "content06", "test", new Timestamp(new java.util.Date().getTime())));
-//			}
+	        if(!checkPostExist(postService)) {
+				postService.createPost(
+						new PostEntity(
+								"video01", "image01", 100, 100, "title01", "content01", "lesson", new Timestamp(new java.util.Date().getTime())));
+				postService.createPost(
+						new PostEntity(
+								"video02", "image02", 200, 200, "title02", "content02", "test", new Timestamp(new java.util.Date().getTime())));
+				postService.createPost(
+						new PostEntity(
+								"video03", "image03", 300, 300, "title03", "content03", "lesson", new Timestamp(new java.util.Date().getTime())));
+				postService.createPost(
+						new PostEntity(
+								"video04", "image04", 400, 400, "title04", "content04", "test", new Timestamp(new java.util.Date().getTime())));
+				postService.createPost(
+						new PostEntity(
+								"video05", "image05", 500, 500, "title05", "content05", "lesson", new Timestamp(new java.util.Date().getTime())));
+				postService.createPost(
+						new PostEntity(
+								"video06", "image06", 600, 600, "title06", "content06", "test", new Timestamp(new java.util.Date().getTime())));
+			}
 	        else {
 	            System.out.println("Initialization is disabled or records already exist.");
 	        }

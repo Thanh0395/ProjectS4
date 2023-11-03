@@ -5,7 +5,7 @@ ALTER SEQUENCE favorite_category_tbl_favorite_category_id_seq RESTART WITH 1;
 ALTER SEQUENCE feedback_tbl_feedback_id_seq RESTART WITH 1;
 ALTER SEQUENCE gem_tbl_gem_id_seq RESTART WITH 1;
 ALTER SEQUENCE post_question_tbl_post_question_id_seq RESTART WITH 1;
-ALTER SEQUENCE post_tbl_post_id_seq RESTART WITH 1;
+ALTER SEQUENCE post_tbl_post_id_seq RESTART WITH 8;
 ALTER SEQUENCE question_tbl_question_id_seq RESTART WITH 1;
 ALTER SEQUENCE reward_tbl_reward_id_seq RESTART WITH 1;
 ALTER SEQUENCE tag_post_tbl_tag_post_id_seq RESTART WITH 1;

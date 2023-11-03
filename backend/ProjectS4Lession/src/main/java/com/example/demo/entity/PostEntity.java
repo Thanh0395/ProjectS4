@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -64,6 +65,9 @@ public class PostEntity extends BaseEntity{
 	@Pattern(regexp = "^(lesson|test)$", message = "Type must be 'lesson' or 'test'")
 	private String type;
 	
+	@Column(name = "expired_at")
+	private Timestamp expiredAt;
+	
 	public PostEntity(String featureImage, String video, int price, int prize,
 			@NotNull(message = "Title must not be null!") @NotBlank(message = "Title shouldn't be left blank!") String title,
 			@NotNull(message = "Content must not be null!") @NotBlank(message = "Content shouldn't be left blank!") String content,
@@ -79,30 +83,30 @@ public class PostEntity extends BaseEntity{
 		this.type = type;
 		this.expiredAt = expiredAt;
 	}
-
-	@Column(name = "expired_at")
-	private Timestamp expiredAt;
 	
 	@ManyToOne
 	@JoinColumn(name = "author", referencedColumnName = "user_id")
+	@JsonIgnore
 	private UserEntity user;
 	
 	@ManyToOne
 	@JoinColumn(name = "category_id", referencedColumnName = "category_id")
+	@JsonIgnore
 	private CategoryEntity category;
 	
 	@OneToMany(mappedBy = "post")
+	//@JsonIgnore
 	@JsonManagedReference
 	private List<TagPostEntity> tagPosts = new ArrayList<>();
 	
 	//relation with UserPostEntity
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonIgnore
     private List<UserPostEntiy> userPosts = new ArrayList<>();
     
     //relation with FeedbackEntity
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonIgnore
     private List<FeedbackEntity> feedbacks = new ArrayList<>();
     public void addFeedback(FeedbackEntity feedbackEntity) {
     	feedbacks.add(feedbackEntity);
@@ -115,7 +119,7 @@ public class PostEntity extends BaseEntity{
     
     //relation with PostQuestionEntity
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonIgnore
     private List<PostQuestionEntity> postQuestions = new ArrayList<>();
     public void addFeedback(PostQuestionEntity postQuestionEntity) {
     	postQuestions.add(postQuestionEntity);

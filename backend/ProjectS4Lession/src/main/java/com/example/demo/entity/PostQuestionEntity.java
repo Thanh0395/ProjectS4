@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,10 +28,12 @@ public class PostQuestionEntity {
 	
 	@ManyToOne
 	@JoinColumn(name = "question_id", referencedColumnName = "question_id")
+	@JsonBackReference
 	private QuestionEntity question;
 	
 	@ManyToOne
 	@JoinColumn(name = "post_id", referencedColumnName = "post_id")
+	@JsonBackReference
 	private PostEntity post;
 	
 
