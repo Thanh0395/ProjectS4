@@ -7,6 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.demo.config.initializationProperties;
 import com.example.demo.entity.PostEntity;
@@ -17,10 +20,17 @@ import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 
 @SpringBootApplication
+@EnableWebSecurity
+@EnableJpaRepositories
 public class ProjectS4LessionApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectS4LessionApplication.class, args);
+	}
+	
+	@Bean
+	BCryptPasswordEncoder brBCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 	
 	@Bean

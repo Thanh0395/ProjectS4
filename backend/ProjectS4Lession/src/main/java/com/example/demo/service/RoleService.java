@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.RoleEntity;
+import com.example.demo.entity.UserRoleEntity;
 import com.example.demo.repository.RoleRepository;
 
 
@@ -31,4 +33,13 @@ public class RoleService {
 		return false;
 	}
 	
+	public List<RoleEntity> getRolesByUserRoles(List<UserRoleEntity> userRoles) {
+	    List<RoleEntity> rolesDb = new ArrayList<>();
+
+	    for (UserRoleEntity userRoleEntity : userRoles) {
+	        rolesDb.add(userRoleEntity.getRole());
+	    }
+
+	    return rolesDb;
+	}	
 }
