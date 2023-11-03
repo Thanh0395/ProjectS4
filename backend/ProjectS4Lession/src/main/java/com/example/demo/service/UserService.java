@@ -54,7 +54,7 @@ public class UserService {
 	
 	public UserEntity updateUser(UserEntity user) throws NotFoundException {
 		UserEntity userDb = userRepository.findById(user.getUserId())
-				.orElseThrow(() -> new NotFoundException("User not found with id : " + user.getUserId()));
+				.orElseThrow(() -> new NotFoundException("Update faild!. User not found with id : " + user.getUserId()));
 		if(userDb != null) {
 			user.setCreatedAt(userDb.getCreatedAt());
 			return userRepository.save(user);
