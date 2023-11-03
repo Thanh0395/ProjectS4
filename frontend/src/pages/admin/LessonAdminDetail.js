@@ -6,9 +6,10 @@ function LessonAdminDetail(props) {
     const [lesson, setLesson] = useState(null);
     const params = useParams();
     useEffect(() => {
+        const lessonId = params.id;
         const fetchData = async () => {
             try {
-                const postData = await fetchLessonById(params.id);
+                const postData = await fetchLessonById(lessonId);
                 setLesson(postData);
             } catch (error) {
                 console.error('Error fetching post:', error);
