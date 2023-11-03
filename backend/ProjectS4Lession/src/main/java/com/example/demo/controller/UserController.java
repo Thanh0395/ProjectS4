@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.UserCreationDto;
 import com.example.demo.entity.UserEntity;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.Mapper;
 import com.example.demo.service.UserService;
@@ -39,7 +40,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/create-user")
-	public ResponseEntity<UserEntity> createUser(@Valid @RequestBody UserCreationDto userCreationDto){
+	public ResponseEntity<UserEntity> createUser(@Valid @RequestBody UserCreationDto userCreationDto) {
 		UserEntity user = mapper.UserCreationDtoToUserEntity(userCreationDto);
 		UserEntity userCreated = userService.createUser(user);
 		return new ResponseEntity<>(userCreated, HttpStatus.OK);

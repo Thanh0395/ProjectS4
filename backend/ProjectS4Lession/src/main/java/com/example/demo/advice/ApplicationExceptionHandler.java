@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 
 
@@ -30,6 +31,14 @@ public class ApplicationExceptionHandler {
 	public Map<String, String> handleBusinessException(NotFoundException ex){
 		Map<String, String> errorMap = new HashMap<>();
 		errorMap.put("Error Message ", ex.getMessage());
+		return errorMap;
+	}
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(BadRequestException.class)
+	public Map<String, String> handleBadRequestException(BadRequestException ex){
+		Map<String, String> errorMap = new HashMap<>();
+		errorMap.put("Error Message", ex.getMessage());
 		return errorMap;
 	}
 }
