@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,10 +36,12 @@ public class UserPostEntiy extends BaseEntity{
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
+	@JsonBackReference
 	private UserEntity user;
 	
 	@ManyToOne
 	@JoinColumn(name = "post_id", referencedColumnName = "post_id")
+	@JsonBackReference
 	private PostEntity post;
 	
 //	private int isRefund;

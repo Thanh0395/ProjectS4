@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.UserCreationDto;
+import com.example.demo.dto.UserUpdationDto;
 import com.example.demo.entity.UserEntity;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.Mapper;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
 
 import jakarta.validation.Valid;
@@ -30,7 +33,7 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	private Mapper mapper;
+	private UserMapper userMapper;
 	
 	@GetMapping("/list-user")
 	public ResponseEntity<List<UserEntity>> getAllUser(){
@@ -39,8 +42,8 @@ public class UserController {
 	}
 	
 	@PostMapping("/create-user")
-	public ResponseEntity<UserEntity> createUser(@Valid @RequestBody UserCreationDto userCreationDto){
-		UserEntity user = mapper.UserCreationDtoToUserEntity(userCreationDto);
+	public ResponseEntity<UserEntity> createUser(@Valid @RequestBody UserCreationDto userCreationDto) {
+		UserEntity user = userMapper.UserCreationDtoToUserEntity(userCreationDto);
 		UserEntity userCreated = userService.createUser(user);
 		return new ResponseEntity<>(userCreated, HttpStatus.OK);
 	}
@@ -59,9 +62,9 @@ public class UserController {
 	}
 	
 	@PutMapping("/update-user")
-	public ResponseEntity<UserEntity> updateUser(@Valid @RequestBody UserEntity user) throws NotFoundException{
-		UserEntity userUpdated = new UserEntity();
-		userUpdated = userService.updateUser(user);
+	public ResponseEntity<UserEntity> updateUser(@Valid @RequestBody UserUpdationDto userUpdationDto) throws NotFoundException{
+		UserEntity user = userMapper.UserUpdationToUserEntity(userUpdationDto);
+		UserEntity userUpdated = userService.updateUser(user);
 		return new ResponseEntity<>(userUpdated, HttpStatus.OK);
 	}
 	

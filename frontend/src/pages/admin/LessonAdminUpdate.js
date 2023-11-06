@@ -30,7 +30,7 @@ function LessonAdminUpdate(props) {
             }
         };
         fetchData();
-    }, [params.id, categories]);
+    }, [params.id]);
 
     const [isLoading, setIsLoading] = useState(false);// loading nay khi submit form
     const { Formik } = formik;
