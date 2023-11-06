@@ -37,6 +37,15 @@ public class PostService {
 		return null;
 	}
 	
+	public boolean deletePostById(int postId) throws NotFoundException {
+		if(postRepository.existsById(postId)) {
+			postRepository.deleteById(postId);
+			return true;
+		}else {
+			throw new NotFoundException("Not found Post with post id :" + postId);
+		}	
+	}
+	
 	public boolean checkAnyPostExist() {
 		return postRepository.count() > 0;
 	}

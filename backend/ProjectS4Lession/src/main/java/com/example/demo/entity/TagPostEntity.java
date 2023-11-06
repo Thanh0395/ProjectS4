@@ -1,5 +1,8 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,9 +31,11 @@ public class TagPostEntity {
 		
 	@ManyToOne
 	@JoinColumn(name = "tag_id", referencedColumnName = "tag_id")
+	@JsonBackReference
 	private TagEntity tag;
 	
 	@ManyToOne
 	@JoinColumn(name = "post_id", referencedColumnName = "post_id")
+	@JsonBackReference
 	private PostEntity post;
 }
