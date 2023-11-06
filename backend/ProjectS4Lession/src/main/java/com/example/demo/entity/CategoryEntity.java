@@ -68,4 +68,6 @@ public class CategoryEntity {
     	posts.remove(postEntity);
     	postEntity.setCategory(null);
     }
+    
+    
 }

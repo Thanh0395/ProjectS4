@@ -40,6 +40,5 @@ public class UserPostEntiy extends BaseEntity{
 	@JoinColumn(name = "post_id", referencedColumnName = "post_id")
 	private PostEntity post;
 	
-	
-
+//	private int isRefund;
 }
