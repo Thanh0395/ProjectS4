@@ -32,7 +32,7 @@ public class PostService {
 		PostEntity postDb = postRepository.findById(post.getPostId())
 				.orElseThrow(() -> new NotFoundException("Update failed!. Post not found with id :" + post.getPostId()));
 		if(postDb!= null) {
-			return postRepository.save(postDb);
+			return postRepository.save(post);
 		}
 		return null;
 	}

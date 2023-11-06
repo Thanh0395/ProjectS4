@@ -17,6 +17,7 @@ import com.example.demo.entity.RoleEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.service.PostService;
 import com.example.demo.service.RoleService;
+import com.example.demo.service.StorageService;
 import com.example.demo.service.UserService;
 
 @SpringBootApplication
@@ -31,6 +32,13 @@ public class ProjectS4LessionApplication {
 	@Bean
 	BCryptPasswordEncoder brBCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	CommandLineRunner init(StorageService storageFileService) {
+		return (arg -> {
+			storageFileService.init();
+		});
 	}
 	
 	@Bean

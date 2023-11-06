@@ -20,6 +20,7 @@ import com.example.demo.entity.PostEntity;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.Mapper;
+import com.example.demo.mapper.PostMapper;
 import com.example.demo.service.PostService;
 
 import jakarta.validation.Valid;
@@ -32,7 +33,7 @@ public class PostController {
 	private PostService postService;
 	
 	@Autowired
-	private Mapper mapper;
+	private PostMapper postMapper;
 	
 	@GetMapping("/list-post")
 	public ResponseEntity<List<PostEntity>> getAllPost() throws BadRequestException {
@@ -42,7 +43,7 @@ public class PostController {
 	
 	@PostMapping("/create-post")
 	public ResponseEntity<PostEntity> createPost(@Valid @RequestBody PostCreationDto postCreationDto) {
-		PostEntity post = mapper.PostCreationDtoToPostEntity(postCreationDto);
+		PostEntity post = postMapper.PostCreationDtoToPostEntity(postCreationDto);
 		PostEntity postCreated = postService.createPost(post);
 		return new ResponseEntity<PostEntity>(postCreated, HttpStatus.OK);
 	}
@@ -61,7 +62,7 @@ public class PostController {
 	
 	@PutMapping("/update-post")
 	public ResponseEntity<PostEntity> updatePost(@Valid @RequestBody PostUpdationDto postUpdationDto) throws NotFoundException {
-		PostEntity post = mapper.PostUpdationDtoToPostEntity(postUpdationDto);
+		PostEntity post = postMapper.PostUpdationDtoToPostEntity(postUpdationDto);
 		PostEntity postUpdated = postService.updatePost(post);
 		return new ResponseEntity<PostEntity>(postUpdated, HttpStatus.OK);
 	}
