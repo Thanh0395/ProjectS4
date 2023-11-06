@@ -87,10 +87,7 @@ public class UserService {
             userRoles.add(userRole);
         }
 
-        // Save user roles
         userRoleRepository.saveAll(userRoles);
-
-        // Update the user entity with the roles
         savedUser.setUserRoles(userRoles);
         return savedUser;
     }
@@ -129,28 +126,6 @@ public class UserService {
 		}
 		return null;
 	}
-
-	
-//	public void addRoleToUser(String email, int roleId) throws NotFoundException {
-//        // Find the user by email
-//        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found with email: " + email));
-//        RoleEntity role = roleRepository.findById(roleId).get();
-//        user.addRole(role);
-//        userRepository.save(user);
-//    }
-//	
-//	public UserEntity removeRoleFromUser(int userId, int roleId) throws NotFoundException {
-//        UserEntity user = userRepository.findById(userId)
-//            .orElseThrow(() -> new NotFoundException("User not found with id: " + userId));
-//
-//        RoleEntity roleToRemove = user.getRoles().stream()
-//            .filter(role -> role.getRole_id() == roleId)
-//            .findFirst()
-//            .orElseThrow(() -> new NotFoundException("Role not found with id: " + roleId));
-//
-//        user.removeRole(roleToRemove);
-//        return userRepository.save(user);
-//    }
 	
 	public boolean checkAnyUsersExist() {
 		return userRepository.count() > 0;

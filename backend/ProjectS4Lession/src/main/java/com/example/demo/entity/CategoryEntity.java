@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,7 +46,8 @@ public class CategoryEntity {
 	
 	//relation with FavoriteCategoryEntity
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-	private Set<FavoriteCategoryEntity> favoriteCategories = new HashSet<>();
+	@JsonIgnore
+	private List<FavoriteCategoryEntity> favoriteCategories = new ArrayList<>();
 	
 	public void addFavoriteCategory(FavoriteCategoryEntity favoriteCategoryEntity) {
     	favoriteCategories.add(favoriteCategoryEntity);
@@ -57,6 +60,7 @@ public class CategoryEntity {
     
     //relation with PostEntiy
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<PostEntity> posts = new ArrayList<>();
     
     public void addPost(PostEntity postEntity) {
