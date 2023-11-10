@@ -24,6 +24,7 @@ import com.example.demo.config.StorageFileProperties;
 import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.FileEntity;
 import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.FileRepository;
 import com.example.demo.utils.StorageUtils;
 
 @Service
@@ -31,6 +32,9 @@ public class StorageService {
 
 
 	private final Path rootLocation;
+	
+	@Autowired
+	private FileRepository fileRepository;
 
 	public StorageService(StorageFileProperties storageProperties) {
 		this.rootLocation = Paths.get(storageProperties.getLocation());
@@ -73,14 +77,33 @@ public class StorageService {
 
 		// Save the file using NIO (Java 7+)
 		Files.copy(file.getInputStream(), Path.of(filePath), StandardCopyOption.REPLACE_EXISTING);
-//
-//		FileEntity fileEntity = fileRepository.save(FileEntity.builder().name(file.getOriginalFilename())
-//				.type(file.getContentType()).filePath(filePath).build());
-//
-//		if (fileEntity != null) {
-//			return "File uploaded successfully: " + filePath;
-//		}
-		return file.getOriginalFilename();
+		FileEntity fileData = fileRepository.save(FileEntity.builder().name(fileName.substring(1))
+				.type(file.getContentType()).filePath(filePath).build());
+
+		if (fileData != null) {
+			return "File uploaded successfully: " + filePath;
+		}
+		return null;
+	}
+	
+	@Transactional
+	public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
+		Optional<FileEntity> fileDataOptional = fileRepository.findFirstByName(fileName);
+		if (fileDataOptional.isPresent()) {
+			String filePathDb = fileDataOptional.get().getFilePath();
+			Path filePath = Paths.get(filePathDb);
+
+			try (InputStream inputStream = Files.newInputStream(filePath)) {
+				return IOUtils.toByteArray(inputStream); // Using Apache Commons IO
+			} catch (IOException e) {
+				// Handle IOException (e.g., log the error or re-throw it)
+				throw e;
+			}
+		} else {
+			// Handle the case where the file is not found (e.g., return null or throw an
+			// exception)
+			throw new FileNotFoundException("File not found: " + fileName);
+		}
 	}
 
 
