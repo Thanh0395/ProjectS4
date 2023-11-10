@@ -1,0 +1,41 @@
+.popular-course{
+    text-align: left;
+}
+.o-course {
+    width: 100%;
+    padding-top: 8rem;
+    height: 200vh;
+    text-align: left;
+}
+
+.o-course .o-course-session-card {
+    text-align: left;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fill, 80rem);
+}
+
+.o-course .o-course-card {
+    grid: 3rem;
+    border: 1px solid rgb(238, 238, 238);
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.o-course .o-course-card_image {
+    overflow: hidden;
+    
+}
+
+.o-course .o-course-card_image img {
+    width: 100%;
+    transition: 0.3s linear;
+    transform: scale();
+}
+.o-course .o-course-card:hover img{
+    transform: scale(1.1);
+    
+}
+.o-course .o-course-card_count {
+    border-top: 1px solid rgb(238, 238, 238);
+}

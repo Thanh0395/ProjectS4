@@ -1,11 +1,13 @@
-import React from 'react';
-
+import React from "react";
+import Banner from "./components/home/banner/banner";
+import Course from "./components/home/Popular_Course/course";
 function Home(props) {
-    return (
-        <div>
-            <h1>Day la trang Home (client) nek</h1>
-        </div>
-    );
+  return (
+    <>
+      <Banner />
+      <Course />
+    </>
+  );
 }
 
 export default Home;

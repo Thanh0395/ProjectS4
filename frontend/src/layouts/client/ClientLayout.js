@@ -9,7 +9,8 @@ function ClientLayout({ children }) {
         <div id="client">
             <ProductProvider>
                 <Header />
-                <main className="container">
+                {/* do not need container here, will be set manual */}
+                <main className="">
                     {children}
                 </main>
                 <Footer />
