@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchLessonById } from '../../api/lessonApi'
+import { fetchLessonById } from '../../services/api/lessonApi';
 
 function LessonAdminDetail(props) {
     const [lesson, setLesson] = useState(null);
