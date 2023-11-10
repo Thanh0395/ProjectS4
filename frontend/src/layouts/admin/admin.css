@@ -45,8 +45,15 @@
   padding: 0px !important;
 }
 .admin-content{
-  padding: 5px;
+  padding: 10px;
 }
 .delete-row:hover {
   background-color: rgb(255, 230, 230);
+}
+.cell{
+  width: 100px;
+}
+.invalid{
+  border: dashed 2px;
+  border-color: red !important;
 }
