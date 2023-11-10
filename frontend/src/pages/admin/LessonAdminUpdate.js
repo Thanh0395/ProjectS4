@@ -3,7 +3,7 @@ import * as formik from 'formik';
 import * as yup from 'yup';
 import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { Link, useParams } from 'react-router-dom';
-import { fetchCategories, fetchLessonById } from '../../api/lessonApi'
+import { fetchCategories, fetchLessonById } from '../../services/api/lessonApi'
 import QuestionEditor from '../../components/QuestionEditor';
 
 function LessonAdminUpdate(props) {
