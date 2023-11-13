@@ -14,6 +14,7 @@ public class CategoryMapper {
 				.builder()
 				.categoryName(categoryEntity.getCategoryName())
 				.featureImage(categoryEntity.getFeatureImage())
+				//.file()
 				.build();
 		return categoryCreationDto;
 	}
