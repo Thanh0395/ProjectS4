@@ -34,4 +34,7 @@ public class UserCreationDto {
 	private Date dateOfBirth;
 	
 	private String avatar;
+	
+	@Builder.Default
+	private int role = 1;
 }

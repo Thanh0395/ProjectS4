@@ -21,11 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.config.StorageFileProperties;
-import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.FileEntity;
-import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.FileRepository;
-import com.example.demo.utils.StorageUtils;
 
 @Service
 public class StorageService {
@@ -42,18 +39,15 @@ public class StorageService {
 
 	public void init() {
         try {
-            // Create multiple directories by chaining the createDirectories method
             Files.createDirectories(rootLocation.resolve("images/user"));
             Files.createDirectories(rootLocation.resolve("images/post"));
             Files.createDirectories(rootLocation.resolve("images/category"));
             Files.createDirectories(rootLocation.resolve("video/post"));
 
-            // You can add more directories as needed
 
             System.out.print(rootLocation.toString());
             System.out.println("Creating directory: " + rootLocation.resolve("images/user").toString());
         } catch (IOException e) {
-            // Log or handle the specific error
             e.printStackTrace();
             throw new RuntimeException("Failed to create directories: " + e.getMessage(), e);
         }

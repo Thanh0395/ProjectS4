@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.AuthService;
 
 import java.util.Collection;
 import java.util.Date;
@@ -12,9 +12,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.demo.entity.UserEntity;
 
+import static com.example.demo.constans.GlobalStorage.SECRET_KEY_JWT;
+
 @Service
 public class JwtService {
-	private static final String Secret_key = "123";
+	private static final String Secret_key = SECRET_KEY_JWT;
+	
 	
 	public String generateToken(UserEntity user, Collection<SimpleGrantedAuthority> authorities) {
 		Algorithm algorithm = Algorithm.HMAC256(Secret_key.getBytes());
