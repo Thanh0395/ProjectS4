@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,10 @@ public class UserService {
 	private RoleRepository roleRepository;
 	@Autowired
 	private UserRoleRepository userRoleRepository;
+	@Autowired
+	private RoleService roleService;
+	
+	private final PasswordEncoder passwordEncoder;
 		
 	public List<UserEntity> getAll(){
 		List<UserEntity> users = userRepository.findAll();
@@ -35,6 +40,7 @@ public class UserService {
 	}
 	
 	public UserEntity createUser(UserEntity userEntity){
+		userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 		return userRepository.save(userEntity);
 	}
 	
@@ -54,7 +60,7 @@ public class UserService {
 	
 	public UserEntity updateUser(UserEntity user) throws NotFoundException {
 		UserEntity userDb = userRepository.findById(user.getUserId())
-				.orElseThrow(() -> new NotFoundException("User not found with id : " + user.getUserId()));
+				.orElseThrow(() -> new NotFoundException("Update faild!. User not found with id : " + user.getUserId()));
 		if(userDb != null) {
 			user.setCreatedAt(userDb.getCreatedAt());
 			return userRepository.save(user);
@@ -81,10 +87,7 @@ public class UserService {
             userRoles.add(userRole);
         }
 
-        // Save user roles
         userRoleRepository.saveAll(userRoles);
-
-        // Update the user entity with the roles
         savedUser.setUserRoles(userRoles);
         return savedUser;
     }
@@ -110,28 +113,19 @@ public class UserService {
             throw new NotFoundException("User role not found with id: " + userRoleId);
         }
     }
-
 	
-//	public void addRoleToUser(String email, int roleId) throws NotFoundException {
-//        // Find the user by email
-//        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found with email: " + email));
-//        RoleEntity role = roleRepository.findById(roleId).get();
-//        user.addRole(role);
-//        userRepository.save(user);
-//    }
-//	
-//	public UserEntity removeRoleFromUser(int userId, int roleId) throws NotFoundException {
-//        UserEntity user = userRepository.findById(userId)
-//            .orElseThrow(() -> new NotFoundException("User not found with id: " + userId));
-//
-//        RoleEntity roleToRemove = user.getRoles().stream()
-//            .filter(role -> role.getRole_id() == roleId)
-//            .findFirst()
-//            .orElseThrow(() -> new NotFoundException("Role not found with id: " + roleId));
-//
-//        user.removeRole(roleToRemove);
-//        return userRepository.save(user);
-//    }
+	public List<RoleEntity> getRolesByUserRole(UserEntity user) throws NotFoundException {
+		UserEntity userDb = userRepository.findById(user.getUserId())
+				.orElseThrow(() -> new NotFoundException("Not found user with id:" + user.getUserId()));
+		List<UserRoleEntity> userRolesDb = null;
+		List<RoleEntity> roles = new ArrayList<RoleEntity>();
+		if(userDb != null) {
+			userRolesDb = userDb.getUserRoles();
+			roles = roleService.getRolesByUserRoles(userRolesDb);
+			return roles;
+		}
+		return null;
+	}
 	
 	public boolean checkAnyUsersExist() {
 		return userRepository.count() > 0;

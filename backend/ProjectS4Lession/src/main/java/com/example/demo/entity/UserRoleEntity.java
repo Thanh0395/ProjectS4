@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_role_rbl")
+@Table(name = "user_role_tbl")
 public class UserRoleEntity {
 
 	@Id

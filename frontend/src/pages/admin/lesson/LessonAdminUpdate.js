@@ -3,8 +3,8 @@ import * as formik from 'formik';
 import * as yup from 'yup';
 import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { Link, useParams } from 'react-router-dom';
-import { fetchCategories, fetchLessonById } from '../../api/lessonApi'
-import QuestionEditor from '../../components/QuestionEditor';
+import { fetchCategories, fetchLessonById } from '../../../services/api/lessonApi'
+import QuestionEditor from '../../../components/QuestionEditor';
 
 function LessonAdminUpdate(props) {
     const [lesson, setLesson] = useState(null);
@@ -30,7 +30,7 @@ function LessonAdminUpdate(props) {
             }
         };
         fetchData();
-    }, [params.id, categories]);
+    }, [params.id]);
 
     const [isLoading, setIsLoading] = useState(false);// loading nay khi submit form
     const { Formik } = formik;
@@ -57,7 +57,7 @@ function LessonAdminUpdate(props) {
             }),
         tags: yup
             .array(),
-            
+
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
@@ -65,8 +65,8 @@ function LessonAdminUpdate(props) {
             setIsLoading(true);
             // Call the API function to register the user
             await console.log(values);
-            await console.log('Questions',questions);
-            await console.log('DeletedQuestion',deletedQuestions);
+            await console.log('Questions', questions);
+            await console.log('DeletedQuestion', deletedQuestions);
             // Optionally, you can redirect the user to a different page after successful registration
             // history.push('/login'); // Import useHistory from 'react-router-dom'
             console.log('Registration successful');
@@ -86,7 +86,7 @@ function LessonAdminUpdate(props) {
                     <Formik
                         validationSchema={schema}
                         onSubmit={handleSubmit}
-                        initialValues={{ ...lesson, image: null,tag:[{id:1,name:'hahaa'},{id:2,name:'test'}] }}
+                        initialValues={{ ...lesson, image: null, tag: [{ id: 1, name: 'hahaa' }, { id: 2, name: 'test' }] }}
                     >
                         {({ handleSubmit, handleChange, values, touched, errors, setFieldValue }) => (
                             // noValidate: bỏ qua validate mặc định của browser
@@ -193,7 +193,7 @@ function LessonAdminUpdate(props) {
                                             onChange={handleChange}
                                             isInvalid={!!errors.price}
                                         />
-                                        <Form.Control.Feedback type="invalid" > 
+                                        <Form.Control.Feedback type="invalid" >
                                             {errors.price}
                                         </Form.Control.Feedback>
                                     </Form.Group>
@@ -216,26 +216,26 @@ function LessonAdminUpdate(props) {
                                     </Form.Group>
 
                                 </Row>
-                                <Row>
-                                    <QuestionEditor updateQuestion={updateQuestion} updateDeletedQuestion={updateDeletedQuestion}></QuestionEditor>
-                                </Row>
                                 <div className="d-grid">
                                     <Button variant="primary" type="button" onClick={handleSubmit} disabled={isLoading} >
                                         {isLoading ? (<Spinner size="sm"></Spinner>)
                                             : ("Update")}
                                     </Button>
+                                    <p className="m-3 text-center">
+                                        <Link to="/admin/lessons" >Back</Link>
+                                    </p>
                                 </div>
+
+                                <Row>
+                                    <QuestionEditor updateQuestion={updateQuestion} updateDeletedQuestion={updateDeletedQuestion}></QuestionEditor>
+                                </Row>
                             </Form>
                         )}
                     </Formik>
                 ) : (
                     <p>Loading...</p>
                 )}
-                <div className="mt-3">
-                    <p className="mb-0  text-center">
-                        <Link to="/admin/lessons" >Back</Link>
-                    </p>
-                </div>
+
             </div>
         </div>
     );

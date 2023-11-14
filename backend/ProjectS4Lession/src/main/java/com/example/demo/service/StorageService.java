@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,18 +21,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.config.StorageFileProperties;
+import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.FileEntity;
+import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.FileRepository;
+import com.example.demo.utils.StorageUtils;
 
 @Service
-public class StorageFileService {
+public class StorageService {
 
+
+	private final Path rootLocation;
+	
 	@Autowired
 	private FileRepository fileRepository;
-	
-	private final Path rootLocation;
 
-	public StorageFileService(StorageFileProperties storageProperties) {
+	public StorageService(StorageFileProperties storageProperties) {
 		this.rootLocation = Paths.get(storageProperties.getLocation());
 	}
 
@@ -39,6 +45,7 @@ public class StorageFileService {
             // Create multiple directories by chaining the createDirectories method
             Files.createDirectories(rootLocation.resolve("images/user"));
             Files.createDirectories(rootLocation.resolve("images/post"));
+            Files.createDirectories(rootLocation.resolve("images/category"));
             Files.createDirectories(rootLocation.resolve("video/post"));
 
             // You can add more directories as needed
@@ -57,7 +64,7 @@ public class StorageFileService {
 		String uniqueId = UUID.randomUUID().toString().replace("-", "");
 		return "/" + folderName + "_" + uniqueId + "." + ext;
 	}
-
+	
 	public String uploadImageToFileSystem(MultipartFile file, String folderName, String pathCustom) throws IOException {
 		String fileName = getUniqueFileName(file,folderName);
 		String filePath = rootLocation.resolve(pathCustom + fileName).toString();
@@ -70,16 +77,15 @@ public class StorageFileService {
 
 		// Save the file using NIO (Java 7+)
 		Files.copy(file.getInputStream(), Path.of(filePath), StandardCopyOption.REPLACE_EXISTING);
-
-		FileEntity fileEntity = fileRepository.save(FileEntity.builder().name(file.getOriginalFilename())
+		FileEntity fileData = fileRepository.save(FileEntity.builder().name(fileName.substring(1))
 				.type(file.getContentType()).filePath(filePath).build());
 
-		if (fileEntity != null) {
+		if (fileData != null) {
 			return "File uploaded successfully: " + filePath;
 		}
 		return null;
 	}
-
+	
 	@Transactional
 	public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
 		Optional<FileEntity> fileDataOptional = fileRepository.findFirstByName(fileName);
@@ -99,47 +105,7 @@ public class StorageFileService {
 			throw new FileNotFoundException("File not found: " + fileName);
 		}
 	}
-	
-	@Transactional
-	public byte[] downloadImageFromFileSystemToFilePath(String filePath) throws IOException {
-		Optional<FileEntity> fileDataOptional = fileRepository.findByFilePath(filePath);
-		if (fileDataOptional.isPresent()) {
-			Path filePathRoot = Paths.get(filePath);
 
-			try (InputStream inputStream = Files.newInputStream(filePathRoot)) {
-				return IOUtils.toByteArray(inputStream); // Using Apache Commons IO
-			} catch (IOException e) {
-				// Handle IOException (e.g., log the error or re-throw it)
-				throw e;
-			}
-		} else {
-			// Handle the case where the file is not found (e.g., return null or throw an
-			// exception)
-			throw new FileNotFoundException("File not found: " +  fileDataOptional.get().getName().toString());
-		}
-	}
-//
-//	public VideoModel uploadVideotoSystem(String path, MultipartFile file) throws IOException {
-//		VideoModel videoModel = new VideoModel();
-//		String fileName = file.getOriginalFilename();
-//		String uuid = UUID.randomUUID().toString();
-//		String finalName = uuid.concat(fileName).substring(fileName.indexOf("."));
-//
-//		// file full path
-//		String filePath = path + File.separator + finalName;
-//		// create directory to store file
-//		File f = new File(path);
-//		if (!f.exists()) {
-//			f.mkdir();
-//		}
-//		Files.copy(file.getInputStream(), Paths.get(filePath));
-//		videoModel.setVideoName(finalName);
-//		return videoModel;
-//	}
-//	
-//	public InputStream getVideoFile(String path, String fileName, int id) throws FileNotFoundException{
-//		String fullPath = path + File.separator + fileName;
-//		InputStream inputStream = new FileInputStream(fullPath);
-//		return inputStream;
-//	}
+
+
 }

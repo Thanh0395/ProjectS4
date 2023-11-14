@@ -9,19 +9,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.service.StorageFileService;
+import com.example.demo.service.StorageService;
+
 
 @RestController
 @RequestMapping("/api/project4/file")
 public class StorageFileController {
 
 	@Autowired
-	private StorageFileService storageFileService;
+	private StorageService storageFileService;
 	
 	@PostMapping("/upload")
 	public ResponseEntity<?> uploadImageToFileSystem(@RequestParam("file") MultipartFile file, String folderName, String folderPath) throws IOException{
