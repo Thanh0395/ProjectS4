@@ -7,11 +7,9 @@ export const loginUser = async (email, password) => {
             password: password,
         });
         const userData = response.data;
-        console.log("userData", userData);
-        //localStorage.setItem('userData', JSON.stringify(userData));
-        //return userData;
+        localStorage.setItem('userData', JSON.stringify(userData));
+        return userData;
     } catch (error) {
-        console.log('Error Response:', error.response);
         if (error.response && error.response.status === 403) {
             console.error('Forbidden: You do not have permission to access this resource.');
         }

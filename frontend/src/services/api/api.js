@@ -1,5 +1,5 @@
 import axios from 'axios';
-import environment from '../../enviroment.json'
+import environment from '../../environment.json'
 
 const baseURL = environment.urls.dev;
 
