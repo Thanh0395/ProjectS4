@@ -1,4 +1,7 @@
 import axios from 'axios';
+import environment from '../../enviroment.json'
+
+const baseURL = environment.urls.dev;
 
 const getToken = () => {
   const token = localStorage.getItem('token');
@@ -9,9 +12,15 @@ const getToken = () => {
   };
 }
 
-const instance = axios.create({
+const api = axios.create({
   // baseURL: 'https://fakestoreapi.com',
-  baseURL: 'http://localhost:8080/api/project4',
+  baseURL: baseURL,
+  timeout: 10000,
+});
+
+const apiWithToken = axios.create({
+  // baseURL: 'https://fakestoreapi.com',
+  baseURL: baseURL,
   timeout: 10000,
   ...getToken(), // Request timeout in milliseconds
 });
@@ -26,4 +35,4 @@ const instance = axios.create({
 //   return config;
 // });
 
-export default instance;
+export {api ,apiWithToken};

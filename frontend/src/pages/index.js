@@ -2,13 +2,14 @@
 export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as NotFound } from './NotFound';
+export { default as Unauthorized } from './Unauthorized';
 // Admin
 export { default as HomeAdmin } from './admin/HomeAdmin';
 export { default as Dashboard } from './admin/Dashboard';
-export { default as LessonAdmin } from './admin/LessonAdmin';
-export { default as LessonAdminCreate } from './admin/LessonAdminCreate';
-export { default as LessonAdminDetail } from './admin/LessonAdminDetail';
-export { default as LessonAdminUpdate } from './admin/LessonAdminUpdate';
+export { default as LessonAdmin } from './admin/lesson/LessonAdmin';
+export { default as LessonAdminCreate } from './admin/lesson/LessonAdminCreate';
+export { default as LessonAdminDetail } from './admin/lesson/LessonAdminDetail';
+export { default as LessonAdminUpdate } from './admin/lesson/LessonAdminUpdate';
 export { default as ExamAdmin } from './admin/ExamAdmin';
 export { default as UserAdmin } from './admin/UserAdmin';
 export { default as CategoryAdmin } from './admin/CategoryAdmin';

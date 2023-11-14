@@ -1,8 +1,8 @@
 import React from 'react';
-import img from '../Not_found.jpg';
+import img from '../Unauthorized.jpg';
 import { Link } from 'react-router-dom';
 
-function NotFound(props) {
+function Unauthorized(props) {
     return (
         <div style={{
             backgroundImage: `url(${img})`,
@@ -16,18 +16,17 @@ function NotFound(props) {
         }}>
             <div style={{
                 textAlign: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                backgroundColor: 'rgba(255, 255, 255, 0.95)', 
                 padding: '6px',
                 borderRadius: '8px',
                 position: 'relative',
-                top: '-180px', 
-                left: '250px', 
+                top: '-100px',
             }}>
-                <h1>Unknown Page</h1>
-                <p>Return <Link to="/">home page</Link>.</p>
+                <h1>Unauthorized Access</h1>
+                <p>Please <Link to="/login">login</Link> to access this page or go back to the <Link to="/">home page</Link>.</p>
             </div>
         </div>
     );
 }
 
-export default NotFound;
+export default Unauthorized;
