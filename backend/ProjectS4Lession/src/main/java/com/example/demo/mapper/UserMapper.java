@@ -3,6 +3,7 @@ package com.example.demo.mapper;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.UserCreationDto;
+import com.example.demo.dto.UserLoginResponseDto;
 import com.example.demo.dto.UserUpdationDto;
 import com.example.demo.entity.UserEntity;
 
@@ -56,5 +57,17 @@ public class UserMapper {
 				.avatar(userUpdationDto.getAvatar())
 				.build();
 		return userEntity;
+	}
+	
+	public UserLoginResponseDto UserEntityToUserLoginResponse (UserEntity user) {
+		UserLoginResponseDto userLoginResponseDto = UserLoginResponseDto
+				.builder()
+				.userId(user.getUserId())
+				.email(user.getEmail())
+				.name(user.getName())
+				.dateOfBirth(user.getDateOfBirth())
+				.avatar(user.getAvatar())
+				.build();
+		return userLoginResponseDto;
 	}
 }

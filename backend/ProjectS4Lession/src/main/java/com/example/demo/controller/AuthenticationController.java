@@ -17,13 +17,15 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/project4/auth")
 @RequiredArgsConstructor
-//(origins = "*", allowedHeaders = {"X-PINGOTHER", "Origin", "X-Requested-With", "Content-Type", "Accept"})
-@CrossOrigin
 public class AuthenticationController {
-	@Autowired AuthenticationService authenticationService;
-	@PostMapping("/login")
-	public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest){
-		return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
-	}
-	
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+//    @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge = 3000)
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
+        return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
+    }
 }
+
