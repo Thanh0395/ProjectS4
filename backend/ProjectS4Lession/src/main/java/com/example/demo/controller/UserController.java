@@ -22,11 +22,12 @@ import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.Mapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
+import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/project4/users")
+@RequestMapping(DEV_DOMAIN_API + "/user")
 public class UserController {
 
 	@Autowired
@@ -43,9 +44,13 @@ public class UserController {
 	
 	@PostMapping("/create-user")
 	public ResponseEntity<UserEntity> createUser(@Valid @RequestBody UserCreationDto userCreationDto) {
-		UserEntity user = userMapper.UserCreationDtoToUserEntity(userCreationDto);
-		UserEntity userCreated = userService.createUser(user);
-		return new ResponseEntity<>(userCreated, HttpStatus.OK);
+		try {
+			UserEntity user = userMapper.UserCreationDtoToUserEntity(userCreationDto);
+			UserEntity userCreated = userService.createUser(user);
+			return new ResponseEntity<>(userCreated, HttpStatus.OK);
+		} catch (Exception e) {
+		}
+		return null;
 	}
 	
 	@GetMapping("/get-user-by-id/{id}")
