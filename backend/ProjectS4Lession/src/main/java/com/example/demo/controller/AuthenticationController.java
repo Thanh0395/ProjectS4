@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.auth.AuthenticationRequest;
 import com.example.demo.auth.AuthenticationResponse;
-import com.example.demo.service.AuthenticationService;
+import com.example.demo.exception.NotFoundException;
+import com.example.demo.service.AuthService.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,9 +23,9 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-//    @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", maxAge = 3000)
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) throws NotFoundException{
+    	
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
     }
 }

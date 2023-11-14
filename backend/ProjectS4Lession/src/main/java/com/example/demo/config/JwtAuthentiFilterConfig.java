@@ -30,18 +30,22 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import static com.example.demo.constans.GlobalStorage.SECRET_KEY_JWT;
+import static com.example.demo.constans.GlobalStorage.TOKEN_PREFIX;;
+
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthentiFilterConfig extends OncePerRequestFilter{
 
-	private final String Secret_key = "123";
+	private final String Secret_key = SECRET_KEY_JWT;
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String authorizationHeader = request.getHeader(AUTHORIZATION);
-		if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+		if(authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
 			try {
-				String token = authorizationHeader.substring("Bearer ".length());
+				String token = authorizationHeader.substring(TOKEN_PREFIX.length());
 				Algorithm algorithm = Algorithm.HMAC256(Secret_key.getBytes());
 				JWTVerifier jwtVerifier = JWT.require(algorithm).build();
 				DecodedJWT decodeJwt = jwtVerifier.verify(token);
