@@ -19,7 +19,6 @@ function Login(props) {
             //setIsLoading(true);
             // Call the API function to register the user
             const userData = await loginUser(values.email, values.password);
-            console.log("email", values.email);
             console.log('Login successful', userData);
         } catch (error) {
             console.error('Login error:', error);
