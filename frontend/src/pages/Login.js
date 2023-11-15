@@ -21,7 +21,8 @@ function Login(props) {
             const userData = await loginUser(values.email, values.password);
             console.log('Login successful', userData);
         } catch (error) {
-            console.error('Login error:', error);
+            const errorObj = error.response.data;
+            console.log('Login error:', errorObj['Error Message']);
         } finally {
             setIsLoading(false);
             setSubmitting(false);

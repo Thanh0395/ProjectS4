@@ -4,13 +4,16 @@ import * as yup from 'yup';
 import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { Link, useParams } from 'react-router-dom';
 import { fetchCategories, fetchLessonById } from '../../../services/api/lessonApi'
-import QuestionEditor from '../../../components/QuestionEditor';
+import QuestionEditor from '../../../components/admin/QuestionEditor';
+import TagsEdittor from '../../../components/admin/TagsEdittor';
+
 
 function LessonAdminUpdate(props) {
-    const [lesson, setLesson] = useState(null);
-    const [categories, setCategories] = useState(null);
-    const [questions, setQuestions] = useState(null);
-    const [deletedQuestions, setDeletedQuestions] = useState(null);
+    const [lesson, setLesson] = useState();
+    const [categories, setCategories] = useState([]);
+    const [questions, setQuestions] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [deletedQuestions, setDeletedQuestions] = useState([]);
     function updateQuestion(ques) {
         setQuestions(ques);
     }
@@ -23,8 +26,10 @@ function LessonAdminUpdate(props) {
             try {
                 const postData = await fetchLessonById(params.id);
                 const cateData = await fetchCategories();
+                const tagsData = await fetchCategories();
                 setLesson(postData);
                 setCategories(cateData);
+                setTags(tagsData);
             } catch (error) {
                 console.error('Error fetching post:', error);
             }
@@ -215,7 +220,14 @@ function LessonAdminUpdate(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
+                                    <Form.Group as={Col} md="6">
+                                        <TagsEdittor lessonTags={tags}></TagsEdittor>
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.description}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
                                 </Row>
+
                                 <div className="d-grid">
                                     <Button variant="primary" type="button" onClick={handleSubmit} disabled={isLoading} >
                                         {isLoading ? (<Spinner size="sm"></Spinner>)

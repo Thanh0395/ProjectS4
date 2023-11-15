@@ -12,6 +12,6 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
 export default ProtectedRoute;
 
-// //Use this component to cover the route you want to check user's role
+// //Use this component to cover the route you want to allow user's roles
 // <ProtectedRoute allowedRoles={['admin', 'user']}>
 // </ProtectedRoute>
