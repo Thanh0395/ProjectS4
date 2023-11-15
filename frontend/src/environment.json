@@ -1,7 +1,7 @@
 {
-    "urls": {
-      "dev": "http://localhost:8080/api/project4",
-      "test": "http://localhost:8080/api/project4",
-      "prod": "http://localhost:8080/api/project4"
-    }
+  "urls": {
+    "dev": "http://localhost:8080/api/project4",
+    "test": "http://localhost:8080/api/project4",
+    "prod": "http://localhost:8080/api/project4"
   }
+}

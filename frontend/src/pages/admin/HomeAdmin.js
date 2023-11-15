@@ -3,7 +3,7 @@ import React from 'react';
 function HomeAdmin(props) {
     return (
         <div>
-            Dasboard admin
+            Dashboard admin
         </div>
     );
 }
