@@ -30,7 +30,7 @@ public class TagEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "tag_id")
-	private int tag_id;
+	private int tagId;
 	
 	@Column(name = "tag_name", nullable = false)
 	@NotNull
