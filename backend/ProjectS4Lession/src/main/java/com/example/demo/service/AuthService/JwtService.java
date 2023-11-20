@@ -16,11 +16,10 @@ import static com.example.demo.constans.GlobalStorage.SECRET_KEY_JWT;
 
 @Service
 public class JwtService {
-	private static final String Secret_key = SECRET_KEY_JWT;
 	
 	
 	public String generateToken(UserEntity user, Collection<SimpleGrantedAuthority> authorities) {
-		Algorithm algorithm = Algorithm.HMAC256(Secret_key.getBytes());
+		Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY_JWT.getBytes());
 		return JWT.create()
 				.withSubject(user.getEmail())
 				.withExpiresAt(new Date(System.currentTimeMillis() + 50 * 60  * 1000))
@@ -29,7 +28,7 @@ public class JwtService {
 	}
 	
 	public String generateRefreshToken(UserEntity user, Collection<SimpleGrantedAuthority> authorities) {
-		Algorithm algorithm = Algorithm.HMAC256(Secret_key.getBytes());
+		Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY_JWT.getBytes());
 		return JWT.create()
 				.withSubject(user.getEmail())
 				.withExpiresAt(new Date(System.currentTimeMillis() + 70 * 60  * 1000))

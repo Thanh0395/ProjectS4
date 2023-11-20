@@ -30,11 +30,13 @@ import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.CategoryMapper;
 import com.example.demo.service.CategoryService;
 import com.example.demo.service.StorageService;
+import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
+
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/project4/categories")
+@RequestMapping(DEV_DOMAIN_API + "/categories")
 public class CategoryController {
 
 	@Autowired
