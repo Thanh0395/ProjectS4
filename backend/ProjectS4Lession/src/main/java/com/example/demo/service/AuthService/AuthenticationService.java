@@ -19,10 +19,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.demo.auth.AuthenticationRequest;
 import com.example.demo.auth.AuthenticationResponse;
+import com.example.demo.dto.UserLoginResponseDto;
 import com.example.demo.entity.RoleEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.exception.CustomAuthenticationException;
 import com.example.demo.exception.NotFoundException;
+import com.example.demo.mapper.UserMapper;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
@@ -40,6 +42,8 @@ public class AuthenticationService {
 	private final JwtService jwtService;
 	private final UserService userService;
 	private final AuthenticationManager authenticationManager;
+	@Autowired
+	private UserMapper userMapper;
 
 	public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest)
 			throws NotFoundException, CustomAuthenticationException {
@@ -57,7 +61,9 @@ public class AuthenticationService {
 
 			var JwtToken = jwtService.generateToken(user, authorities);
 			var JwtRefreshToken = jwtService.generateRefreshToken(user, authorities);
-			return AuthenticationResponse.builder().token(JwtToken).refreshToken(JwtRefreshToken).build();
+			UserLoginResponseDto userLoginResponse = userMapper.UserEntityToUserLoginResponse(user);
+			userLoginResponse.setRoles(set);
+			return AuthenticationResponse.builder().user(userLoginResponse).token(JwtToken).refreshToken(JwtRefreshToken).build();
 		} catch (BadCredentialsException e) {
 			// Invalid email or password
 			throw new CustomAuthenticationException("Invalid email or password");

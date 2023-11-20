@@ -38,7 +38,6 @@ import static com.example.demo.constans.GlobalStorage.TOKEN_PREFIX;;
 @RequiredArgsConstructor
 public class JwtAuthentiFilterConfig extends OncePerRequestFilter{
 
-	private final String Secret_key = SECRET_KEY_JWT;
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -46,7 +45,7 @@ public class JwtAuthentiFilterConfig extends OncePerRequestFilter{
 		if(authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
 			try {
 				String token = authorizationHeader.substring(TOKEN_PREFIX.length());
-				Algorithm algorithm = Algorithm.HMAC256(Secret_key.getBytes());
+				Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY_JWT.getBytes());
 				JWTVerifier jwtVerifier = JWT.require(algorithm).build();
 				DecodedJWT decodeJwt = jwtVerifier.verify(token);
 				String userName = decodeJwt.getSubject();

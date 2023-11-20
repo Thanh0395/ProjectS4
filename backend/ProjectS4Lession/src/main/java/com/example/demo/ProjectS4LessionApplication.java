@@ -50,27 +50,27 @@ public class ProjectS4LessionApplication {
 	    return args -> {
 	    	boolean initializationEnabled = appConfig.isInitializationEnabled();
 	        if (initializationEnabled && !checkUserExist(userService)) {
-				roleService.create(new RoleEntity("ROLE_USER"));
-				roleService.create(new RoleEntity("ROLE_TEACHER"));
-				roleService.create(new RoleEntity("ROLE_ADMIN"));
+				roleService.create(new RoleEntity("USER"));
+				roleService.create(new RoleEntity("TEACHER"));
+				roleService.create(new RoleEntity("ADMIN"));
 				
-				userService.createUser(new UserEntity("tanhung01@gmail.com", "Tan Hung 01", Date.valueOf("1999-07-27"), "avt", "1234567"));
+				userService.createUser(new UserEntity("tanhung.nguyen270799@gmail.com", "Tan Hung 01", Date.valueOf("1999-07-27"), "avt", "1234567"));
 				userService.createUser(new UserEntity("tanhung02@gmail.com", "Tan Hung 02" ,Date.valueOf("1999-07-27"), "avt", "1234567"));
 				userService.createUser(new UserEntity("tanhung03@gmail.com", "Tan Hung 03", Date.valueOf("1999-07-27"), "avt", "1234567"));
 				
-				userService.createUser(new UserEntity("duythanh01@gmail.com", "Duy Thanh 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
+				userService.createUser(new UserEntity("tranphamduythanh@gmail.com", "Duy Thanh 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				userService.createUser(new UserEntity("duythanh02@gmail.com", "Duy Thanh 02", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				userService.createUser(new UserEntity("duythanh03@gmail.com", "Duy Thanh 03", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				
-				userService.createUser(new UserEntity("trungnhan01@gmail.com", "Trung Nhan 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
+				userService.createUser(new UserEntity("Phamtrungnhan15dqt22@gmail.com", "Trung Nhan 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				userService.createUser(new UserEntity("trungnhan02@gmail.com", "Trung Nhan 02", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				userService.createUser(new UserEntity("trungnhan03@gmail.com", "Trung Nhan 03", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				
-				userService.createUser(new UserEntity("tiensy01@gmail.com", "Tien Sy 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
+				userService.createUser(new UserEntity("trancaotiensi020501@gmail.com", "Tien Sy 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				userService.createUser(new UserEntity("tiensy02@gmail.com", "Tien Sy 02", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				userService.createUser(new UserEntity("tiensy03@gmail.com", "Tien Sy 03", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				
-				userService.createUser(new UserEntity("doanpham01@gmail.com", "Doan Pham 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
+				userService.createUser(new UserEntity("doananhphamuk@gmail.com", "Doan Pham 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				userService.createUser(new UserEntity("doanpham02@gmail.com", "Doan Pham 02", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				userService.createUser(new UserEntity("doanpham03@gmail.com", "Doan Pham 03", Date.valueOf("1999-07-27"),"avt", "1234567"));
 				

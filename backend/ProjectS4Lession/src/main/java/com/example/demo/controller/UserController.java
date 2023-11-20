@@ -27,7 +27,7 @@ import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(DEV_DOMAIN_API + "/user")
+@RequestMapping(DEV_DOMAIN_API + "/users")
 public class UserController {
 
 	@Autowired

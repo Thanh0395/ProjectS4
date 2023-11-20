@@ -17,10 +17,12 @@ import com.example.demo.entity.UserEntity;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.service.RoleService;
 
+import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
+
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/project4/roles")
+@RequestMapping(DEV_DOMAIN_API + "/roles")
 public class RoleController {
 
 	@Autowired
