@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 
 import com.example.demo.service.StorageService;
 
 
 @RestController
-@RequestMapping("/api/project4/file")
+@RequestMapping(DEV_DOMAIN_API + "/file")
 public class StorageFileController {
 
 	@Autowired

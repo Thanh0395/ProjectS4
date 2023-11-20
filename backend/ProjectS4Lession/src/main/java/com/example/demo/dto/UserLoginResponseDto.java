@@ -1,6 +1,10 @@
 package com.example.demo.dto;
 
 import java.sql.Date;
+import java.util.List;
+
+import com.example.demo.entity.RoleEntity;
+import com.example.demo.entity.UserRoleEntity;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -17,11 +21,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserLoginResponseDto {
 	private int userId;
-	
-
 	private String email;
 	private String name;
 	private String password;
 	private Date dateOfBirth;
 	private String avatar;
+	private boolean isActive;
+	private List<UserRoleEntity> userRoles;
+	private List<RoleEntity> roles;
 }
