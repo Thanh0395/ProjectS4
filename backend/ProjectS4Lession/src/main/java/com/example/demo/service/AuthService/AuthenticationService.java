@@ -1,11 +1,8 @@
 package com.example.demo.service.AuthService;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +10,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.demo.auth.AuthenticationRequest;
 import com.example.demo.auth.AuthenticationResponse;
 import com.example.demo.dto.ActiveUserRequestDto;
-import com.example.demo.dto.RegisterRequestDto;
 import com.example.demo.dto.UserResponseDto;
+import com.example.demo.dto.VerifyEmailResponseDto;
 import com.example.demo.entity.RoleEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.UserRoleEntity;
+import com.example.demo.entity.VerifyEmailEntity;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.CustomAuthenticationException;
 import com.example.demo.exception.NotFoundException;
@@ -117,7 +111,7 @@ public class AuthenticationService {
     	UserEntity userCreated = userService.createUser(user);
     	UserResponseDto userResponseDto = userMapper.UserEntityToUserResponse(userCreated);
     	//add default role user
-    	AddPermission(userCreated.getEmail(), "USER");
+    	AddPermission(userCreated.getEmail(), DEFAULT_ROLE);
 	    return userResponseDto;
 	}
 	
@@ -137,6 +131,22 @@ public class AuthenticationService {
         return userRoleRepository.save(userRoleEntity);
     }
 	
+	public VerifyEmailResponseDto CreateVerifyEmailWithUser(String email) 
+			throws NotFoundException 
+	{
+		UserEntity userDb = userRepository.findByEmail(email)
+				.orElseThrow(() -> new NotFoundException("Not found user with email:" + email));
+		
+		VerifyEmailEntity verifyEmailCreated = verifyEmailService.createVerifyEmail(userDb);
+		VerifyEmailResponseDto verifyEmailResponseDto = VerifyEmailResponseDto
+				.builder()
+				.code(verifyEmailCreated.getCode())
+				.email(userDb.getEmail())
+				.message("Create verify with email : " + userDb.getEmail() + "and code : " + verifyEmailCreated.getCode())
+				.build();
+		return verifyEmailResponseDto;
+	}
+	
 	public void ActiveUser(ActiveUserRequestDto activeUserRequestDto) 
 			throws NotFoundException, VerificationCodeMismatchException 
 	{
@@ -145,6 +155,7 @@ public class AuthenticationService {
 		boolean isVerify = verifyEmailService.checkVerifyEmail(user, activeUserRequestDto.getCode());
 		if(isVerify) {
 			user.setActive(true);
+			userRepository.save(user);
 		}else {
 			throw new VerificationCodeMismatchException("Verification code does not match for user: " + activeUserRequestDto.getEmail());
 		}

@@ -26,13 +26,13 @@ public class TestController {
 	@Autowired
 	private UserService userService;
 
-	@PostMapping("/send-email")
-	public ResponseEntity<String> testSendMail(@RequestBody EmailEntity email) throws NotFoundException {
-		System.out.println("Email test." + email.getToEmail());
-		UserEntity user = userService.getUserByEmail(email.getToEmail());
-		emailService.sendMail(email);
-		return new ResponseEntity<>("Send Email success", HttpStatus.OK); // Use ResponseEntity.ok() to return success
-	}
+//	@PostMapping("/send-email")
+//	public ResponseEntity<String> testSendMail(@RequestBody EmailEntity email) throws NotFoundException {
+//		System.out.println("Email test." + email.getToEmail());
+//		UserEntity user = userService.getUserByEmail(email.getToEmail());
+//		emailService.sendMailVerifyCode(email);
+//		return new ResponseEntity<>("Send Email success", HttpStatus.OK); // Use ResponseEntity.ok() to return success
+//	}
 	
 	@GetMapping("")
 	public ResponseEntity<String> test (){

@@ -42,8 +42,7 @@ public class EmailService {
         }
     }
 
-    //, String encodeToken
-    public boolean sendMail(EmailEntity email) throws NotFoundException {
+    public boolean sendMailVerifyCode(EmailEntity email, String code) throws NotFoundException {
         try {
         	Optional<UserEntity> user = userRepository.findByEmail(email.getToEmail());
         	if(!user.isPresent()) {
@@ -59,7 +58,7 @@ public class EmailService {
             // Load and customize the email template
             String template = loadEmailTemplate();
             template = template.replace("${userName}", user.get().getName());
-            template = template.replace("${verifyCodeEmail}", "12345");
+            template = template.replace("${verifyCodeEmail}", code);
             helper.setText(template, true); // true indicates the content is HTML
 
             javaMailSender.send(message);
