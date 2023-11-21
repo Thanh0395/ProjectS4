@@ -1,28 +1,45 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import { Button, Container, FloatingLabel, Form, Spinner } from "react-bootstrap";
+import { Link, useNavigate } from 'react-router-dom';
+import { Alert, Button, Container, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import * as formik from 'formik';
 import * as yup from 'yup';
 import { loginUser } from '../services/api/userAPI';
 
 function Login(props) {
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [showVerifyCode, setShowVerifyCode] = useState(true);
+    const [currentEmail, setCurrentEmail] = useState(()=>{
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        return currentUser? currentUser.email : '';
+    });
+    const navigate = useNavigate();
 
     const { Formik } = formik;
     const schema = yup.object().shape({
         email: yup.string().email().required(),
         password: yup.string().min(3, "Please, at least 3 character!...").required(),
+        verify: yup.string(),
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
-            //setIsLoading(true);
+            setIsLoading(true);
+            setCurrentEmail(values.email)
             // Call the API function to register the user
-            const userData = await loginUser(values.email, values.password);
-            console.log('Login successful', userData);
+            await loginUser(values.email, values.password);
+            if(localStorage.getItem('currentUser')){
+                if(localStorage.getItem('currentUser').active){
+                    console.log('true');
+                }else{
+                    console.log('false');
+                }
+            }
+            navigate('/');
         } catch (error) {
             const errorObj = error.response.data;
-            console.log('Login error:', errorObj['Error Message']);
+            setErrorMessage(errorObj['Error Message']);
+            // console.log('Login error:', errorObj['Error Message']);
         } finally {
             setIsLoading(false);
             setSubmitting(false);
@@ -40,7 +57,7 @@ function Login(props) {
                             validationSchema={schema}
                             onSubmit={handleSubmit}
                             initialValues={{
-                                email: '',
+                                email: currentEmail,
                                 password: '',
                             }}
                         >
@@ -53,7 +70,7 @@ function Login(props) {
                                                 name="email"
                                                 value={values.email}
                                                 onChange={handleChange}
-                                                isInvalid={!!errors.email}
+                                                isInvalid={touched.email && !!errors.email}
                                                 placeholder="name@example.com"
                                             />
 
@@ -73,7 +90,7 @@ function Login(props) {
                                                 name="password"
                                                 value={values.password}
                                                 onChange={handleChange}
-                                                isInvalid={!!errors.password}
+                                                isInvalid={touched.password && !!errors.password}
                                                 placeholder=""
                                             />
 
@@ -92,6 +109,28 @@ function Login(props) {
                                             </a>
                                         </p>
                                     </Form.Group>
+                                    {showVerifyCode && (
+                                        <Form.Group className="mb-3" controlId="formBasicVerify">
+                                            <FloatingLabel label="Verification Code">
+                                                <Form.Control
+                                                    type="text"
+                                                    name="verify"
+                                                    value={values.verify}
+                                                    onChange={handleChange}
+                                                    isInvalid={touched.verify && !!errors.verify}
+                                                    placeholder="Enter verification code"
+                                                />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.verify}
+                                                </Form.Control.Feedback>
+                                            </FloatingLabel>
+                                        </Form.Group>
+                                    )}
+                                    {errorMessage && (
+                                        <Alert variant="danger">
+                                            {errorMessage}
+                                        </Alert>
+                                    )}
                                     <div className="d-grid">
                                         <Button variant="primary" type="submit" disabled={isLoading} >
                                             {isLoading ? (<Spinner size="sm"></Spinner>)
