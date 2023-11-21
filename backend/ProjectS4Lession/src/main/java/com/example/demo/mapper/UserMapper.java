@@ -2,8 +2,9 @@ package com.example.demo.mapper;
 
 import org.springframework.stereotype.Component;
 
+import com.example.demo.dto.RegisterRequestDto;
 import com.example.demo.dto.UserCreationDto;
-import com.example.demo.dto.UserLoginResponseDto;
+import com.example.demo.dto.UserResponseDto;
 import com.example.demo.dto.UserUpdationDto;
 import com.example.demo.entity.UserEntity;
 
@@ -62,10 +63,10 @@ public class UserMapper {
 		return userEntity;
 	}
 	
-	//User Login Response Dto
+	//User ResponseDto
 	
-	public UserLoginResponseDto UserEntityToUserLoginResponse (UserEntity user) {
-		UserLoginResponseDto userLoginResponseDto = UserLoginResponseDto
+	public UserResponseDto UserEntityToUserResponse (UserEntity user) {
+		UserResponseDto userResponseDto = UserResponseDto
 				.builder()
 				.userId(user.getUserId())
 				.email(user.getEmail())
@@ -73,10 +74,21 @@ public class UserMapper {
 				.dateOfBirth(user.getDateOfBirth())
 				.avatar(user.getAvatar())
 				.isActive(user.isActive())
-				.userRoles(user.getUserRoles())
+				//.userRoles(user.getUserRoles())
 				.build();
-		return userLoginResponseDto;
+		return userResponseDto;
 	}
 	
-	
+	//RegisterRequestDto
+	public UserEntity RegisterRequestDtoToUserEntity(RegisterRequestDto registerRequestDto) {
+		UserEntity userEntity = UserEntity
+				.builder()
+				.email(registerRequestDto.getEmail())
+				.name(registerRequestDto.getName())
+				.password(registerRequestDto.getPassword())
+				.dateOfBirth(registerRequestDto.getDateOfBirth())
+				.avatar(registerRequestDto.getAvatar())
+				.build();
+		return userEntity;
+	}
 }
