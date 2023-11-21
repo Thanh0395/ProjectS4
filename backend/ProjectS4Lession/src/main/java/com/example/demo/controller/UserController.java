@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,11 +23,12 @@ import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.Mapper;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
+import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/project4/users")
+@RequestMapping(DEV_DOMAIN_API + "/users")
 public class UserController {
 
 	@Autowired
@@ -36,6 +38,7 @@ public class UserController {
 	private UserMapper userMapper;
 	
 	@GetMapping("/list-user")
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public ResponseEntity<List<UserEntity>> getAllUser(){
 		List<UserEntity> listUser = userService.getAll();
 		return new ResponseEntity<>(listUser, HttpStatus.OK);
@@ -43,9 +46,13 @@ public class UserController {
 	
 	@PostMapping("/create-user")
 	public ResponseEntity<UserEntity> createUser(@Valid @RequestBody UserCreationDto userCreationDto) {
-		UserEntity user = userMapper.UserCreationDtoToUserEntity(userCreationDto);
-		UserEntity userCreated = userService.createUser(user);
-		return new ResponseEntity<>(userCreated, HttpStatus.OK);
+		try {
+			UserEntity user = userMapper.UserCreationDtoToUserEntity(userCreationDto);
+			UserEntity userCreated = userService.createUser(user);
+			return new ResponseEntity<>(userCreated, HttpStatus.OK);
+		} catch (Exception e) {
+		}
+		return null;
 	}
 	
 	@GetMapping("/get-user-by-id/{id}")

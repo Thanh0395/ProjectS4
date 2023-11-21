@@ -2,77 +2,51 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
 	private final JwtAuthentiFilterConfig jwtAuthentiFilterConfig;
 	private final AuthenticationProvider authenticationProvider;
-	
+
 	@Bean
-	@Order(1)
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .authorizeRequests()
-            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            .requestMatchers("/api/project4/auth/login").permitAll()
-            .requestMatchers("/api/project4/users/**").hasAuthority("ROLE_USER")
-            .anyRequest().permitAll()
-        .and()
-        .authenticationProvider(authenticationProvider)
-        .addFilterBefore(jwtAuthentiFilterConfig, UsernamePasswordAuthenticationFilter.class);
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+	    httpSecurity
+	        .cors().and()
+	        .csrf().disable()
+	        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+	        .authorizeRequests()
+	            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+	            .requestMatchers(DEV_DOMAIN_API + "/auth/login").permitAll()
+	            .requestMatchers(DEV_DOMAIN_API + "/auth/logout").permitAll()
+	            .requestMatchers(DEV_DOMAIN_API + "/users/**").hasAnyAuthority("USER","ADMIN","TEACHER")
+	            .requestMatchers(DEV_DOMAIN_API + "/users/create-user").permitAll()
+	            .anyRequest().permitAll().and()
+	        .authenticationProvider(authenticationProvider)
+	        .addFilterBefore(jwtAuthentiFilterConfig, UsernamePasswordAuthenticationFilter.class)
+	        .logout() // Adding logout configuration
+	            .logoutUrl("/logout") // URL to trigger logout
+	            .logoutSuccessUrl(DEV_DOMAIN_API + "/auth/login?logout") // Redirect to this URL after successful logout
+	            .invalidateHttpSession(true) // Invalidate HTTP session
+	            .deleteCookies("JSESSIONID", "your_other_cookie_name"); // Delete cookies upon logout
 
-    return httpSecurity.build();
-    }
-	
-//	 @Bean
-//	    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//	        httpSecurity.csrf().disable()
-//	            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//	            .and()
-//	            .authorizeRequests()
-//	                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//	                .requestMatchers("/api/project4/auth/login").permitAll()
-//	                .requestMatchers("/api/project4/users/**").hasAuthority("ROLE_USER")
-//	                .anyRequest().authenticated()
-//	            .and()
-//	            .authenticationProvider(authenticationProvider)
-//	            .addFilterBefore(jwtAuthentiFilterConfig, UsernamePasswordAuthenticationFilter.class);
-//
-//	        return httpSecurity.build();
-//	    }
+	    return httpSecurity.build();
+	}
 
-//	@Bean
-//	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//		httpSecurity.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//				.authorizeRequests()
-//					.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//				.requestMatchers("/api/project4/auth/login").permitAll()
-//				.requestMatchers("/api/project4/users/**").hasAnyAuthority("ROLE_USER")
-//				.and()
-//				.csrf().disable()
-//				.authorizeRequests()
-//				.anyRequest()
-//				.authenticated()
-//				.and()
-//				.authenticationProvider(authenticationProvider)
-//				.addFilterBefore(jwtAuthentiFilterConfig, UsernamePasswordAuthenticationFilter.class);
-//
-//		return httpSecurity.build();
-//	}
 
 }

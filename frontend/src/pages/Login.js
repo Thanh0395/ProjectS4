@@ -1,75 +1,63 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import { Button, Container, FloatingLabel, Form, Spinner } from "react-bootstrap";
+import { Link, useNavigate } from 'react-router-dom';
+import { Alert, Button, Container, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import * as formik from 'formik';
 import * as yup from 'yup';
+import { loginUser } from '../services/api/userAPI';
 
 function Login(props) {
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [showVerifyCode, setShowVerifyCode] = useState(true);
+    const [currentEmail, setCurrentEmail] = useState(()=>{
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        return currentUser? currentUser.email : '';
+    });
+    const navigate = useNavigate();
 
     const { Formik } = formik;
     const schema = yup.object().shape({
         email: yup.string().email().required(),
         password: yup.string().min(3, "Please, at least 3 character!...").required(),
+        verify: yup.string(),
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             setIsLoading(true);
+            setCurrentEmail(values.email)
             // Call the API function to register the user
-            await console.log(values);
-            // Optionally, you can redirect the user to a different page after successful registration
-            // history.push('/login'); // Import useHistory from 'react-router-dom'
-            console.log('Login successful');
+            await loginUser(values.email, values.password);
+            if(localStorage.getItem('currentUser')){
+                if(localStorage.getItem('currentUser').active){
+                    console.log('true');
+                }else{
+                    console.log('false');
+                }
+            }
+            navigate('/');
         } catch (error) {
-            console.error('Login error:', error);
+            const errorObj = error.response.data;
+            setErrorMessage(errorObj['Error Message']);
+            // console.log('Login error:', errorObj['Error Message']);
         } finally {
             setIsLoading(false);
             setSubmitting(false);
         }
     };
 
-
-    // const { checkLogin, setCheckLogin } = props
-    // const initialState = {
-    //     email: "",
-    //     password: "",
-    // };
-    // const [dataLogin, setDataLogin] = useState(initialState);
-    // const navigate = useNavigate();
-    // const handleInputChange = (e) => {
-    //     const { name, value } = e.target;
-    //     console.log(name, value);
-    //     setDataLogin({
-    //         ...dataLogin,
-    //         [name]: value,
-    //     });
-    // };
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     axios.post("http://localhost:5270/api/Auth", dataLogin)
-    //         .then(data => {
-    //             if (data.status === 200) {
-    //                 localStorage.setItem("token", data.data.token)
-    //                 localStorage.setItem("userToken", JSON.stringify(data.data.userToken))
-    //                 setCheckLogin(!checkLogin)
-    //                 navigate('/dashboard')
-    //             }
-    //         })
-    //         .catch(error => console.log(error))
-    // }
     return (
         <Container>
             <div className="login-container">
                 <div className="login-content">
-                    <h2 className="fw-bold mb-2 text-uppercase">Brand</h2>
+                    <h2 className="fw-bold mb-2 text-uppercase">Ultimate Learning</h2>
                     <p className="mb-5">Please enter your Email and Password!</p>
                     <div className="mb-3">
                         <Formik
                             validationSchema={schema}
                             onSubmit={handleSubmit}
                             initialValues={{
-                                email: '',
+                                email: currentEmail,
                                 password: '',
                             }}
                         >
@@ -82,7 +70,7 @@ function Login(props) {
                                                 name="email"
                                                 value={values.email}
                                                 onChange={handleChange}
-                                                isInvalid={!!errors.email}
+                                                isInvalid={touched.email && !!errors.email}
                                                 placeholder="name@example.com"
                                             />
 
@@ -102,7 +90,7 @@ function Login(props) {
                                                 name="password"
                                                 value={values.password}
                                                 onChange={handleChange}
-                                                isInvalid={!!errors.password}
+                                                isInvalid={touched.password && !!errors.password}
                                                 placeholder=""
                                             />
 
@@ -121,6 +109,28 @@ function Login(props) {
                                             </a>
                                         </p>
                                     </Form.Group>
+                                    {showVerifyCode && (
+                                        <Form.Group className="mb-3" controlId="formBasicVerify">
+                                            <FloatingLabel label="Verification Code">
+                                                <Form.Control
+                                                    type="text"
+                                                    name="verify"
+                                                    value={values.verify}
+                                                    onChange={handleChange}
+                                                    isInvalid={touched.verify && !!errors.verify}
+                                                    placeholder="Enter verification code"
+                                                />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.verify}
+                                                </Form.Control.Feedback>
+                                            </FloatingLabel>
+                                        </Form.Group>
+                                    )}
+                                    {errorMessage && (
+                                        <Alert variant="danger">
+                                            {errorMessage}
+                                        </Alert>
+                                    )}
                                     <div className="d-grid">
                                         <Button variant="primary" type="submit" disabled={isLoading} >
                                             {isLoading ? (<Spinner size="sm"></Spinner>)
@@ -146,22 +156,6 @@ function Login(props) {
 
         </Container>
 
-        // <div className="container mt-3">
-        //     <h2>Login Form</h2>
-        //     <form onSubmit={handleSubmit} method="post">
-        //         <div className="mb-3 mt-3">
-        //             <label htmlFor="email">Email:</label>
-        //             <input type="email" className="form-control" id="email" placeholder="Enter email"
-        //              name="email" value={dataLogin.email} onChange={handleInputChange} />
-        //         </div>
-        //         <div className="mb-3">
-        //             <label htmlFor="password">Password:</label>
-        //             <input type="password" className="form-control" id="password" placeholder="Enter password"
-        //              name="password" value={dataLogin.password} onChange={handleInputChange} />
-        //         </div>
-        //         <button type="submit" className="btn btn-primary">Submit</button>
-        //     </form>
-        // </div>
     );
 }
 

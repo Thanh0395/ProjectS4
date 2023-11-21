@@ -21,16 +21,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.config.StorageFileProperties;
-import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.FileEntity;
-import com.example.demo.repository.CategoryRepository;
-import com.example.demo.utils.StorageUtils;
+import com.example.demo.repository.FileRepository;
 
 @Service
 public class StorageService {
 
 
 	private final Path rootLocation;
+	
+	@Autowired
+	private FileRepository fileRepository;
 
 	public StorageService(StorageFileProperties storageProperties) {
 		this.rootLocation = Paths.get(storageProperties.getLocation());
@@ -38,18 +39,15 @@ public class StorageService {
 
 	public void init() {
         try {
-            // Create multiple directories by chaining the createDirectories method
             Files.createDirectories(rootLocation.resolve("images/user"));
             Files.createDirectories(rootLocation.resolve("images/post"));
             Files.createDirectories(rootLocation.resolve("images/category"));
             Files.createDirectories(rootLocation.resolve("video/post"));
 
-            // You can add more directories as needed
 
             System.out.print(rootLocation.toString());
             System.out.println("Creating directory: " + rootLocation.resolve("images/user").toString());
         } catch (IOException e) {
-            // Log or handle the specific error
             e.printStackTrace();
             throw new RuntimeException("Failed to create directories: " + e.getMessage(), e);
         }
@@ -73,14 +71,33 @@ public class StorageService {
 
 		// Save the file using NIO (Java 7+)
 		Files.copy(file.getInputStream(), Path.of(filePath), StandardCopyOption.REPLACE_EXISTING);
-//
-//		FileEntity fileEntity = fileRepository.save(FileEntity.builder().name(file.getOriginalFilename())
-//				.type(file.getContentType()).filePath(filePath).build());
-//
-//		if (fileEntity != null) {
-//			return "File uploaded successfully: " + filePath;
-//		}
-		return file.getOriginalFilename();
+		FileEntity fileData = fileRepository.save(FileEntity.builder().name(fileName.substring(1))
+				.type(file.getContentType()).filePath(filePath).build());
+
+		if (fileData != null) {
+			return "File uploaded successfully: " + filePath;
+		}
+		return null;
+	}
+	
+	@Transactional
+	public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
+		Optional<FileEntity> fileDataOptional = fileRepository.findFirstByName(fileName);
+		if (fileDataOptional.isPresent()) {
+			String filePathDb = fileDataOptional.get().getFilePath();
+			Path filePath = Paths.get(filePathDb);
+
+			try (InputStream inputStream = Files.newInputStream(filePath)) {
+				return IOUtils.toByteArray(inputStream); // Using Apache Commons IO
+			} catch (IOException e) {
+				// Handle IOException (e.g., log the error or re-throw it)
+				throw e;
+			}
+		} else {
+			// Handle the case where the file is not found (e.g., return null or throw an
+			// exception)
+			throw new FileNotFoundException("File not found: " + fileName);
+		}
 	}
 
 

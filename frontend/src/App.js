@@ -6,33 +6,34 @@ import HomePage from "./pages/HomePage";
 import AdminPage from "./pages/AdminPage";
 import { UserProvider } from './components/context/UserContext';
 import {
-  Login, Register, NotFound,
+  Login, Register, NotFound, Unauthorized,
   Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin,
   LessonAdminCreate, LessonAdminDetail, LessonAdminUpdate,
-  ClientContact, ClientProducts, ClientDetailProduct, Home,
+  ClientContact, ClientProducts, ClientDetailProduct, Home, Planning,
 } from "./pages"
 import { useEffect, useState } from "react";
 import { FaAngleUp } from 'react-icons/fa6';
 
 function App() {
-  useEffect(() => {
-    window.addEventListener('error', e => {
-      if (e.message === 'ResizeObserver loop limit exceeded') {
-        const resizeObserverErrDiv = document.getElementById(
-          'webpack-dev-server-client-overlay-div'
-        );
-        const resizeObserverErr = document.getElementById(
-          'webpack-dev-server-client-overlay'
-        );
-        if (resizeObserverErr) {
-          resizeObserverErr.setAttribute('style', 'display: none');
-        }
-        if (resizeObserverErrDiv) {
-          resizeObserverErrDiv.setAttribute('style', 'display: none');
-        }
-      }
-    });
-  }, []);
+  //Fix loi resize khi co form
+  // useEffect(() => {
+  //   window.addEventListener('error', e => {
+  //     if (e.message === 'ResizeObserver loop limit exceeded') {
+  //       const resizeObserverErrDiv = document.getElementById(
+  //         'webpack-dev-server-client-overlay-div'
+  //       );
+  //       const resizeObserverErr = document.getElementById(
+  //         'webpack-dev-server-client-overlay'
+  //       );
+  //       if (resizeObserverErr) {
+  //         resizeObserverErr.setAttribute('style', 'display: none');
+  //       }
+  //       if (resizeObserverErrDiv) {
+  //         resizeObserverErrDiv.setAttribute('style', 'display: none');
+  //       }
+  //     }
+  //   });
+  // }, []);
   // Scroll TOP button, The back-to-top button is hidden at the beginning
   const [showButton, setShowButton] = useState(false);
   useEffect(() => {
@@ -59,6 +60,7 @@ function App() {
           <Route path="/" element={<ClientLayout>   <HomePage />  </ClientLayout>}>
             <Route exact path="" element={<Home />} />
             <Route path="contact" element={<ClientContact />} />
+            <Route path="planning" element={<Planning />} />
             <Route path="products/" >
               <Route exact path="" >
                 <Route path="" element={<ClientProducts />}></Route>
@@ -85,6 +87,7 @@ function App() {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
 

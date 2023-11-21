@@ -44,7 +44,7 @@ function Register(props) {
         <Container>
             <div className="register-container">
                 <div className="register-content">
-                    <h2 className="fw-bold mb-2 text-uppercase">Brand</h2>
+                    <h2 className="fw-bold mb-2 text-uppercase">Ultimate Learning</h2>
                     <p className="mb-5">Here is your register form!</p>
                     <Formik
                         validationSchema={schema}

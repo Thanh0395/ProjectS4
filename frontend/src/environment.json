@@ -1,0 +1,11 @@
+{
+  "urls": {
+    "dev": "http://localhost:8080/api/project4",
+    "test": "http://localhost:8080/api/project4",
+    "prod": "http://localhost:8080/api/project4"
+  },
+  "apikey":{
+    "chatGPT": "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",
+    "NhanchatGPT": "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"
+  }
+}
