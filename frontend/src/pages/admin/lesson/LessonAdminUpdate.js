@@ -6,7 +6,8 @@ import { Link, useParams } from 'react-router-dom';
 import { fetchCategories, fetchLessonById } from '../../../services/api/lessonApi'
 import QuestionEditor from '../../../components/admin/QuestionEditor';
 import TagsEdittor from '../../../components/admin/TagsEdittor';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 function LessonAdminUpdate(props) {
     const [lesson, setLesson] = useState();
@@ -36,6 +37,8 @@ function LessonAdminUpdate(props) {
         };
         fetchData();
     }, [params.id]);
+
+    const datacontent = '<h1>ahaha, t test show editor ne</h1>';
 
     const [isLoading, setIsLoading] = useState(false);// loading nay khi submit form
     const { Formik } = formik;
@@ -207,14 +210,20 @@ function LessonAdminUpdate(props) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} md="6">
                                         <Form.Label>Content</Form.Label>
-                                        <Form.Control
+                                        <ReactQuill
+                                            name="description"
+                                            value={values.description}
+                                            onChange={(val) => setFieldValue('description', val)}
+                                            isInvalid={!!errors.description}
+                                        />
+                                        {/* <Form.Control
                                             type="text"
                                             name="description"
                                             as="textarea"
                                             value={values.description}
                                             onChange={handleChange}
                                             isInvalid={!!errors.description}
-                                        />
+                                        /> */}
                                         <Form.Control.Feedback type="invalid">
                                             {errors.description}
                                         </Form.Control.Feedback>
@@ -247,7 +256,7 @@ function LessonAdminUpdate(props) {
                 ) : (
                     <p>Loading...</p>
                 )}
-
+            <div dangerouslySetInnerHTML={{ __html: datacontent }} />
             </div>
         </div>
     );

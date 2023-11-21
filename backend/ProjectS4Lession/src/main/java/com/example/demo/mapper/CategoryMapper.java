@@ -3,47 +3,48 @@ package com.example.demo.mapper;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.CategoryCreationDto;
+import com.example.demo.dto.CategoryDto;
 import com.example.demo.dto.CategoryUpdationDto;
 import com.example.demo.entity.CategoryEntity;
 
 @Component
 public class CategoryMapper {
 
-	public CategoryCreationDto CategoryEntityToCategoryCreationDto(CategoryEntity categoryEntity) {
-		CategoryCreationDto categoryCreationDto = CategoryCreationDto
+	public CategoryDto CategoryEntityToCategoryDto(CategoryEntity categoryEntity) {
+		CategoryDto categoryDto = CategoryDto
 				.builder()
 				.categoryName(categoryEntity.getCategoryName())
 				.featureImage(categoryEntity.getFeatureImage())
 				//.file()
 				.build();
-		return categoryCreationDto;
+		return categoryDto;
 	}
 	
-	public CategoryEntity CategoryCreationToCategoryEntity(CategoryCreationDto categoryCreationDto) {
+	public CategoryEntity insertCategoryDtoToCategoryEntity(CategoryDto categoryDto) {
 		CategoryEntity categoryEntity = CategoryEntity
 				.builder()
-				.categoryName(categoryCreationDto.getCategoryName())
-				.featureImage(categoryCreationDto.getFeatureImage())
+				.categoryName(categoryDto.getCategoryName())
+				.featureImage(categoryDto.getFeatureImage())
 				.build();
 		return categoryEntity;
 	}
 	
-	public CategoryUpdationDto CategoryEntityToCategoryUpdationDto(CategoryEntity categoryEntity) {
-		CategoryUpdationDto categoryUpdationDto = CategoryUpdationDto
-				.builder()
-				.categoryId(categoryEntity.getCategoryId())
-				.categoryName(categoryEntity.getCategoryName())
-				.featureImage(categoryEntity.getFeatureImage())
-				.build();
-		return categoryUpdationDto;
-	}
+//	public CategoryUpdationDto CategoryEntityToCategoryUpdationDto(CategoryEntity categoryEntity) {
+//		CategoryUpdationDto categoryUpdationDto = CategoryUpdationDto
+//				.builder()
+//				.categoryId(categoryEntity.getCategoryId())
+//				.categoryName(categoryEntity.getCategoryName())
+//				.featureImage(categoryEntity.getFeatureImage())
+//				.build();
+//		return categoryUpdationDto;
+//	}
 	
-	public CategoryEntity CategoryUpdationToCategoryEntity(CategoryUpdationDto categoryUpdationDto) {
+	public CategoryEntity updateCategoryDtoToCategoryEntity(CategoryDto categoryDto) {
 		CategoryEntity categoryEntity = CategoryEntity
 				.builder()
-				.categoryId(categoryUpdationDto.getCategoryId())
-				.categoryName(categoryUpdationDto.getCategoryName())
-				.featureImage(categoryUpdationDto.getFeatureImage())
+				.categoryId(categoryDto.getCategoryId())
+				.categoryName(categoryDto.getCategoryName())
+				.featureImage(categoryDto.getFeatureImage())
 				.build();
 		return categoryEntity;
 	}

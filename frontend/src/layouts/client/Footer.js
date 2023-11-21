@@ -34,6 +34,7 @@ function Footer(props) {
                             <li>Pham Trung Nhan</li>
                             <li>Nguyen Tan Hung</li>
                             <li>Tran Cao Tien Sy</li>
+                            <li>Pham Anh Doan</li>
                             {/* Add more members as needed */}
                         </ul>
                     </Col>
