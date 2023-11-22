@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserCreationDto {
+public class RegisterRequestDto {
 
 	@NotNull(message = "Email must not be null!")
 	@NotBlank(message = "Email must not be left blank!")
@@ -34,5 +34,4 @@ public class UserCreationDto {
 	private Date dateOfBirth;
 	
 	private String avatar;
-	
 }

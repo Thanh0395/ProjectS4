@@ -9,7 +9,7 @@ import {
   Login, Register, NotFound, Unauthorized,
   Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin,
   LessonAdminCreate, LessonAdminDetail, LessonAdminUpdate,
-  ClientContact, ClientProducts, ClientDetailProduct, Home, ClientCourse,
+  ClientContact, ClientProducts, ClientDetailProduct, Home, Planning, ClientCourse
 } from "./pages"
 import { useEffect, useState } from "react";
 import { FaAngleUp } from 'react-icons/fa6';
@@ -60,6 +60,7 @@ function App() {
           <Route path="/" element={<ClientLayout>   <HomePage />  </ClientLayout>}>
             <Route exact path="" element={<Home />} />
             <Route path="contact" element={<ClientContact />} />
+            <Route path="planning" element={<Planning />} />
             <Route path="products/" >
               <Route exact path="" >
                 <Route path="" element={<ClientCourse />}></Route>

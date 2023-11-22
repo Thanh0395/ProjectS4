@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.CategoryCreationDto;
+import com.example.demo.dto.CategoryDto;
 import com.example.demo.dto.CategoryUpdationDto;
 import com.example.demo.dto.PostCreationDto;
 import com.example.demo.dto.PostUpdationDto;
@@ -30,11 +31,13 @@ import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.CategoryMapper;
 import com.example.demo.service.CategoryService;
 import com.example.demo.service.StorageService;
+import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
+
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/project4/categories")
+@RequestMapping(DEV_DOMAIN_API + "/categories")
 public class CategoryController {
 
 	@Autowired
@@ -54,18 +57,18 @@ public class CategoryController {
 	
 	@PostMapping(value = "/create-category", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CategoryEntity> createCategory(
-            @Valid CategoryCreationDto categoryCreationDto,
+            @Valid CategoryDto categoryDto,
             MultipartFile file) throws IOException {
 
         if(file != null) {
         	String filePath = storageService.uploadImageToFileSystem(file, "Category", "images/category");
         	if(filePath != null) {
-        		categoryCreationDto.setFeatureImage(filePath);
+        		categoryDto.setFeatureImage(filePath);
         	}
         }else {
-        	categoryCreationDto.setFeatureImage("image-default-category");
+        	categoryDto.setFeatureImage("image-default-category");
         }
-        CategoryEntity category = categoryMapper.CategoryCreationToCategoryEntity(categoryCreationDto);
+        CategoryEntity category = categoryMapper.insertCategoryDtoToCategoryEntity(categoryDto);
         CategoryEntity categoryCreated = categoryService.createCategory(category);
         return new ResponseEntity<>(categoryCreated, HttpStatus.OK);
     }
@@ -83,8 +86,8 @@ public class CategoryController {
 	}
 	
 	@PutMapping("/update-category")
-	public ResponseEntity<CategoryEntity> updateCategory(@Valid @RequestBody CategoryUpdationDto categoryUpdationDto) throws NotFoundException {
-		CategoryEntity category = categoryMapper.CategoryUpdationToCategoryEntity(categoryUpdationDto);
+	public ResponseEntity<CategoryEntity> updateCategory(@Valid @RequestBody CategoryDto categoryDto) throws NotFoundException {
+		CategoryEntity category = categoryMapper.updateCategoryDtoToCategoryEntity(categoryDto);
 		CategoryEntity categoryUpdated = categoryService.updateCategory(category);
 		return new ResponseEntity<>(categoryUpdated, HttpStatus.OK);
 	}

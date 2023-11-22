@@ -22,3 +22,4 @@ export { default as ClientContact } from './client/ClientContact';
 export { default as ClientProducts } from './client/ClientProducts';
 export { default as ClientCourse} from './client/components/courses/ClientCourse';
 export { default as ClientDetailProduct } from './client/ClientDetailProduct';
+export { default as Planning } from './client/Planning';

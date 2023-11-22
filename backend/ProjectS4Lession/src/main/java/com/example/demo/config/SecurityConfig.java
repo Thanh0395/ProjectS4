@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -24,25 +26,27 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity
-				.cors().and()
-				.csrf().disable()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.requestMatchers(DEV_DOMAIN_API + "/auth/login").permitAll()
-				.requestMatchers(DEV_DOMAIN_API + "/users/**").hasAuthority("ROLE_USER").anyRequest()
-				.permitAll()
-				.and()
-				.logout() // Logout configuration starts here
-				.logoutUrl("/logout") // Specify the URL for logout
-				.logoutSuccessUrl(DEV_DOMAIN_API + "/auth/login?logout") // Redirect to this URL after successful logout
-				.invalidateHttpSession(true) // Invalidate HttpSession
-				.deleteCookies("JSESSIONID") // Delete cookies upon logout if needed
-				.and()
-				.authenticationProvider(authenticationProvider)
-				.addFilterBefore(jwtAuthentiFilterConfig, UsernamePasswordAuthenticationFilter.class);
+	    httpSecurity
+	        .cors().and()
+	        .csrf().disable()
+	        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+	        .authorizeRequests()
+	            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+	            .requestMatchers(DEV_DOMAIN_API + "/auth/login").permitAll()
+	            .requestMatchers(DEV_DOMAIN_API + "/auth/logout").permitAll()
+	            .requestMatchers(DEV_DOMAIN_API + "/users/**").hasAnyAuthority("USER","ADMIN","TEACHER")
+	            .requestMatchers(DEV_DOMAIN_API + "/users/create-user").permitAll()
+	            .anyRequest().permitAll().and()
+	        .authenticationProvider(authenticationProvider)
+	        .addFilterBefore(jwtAuthentiFilterConfig, UsernamePasswordAuthenticationFilter.class)
+	        .logout() // Adding logout configuration
+	            .logoutUrl("/logout") // URL to trigger logout
+	            .logoutSuccessUrl(DEV_DOMAIN_API + "/auth/login?logout") // Redirect to this URL after successful logout
+	            .invalidateHttpSession(true) // Invalidate HTTP session
+	            .deleteCookies("JSESSIONID", "your_other_cookie_name"); // Delete cookies upon logout
 
-		return httpSecurity.build();
+	    return httpSecurity.build();
 	}
+
 
 }

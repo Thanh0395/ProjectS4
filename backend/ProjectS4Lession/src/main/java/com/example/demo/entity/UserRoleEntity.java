@@ -38,6 +38,6 @@ public class UserRoleEntity {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "role_id", referencedColumnName = "role_id")
-	@JsonBackReference
+	//@JsonBackReference
 	private RoleEntity role;
 }

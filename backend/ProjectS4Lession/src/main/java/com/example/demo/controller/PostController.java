@@ -16,17 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.PostCreationDto;
 import com.example.demo.dto.PostUpdationDto;
+import com.example.demo.entity.EmailEntity;
 import com.example.demo.entity.PostEntity;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.Mapper;
 import com.example.demo.mapper.PostMapper;
+import com.example.demo.service.EmailService;
 import com.example.demo.service.PostService;
+import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/project4/posts")
+@RequestMapping(DEV_DOMAIN_API + "/posts")
 public class PostController {
 
 	@Autowired
@@ -37,6 +40,7 @@ public class PostController {
 	
 	@GetMapping("/list-post")
 	public ResponseEntity<List<PostEntity>> getAllPost() throws BadRequestException {
+		
 		List<PostEntity> posts = postService.getAllPost();
 		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
@@ -66,5 +70,6 @@ public class PostController {
 		PostEntity postUpdated = postService.updatePost(post);
 		return new ResponseEntity<PostEntity>(postUpdated, HttpStatus.OK);
 	}
+	
 
 }

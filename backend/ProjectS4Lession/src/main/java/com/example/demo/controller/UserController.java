@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,7 @@ import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(DEV_DOMAIN_API + "/user")
+@RequestMapping(DEV_DOMAIN_API + "/users")
 public class UserController {
 
 	@Autowired
@@ -37,6 +38,7 @@ public class UserController {
 	private UserMapper userMapper;
 	
 	@GetMapping("/list-user")
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public ResponseEntity<List<UserEntity>> getAllUser(){
 		List<UserEntity> listUser = userService.getAll();
 		return new ResponseEntity<>(listUser, HttpStatus.OK);

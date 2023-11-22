@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,9 +124,12 @@ public class UserService {
 			userRolesDb = userDb.getUserRoles();
 			roles = roleService.getRolesByUserRoles(userRolesDb);
 			return roles;
+		}else {
+			return Collections.emptyList();
 		}
-		return null;
 	}
+
+
 	
 	public boolean checkAnyUsersExist() {
 		return userRepository.count() > 0;
