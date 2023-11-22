@@ -1,7 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ProductContext } from "../../../../../components/context/ProductContext";
 import { Link } from "react-router-dom";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { Nav } from "react-bootstrap";
+import { Box, Slider } from "@mui/material";
+import {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Autoplay,
+} from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -22,33 +30,68 @@ function FilterCourse(props) {
   const handlePriceChange = (event, newValue) => {
     proDispatch({ type: "SET_PRICE", payload: newValue });
   };
+  const [swiperRef, setSwiperRef] = useState(null);
 
+  let appendNumber = 4;
+  let prependNumber = 1;
+
+  const prepend2 = () => {
+    swiperRef.prependSlide([
+      '<div class="swiper-slide">Slide ' + --prependNumber + "</div>",
+      '<div class="swiper-slide">Slide ' + --prependNumber + "</div>",
+    ]);
+  };
   return (
     <>
-      {/* <label>
-        <span>Price:</span>
-        <Box sx={{ width: 300 }}>
-          <Slider
-            getAriaLabel={() => "Price range"}
-            size="small"
-            max={1000}
-            defaultValue={[0, 1000]}
-            onChange={handlePriceChange}
-            valueLabelDisplay="auto"
-          />
-        </Box>
-      </label> */}
       <section className="course container">
+        <div className="course-filter_custom">
+        <label className="course-filter_custom_price">
+          <span>Filter by price</span>
+          <Box sx={{ width: 500 }}>
+            <Slider
+              getAriaLabel={() => "Price range"}
+              size="small"
+              max={1000}
+              defaultValue={[0, 1000]}
+              onChange={handlePriceChange}
+              valueLabelDisplay="auto"
+            />
+          </Box>
+        </label>
+        <div className="course-filter_input">
+          <input className="" type="text" placeholder="filter here" />
+          <div className="course-filter_input_icon"></div>
+        </div>
+        </div>
+        
         <div className="course-filter">
           <Swiper
             // install Swiper modules
-            modules={[Scrollbar, A11y]}
-            spaceBetween={0}
             slidesPerView={4}
-            pagination={{ clickable: true }}
-            scrollbar={{ draggable: true }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log("slide change")}
+            spaceBetween={10}
+            pagination={{
+              clickable: true,
+            }}
+            breakpoints={{
+              "@0.00": {
+                slidesPerView: 1,
+                spaceBetween: 10,
+              },
+              "@0.75": {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              "@1.00": {
+                slidesPerView: 3,
+                spaceBetween: 40,
+              },
+              "@1.50": {
+                slidesPerView: 4,
+                spaceBetween: 50,
+              },
+            }}
+            modules={[Pagination, Autoplay, Navigation]}
+            className="mySwiper"
           >
             <SwiperSlide>
               <button
@@ -75,10 +118,6 @@ function FilterCourse(props) {
               </SwiperSlide>
             ))}
           </Swiper>
-          <div className="course-filter_input">
-            <input className="" type="text" placeholder="filter here" />
-            <div className="course-filter_input_icon"></div>
-          </div>
         </div>
       </section>
     </>

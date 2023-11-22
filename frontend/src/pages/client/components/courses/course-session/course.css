@@ -5,44 +5,67 @@
     --light-secondary-color:#ffeebc;
   } */
 :root {
-    --search-session-color: rgba(50, 198, 209, 0.278);
+    --search-session-color: rgba(50, 198, 209, 0.366);
 }
 
 .course {
     margin: 5rem auto;
-    width: 100%;
-    background-color: var(--search-session-color);
     border-radius: 1rem;
 }
 
 .course .course-filter {
-    padding: 0rem 0rem 2rem;
-}
-
-.course .swiper{
-    padding: 2rem 0rem;
-    margin: 1rem 0;
-}
-.course .swiper-slide  .cate-filter  {
-    border: 1px solid rgb(228, 228, 228);
-    background-color: white;
+    background-color: var(--search-session-color);
     border-radius: 1rem;
-    padding: 1rem 3rem;
-    transition: 0.6s;
+    padding: 1rem;
 }
-.course .swiper-slide  .cate-filter:hover {
-    background-color: rgb(49, 172, 191);
-    /* border:1px solid rgb(49, 191, 141); */
-    color: rgb(255, 255, 255);
 
+
+.course .swiper {
+    padding: 2rem 0rem;
 }
-.course .course-filter_input {
+
+.course .swiper-slide .cate-filter {
     border: 1px solid rgb(228, 228, 228);
     background-color: white;
     border-radius: 1rem;
     width: 100%;
+    padding: 1rem;
+    transition: 0.6s;
+}
+
+.course .swiper-slide .cate-filter:hover {
+    background-color: rgb(31, 169, 190);
+    color: rgb(255, 255, 255);
+
+}
+
+.course .course-filter_custom {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0px;
+    justify-content: space-between;
+}
+
+.course .course-filter_custom_price {
+    border: 1px solid rgb(116, 165, 183);
+    border-radius: 1rem;
+    padding: 0.6rem 2rem;
+    cursor: pointer;
+}
+
+.course .course-filter_input {
+    border: 1px solid rgb(228, 228, 228);
+    background-color: white;
+    border-radius: 1rem;
+    width: 50%;
     padding: 0.8rem 2rem;
     position: relative;
+    cursor: pointer;
+    transition: 0.6s;
+}
+
+.course .course-filter_input:hover {
+    border: 1px solid rgb(49, 172, 191)
 }
 
 .course .course-filter_input input {
@@ -60,12 +83,14 @@
     left: 95%;
     transform: translate(-95%, -50%);
 }
+
 .course-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, 370px);
     gap: 2rem;
     justify-content: center;
 }
+
 .course-list .course-list_card {
     width: 370px;
     height: 455px;
@@ -77,11 +102,22 @@
 .course-list .course-list_card:hover {
     border: 1px solid rgb(101, 193, 209);
 }
+.course-list .course-list_card_image{
+    height: 190px;
+    overflow: hidden;
+}
 .course-list .course-list_card_image img {
     width: 100%;
     border-radius: 1rem;
+    transition: 0.6s;
+    transform: scale(1);
+
 }
 
+.course-list .course-list_card :hover .course-list_card_image_course{
+    transform: scale(1.1);
+
+}
 .course-list .course-list_card_title {
     padding: 2rem 0 1rem;
     display: flex;
@@ -93,19 +129,25 @@
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    
+
 }
-.course-list .course-list_card_title_detail h6{
+
+.course-list .course-list_card_title_detail h6 {
     font-weight: 200;
 }
-.course-list .course-list_card_title_percent h6{
-    font-weight: 200;
-}
-.course-list .course-list_card_title_percent{
+
+.course-list .course-list_card_title_percent_price {
     position: relative;
     padding: 0.5rem 0;
+    display: flex;
+    justify-content: space-between;
 }
-.course-list .course-list_card_title_progress{
+.course-list .course-list_card_title_percent_price h6 {
+    font-weight: 200;
+}
+
+
+.course-list .course-list_card_title_progress {
     position: absolute;
     bottom: 0;
     height: 4px;
@@ -113,7 +155,8 @@
     transition: 2s;
     z-index: 1;
 }
-.course-list  .course-list_card_title_progress_line{
+
+.course-list .course-list_card_title_progress_line {
     width: 100%;
     position: absolute;
     bottom: 0;
@@ -122,22 +165,45 @@
     transition: 2s;
     z-index: 0;
 }
-.course-list  .course-list_card_title_progress_rating{
+
+.course-list .course-list_card_title_progress_rating {
     padding: 0.6rem 0;
     display: flex;
     justify-content: space-between;
     gap: 5px;
 }
-.course-list  .course-list_card_title_progress_rating span{
+
+.course-list .course-list_card_title_progress_rating span {
     font-weight: 600;
 }
-.course-list .course-list_card_title_detail{
+
+.course-list .course-list_card_title_detail {
     border: none;
     font-weight: 200;
     background-color: transparent;
     color: rgb(102, 102, 102);
     transition: 0.6s;
 }
-.course-list .course-list_card_title_detail:hover{
+
+.course-list .course-list_card_title_detail:hover {
     color: rgb(101, 193, 209);
+}
+
+.pagination {
+    padding: 2rem;
+    justify-content: center;
+}
+.pagination .page-item{
+    padding: 0.5rem;
+}
+.pagination .page-item .page-link{
+    width: 32px !important;
+    text-align: center;
+    align-items: center;
+    height: 32px !important;
+    border-radius: 100% !important;
+}
+.course .active{
+    background-color: rgb(72, 182, 204) !important;
+    color: white !important;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import './banner.css'
-import banner from '../../../../../assets/course-banner.png'
+import banner from '../../../../../assets/course-banner.jpg'
 const CourseBannerSession = () => {
     return (
         <div className="course-banner">
