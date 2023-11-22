@@ -9,7 +9,7 @@ function ClientLayout({ children }) {
         <div id="client">
             <ProductProvider>
                 <Header />
-                <main className="container">
+                <main>
                     {children}
                 </main>
                 <Footer />

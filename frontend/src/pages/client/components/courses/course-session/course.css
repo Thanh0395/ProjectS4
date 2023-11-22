@@ -1,0 +1,148 @@
+/* :root {
+    --primary-color: #417ECB;
+    --secondary-color:#F2B705;
+    --light-primary-color:#bad8ff;
+    --light-secondary-color:#ffeebc;
+  } */
+:root {
+    --search-session-color: rgba(50, 198, 209, 0.278);
+}
+
+.course {
+    margin: 5rem auto;
+    width: 100%;
+    background-color: var(--search-session-color);
+    border-radius: 1rem;
+}
+
+.course .course-filter {
+    padding: 3rem 2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.course .course-filter_button {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.course .course-filter_button button {
+    border: 1px solid rgb(228, 228, 228);
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem 3rem;
+    transition: 0.6s;
+}
+.course .course-filter_button button:hover {
+    background-color: rgb(49, 172, 191);
+    /* border:1px solid rgb(49, 191, 141); */
+    color: rgb(255, 255, 255);
+
+}
+.course .course-filter_input {
+    border: 1px solid rgb(228, 228, 228);
+    background-color: white;
+    border-radius: 1rem;
+    width: 300px;
+    padding: 1rem 1.5rem;
+    position: relative;
+}
+
+.course .course-filter_input input {
+    border: none;
+    outline: none;
+}
+
+.course .course-filter_input_icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    background-color: rgb(218, 218, 218);
+    position: absolute;
+    top: 50%;
+    left: 95%;
+    transform: translate(-95%, -50%);
+}
+.course-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 370px);
+    gap: 2rem;
+    justify-content: center;
+}
+.course-list .course-list_card {
+    width: 370px;
+    height: 455px;
+    border-radius: 1rem;
+    border: 1px solid rgba(179, 219, 222, 0.701);
+    transition: 0.6s;
+    cursor: pointer;
+}
+.course-list .course-list_card:hover {
+    border: 1px solid rgb(101, 193, 209);
+}
+.course-list .course-list_card_image img {
+    width: 100%;
+    border-radius: 1rem;
+}
+
+.course-list .course-list_card_title {
+    padding: 2rem 0 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.course-list .course-list_card_title_image img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    
+}
+.course-list .course-list_card_title_detail h6{
+    font-weight: 200;
+}
+.course-list .course-list_card_title_percent h6{
+    font-weight: 200;
+}
+.course-list .course-list_card_title_percent{
+    position: relative;
+    padding: 0.5rem 0;
+}
+.course-list .course-list_card_title_progress{
+    position: absolute;
+    bottom: 0;
+    height: 4px;
+    background-color: rgb(19, 145, 80);
+    transition: 2s;
+    z-index: 1;
+}
+.course-list  .course-list_card_title_progress_line{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    height: 4px;
+    background-color: rgba(66, 81, 76, 0.319);
+    transition: 2s;
+    z-index: 0;
+}
+.course-list  .course-list_card_title_progress_rating{
+    padding: 0.6rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+.course-list  .course-list_card_title_progress_rating span{
+    font-weight: 600;
+}
+.course-list .course-list_card_title_detail{
+    border: none;
+    font-weight: 200;
+    background-color: transparent;
+    color: rgb(102, 102, 102);
+    transition: 0.6s;
+}
+.course-list .course-list_card_title_detail:hover{
+    color: rgb(101, 193, 209);
+}

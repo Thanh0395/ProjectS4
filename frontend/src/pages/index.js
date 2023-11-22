@@ -20,4 +20,5 @@ export { default as AchievementAdmin } from './admin/AchievementAdmin';
 export { default as Home } from './client/Home';
 export { default as ClientContact } from './client/ClientContact';
 export { default as ClientProducts } from './client/ClientProducts';
+export { default as ClientCourse} from './client/components/courses/ClientCourse';
 export { default as ClientDetailProduct } from './client/ClientDetailProduct';
