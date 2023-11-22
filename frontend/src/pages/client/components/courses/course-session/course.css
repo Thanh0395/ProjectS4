@@ -16,26 +16,21 @@
 }
 
 .course .course-filter {
-    padding: 3rem 2rem;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    padding: 0rem 0rem 2rem;
 }
 
-.course .course-filter_button {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
+.course .swiper{
+    padding: 2rem 0rem;
+    margin: 1rem 0;
 }
-
-.course .course-filter_button button {
+.course .swiper-slide  .cate-filter  {
     border: 1px solid rgb(228, 228, 228);
     background-color: white;
     border-radius: 1rem;
     padding: 1rem 3rem;
     transition: 0.6s;
 }
-.course .course-filter_button button:hover {
+.course .swiper-slide  .cate-filter:hover {
     background-color: rgb(49, 172, 191);
     /* border:1px solid rgb(49, 191, 141); */
     color: rgb(255, 255, 255);
@@ -45,8 +40,8 @@
     border: 1px solid rgb(228, 228, 228);
     background-color: white;
     border-radius: 1rem;
-    width: 300px;
-    padding: 1rem 1.5rem;
+    width: 100%;
+    padding: 0.8rem 2rem;
     position: relative;
 }
 
