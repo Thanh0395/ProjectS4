@@ -71,19 +71,5 @@ public class PostController {
 		return new ResponseEntity<PostEntity>(postUpdated, HttpStatus.OK);
 	}
 	
-	@Autowired
-	private EmailService emailService;
-
-	@PostMapping("/send-email")
-	public ResponseEntity<String> testSendMail(@RequestBody EmailEntity email) {
-		try {
-			emailService.sendMail(email);
-			return new ResponseEntity<String>("Send Email success", HttpStatus.OK); // Use ResponseEntity.ok() to return success
-		} catch (Exception e) {
-			// Handle the exception properly, for example:
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("Failed to send email: " + e.getMessage());
-		}
-	}
 
 }
