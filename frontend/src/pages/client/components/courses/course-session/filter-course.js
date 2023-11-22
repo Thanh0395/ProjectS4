@@ -3,7 +3,7 @@ import { ProductContext } from "../../../../../components/context/ProductContext
 import { Link } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import { Box, Slider } from "@mui/material";
-import { Swiper, SwiperSlide } from "swiper/react";
+
 function FilterCourse(props) {
   const [proState, proDispatch] = useContext(ProductContext);
   // Category
@@ -25,41 +25,32 @@ function FilterCourse(props) {
       <section className="course">
         <div className="course-filter">
           <div className="course-filter_button">
-            {/* <button
+            <button
               onClick={() => handleCategoryChange("")}
               className={`cate-filter ${
                 proState.filterBy.category === "" ? "active" : ""
               }`}
-              >
-              All Course
-            </button> */}
-            <Swiper
-               spaceBetween={50}
-               slidesPerView={3}
-               onSlideChange={() => console.log('slide change')}
-               onSwiper={(swiper) => console.log(swiper)}
             >
+              All Course
+            </button>
             {categories.map((item, index) => (
-              <SwiperSlide>
-                <button
-                  as={Link}
-                  key={index}
-                  onClick={() => handleCategoryChange(item)}
-                  className={`cate-filter ${
-                    proState.filterBy.category === item ? "active" : ""
-                  }`}
-                >
-                  {item}
-                </button>
-              </SwiperSlide>
+              <button
+                as={Link}
+                key={index}
+                onClick={() => handleCategoryChange(item)}
+                className={`cate-filter ${
+                  proState.filterBy.category === item ? "active" : ""
+                }`}
+              >
+                {item}
+              </button>
             ))}
-          </Swiper>
           </div>
           <div className="course-filter_input">
             <input className="" type="text" placeholder="filter here" />
             <div className="course-filter_input_icon"></div>
           </div>
-        </div>
+        </div>      
       </section>
       {/* <label>
         <span>Price:</span>
