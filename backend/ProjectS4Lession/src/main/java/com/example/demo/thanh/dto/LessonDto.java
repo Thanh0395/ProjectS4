@@ -43,14 +43,16 @@ public class LessonDto {
 	}
 //list lesson
 	public LessonDto(int id, String image, String title, String content, int price,
-			String userName, String categoryName, Timestamp createDate, Timestamp updateDate) {
+			int userId,String userName,int cateId, String categoryName, Timestamp createDate, Timestamp updateDate) {
 		super();
         this.postId = id;
         this.featureImage = image;
         this.title = title;
         this.content = content;
         this.price = price;
+        this.authorId = userId;
         this.authorName = userName;
+        this.categoryId = cateId;
         this.categoryName = categoryName;
         this.creatatedAt = createDate;
         this.updatedAt = updateDate;
