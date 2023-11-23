@@ -50,7 +50,10 @@ public class PostService {
 		return postRepository.count() > 0;
 	}
 //	Thanh
-	public List<PostEntity> getLessonPosts() {
-        return postRepository.findByType("lesson");
+	public List<PostEntity> getPostsByType(String type) {
+        return postRepository.findByType(type);
+    }
+	public List<PostEntity> getPostsByTypeAndNotDeleted(String type) {
+        return postRepository.findByTypeAndDeletedAtIsNull(type);
     }
 }

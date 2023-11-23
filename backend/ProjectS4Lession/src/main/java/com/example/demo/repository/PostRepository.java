@@ -12,4 +12,6 @@ import com.example.demo.entity.PostEntity;
 public interface PostRepository extends JpaRepository<PostEntity, Integer>{
 
 	List<PostEntity> findByType(String type);
+	//Thanh
+	List<PostEntity> findByTypeAndDeletedAtIsNull(String type);
 }
