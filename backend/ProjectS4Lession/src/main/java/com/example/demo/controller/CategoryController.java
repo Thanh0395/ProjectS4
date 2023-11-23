@@ -14,18 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.dto.CategoryCreationDto;
 import com.example.demo.dto.CategoryDto;
-import com.example.demo.dto.CategoryUpdationDto;
-import com.example.demo.dto.PostCreationDto;
-import com.example.demo.dto.PostUpdationDto;
 import com.example.demo.entity.CategoryEntity;
-import com.example.demo.entity.PostEntity;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.CategoryMapper;
@@ -81,7 +74,7 @@ public class CategoryController {
 	
 	@DeleteMapping("/delete-category-by-id/{categoryId}")
 	public ResponseEntity<String> deletePost(@PathVariable int categoryId) throws NotFoundException{
-		boolean categoryDeleted = categoryService.deleteCategoryById(categoryId);
+		categoryService.deleteCategoryById(categoryId);
 		return new ResponseEntity<String>("Delete Category success with category Id :" + categoryId, HttpStatus.OK);
 	}
 	

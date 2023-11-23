@@ -102,7 +102,7 @@ public class PostEntity extends BaseEntity{
 	//relation with UserPostEntity
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<UserPostEntiy> userPosts = new ArrayList<>();
+    private List<UserPostEntity> userPosts = new ArrayList<>();
     
     //relation with FeedbackEntity
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)

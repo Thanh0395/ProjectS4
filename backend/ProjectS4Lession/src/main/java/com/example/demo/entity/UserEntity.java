@@ -138,7 +138,7 @@ public class UserEntity extends BaseEntity implements UserDetails{
 	// relation with UserPostEntity
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<UserPostEntiy> userPosts = new ArrayList<>();
+	private List<UserPostEntity> userPosts = new ArrayList<>();
 
 	// relation with FeedbackEntity
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

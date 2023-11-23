@@ -49,4 +49,8 @@ public class PostService {
 	public boolean checkAnyPostExist() {
 		return postRepository.count() > 0;
 	}
+//	Thanh
+	public List<PostEntity> getLessonPosts() {
+        return postRepository.findByType("lesson");
+    }
 }
