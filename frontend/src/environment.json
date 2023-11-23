@@ -5,7 +5,7 @@
     "prod": "http://localhost:8080/api/project4"
   },
   "apikey":{
-    "chatGPT": "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",
-    "NhanchatGPT": "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"
+    "chatGPT": "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",
+    "NhanchatGPT": "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"
   }
 }

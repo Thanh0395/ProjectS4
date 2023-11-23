@@ -14,5 +14,7 @@ import lombok.NoArgsConstructor;
 public class AddPermissionDto {
 
 	private String email;
-	private String roleName;
+	
+	@Builder.Default
+	private String roleName = null;
 }
