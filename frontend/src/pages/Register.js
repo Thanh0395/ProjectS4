@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, Form, Container, Spinner } from "react-bootstrap";
+import { Row, Col, Button, Form, Container, Spinner, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import * as formik from 'formik';
 import * as yup from 'yup';
+import { registerUser, sendVerifycodeMail } from '../services/api/userAPI';
 function Register(props) {
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [variant, setVariant] = useState('info');
 
     const { Formik } = formik;
     const schema = yup.object().shape({
         fullName: yup.string().required("Field is required"),
         email: yup.string().email().required(),
-        city: yup.string().required(),
         password: yup.string().min(3, "Please, at least 3 character!...").required(),
         confirmPassword: yup.string().oneOf([yup.ref('password'), null], "confirm password must match").required(),
         dob: yup
@@ -22,19 +24,22 @@ function Register(props) {
                 const age = today.getFullYear() - dob.getFullYear();
                 return age >= 18;
             })
-            .required('Field is required'),
+            .required('Date field is required'),
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             setIsLoading(true);
-            // Call the API function to register the user
-            await console.log(values);
-            // Optionally, you can redirect the user to a different page after successful registration
-            // history.push('/login'); // Import useHistory from 'react-router-dom'
-            console.log('Registration successful');
+            const isRegisted = await registerUser(values.email, values.fullName, values.password, values.dob);
+            if (isRegisted) {
+                await sendVerifycodeMail(values.email);
+            }
+            setVariant('success');
+            setErrorMessage('Registered successfully, log in to your email to get the activation code. Or go to login to resend');
         } catch (error) {
-            console.error('Registration error:', error);
+            const errorObj = error.response.data;
+            setVariant('warning');
+            setErrorMessage(errorObj['Error Message']);
         } finally {
             setIsLoading(false);
             setSubmitting(false);
@@ -54,7 +59,6 @@ function Register(props) {
                             email: '',
                             password: '',
                             confirmPassword: '',
-                            city: '',
                         }}
                     >
                         {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -68,7 +72,7 @@ function Register(props) {
                                             name="fullName"
                                             value={values.fullName}
                                             onChange={handleChange}
-                                            isInvalid={!!errors.fullName}
+                                            isInvalid={touched.fullName && !!errors.fullName}
                                         />
 
                                         <Form.Control.Feedback type="invalid">
@@ -82,7 +86,7 @@ function Register(props) {
                                             name="email"
                                             value={values.email}
                                             onChange={handleChange}
-                                            isInvalid={!!errors.email}
+                                            isInvalid={touched.email && !!errors.email}
                                         />
 
                                         <Form.Control.Feedback type="invalid">
@@ -96,7 +100,7 @@ function Register(props) {
                                             name="password"
                                             value={values.password}
                                             onChange={handleChange}
-                                            isInvalid={!!errors.password}
+                                            isInvalid={touched.password && !!errors.password}
                                         />
 
                                         <Form.Control.Feedback type="invalid">
@@ -110,7 +114,7 @@ function Register(props) {
                                             name="confirmPassword"
                                             value={values.confirmPassword}
                                             onChange={handleChange}
-                                            isInvalid={!!errors.confirmPassword}
+                                            isInvalid={touched.confirmPassword && !!errors.confirmPassword}
                                         />
 
                                         <Form.Control.Feedback type="invalid">
@@ -125,31 +129,21 @@ function Register(props) {
                                         <Form.Control
                                             type="date"
                                             name="dob"
-                                            value={values.dob||''}
+                                            value={values.dob || ''}
                                             onChange={handleChange}
-                                            isInvalid={!!errors.dob}
+                                            isInvalid={touched.dob && !!errors.dob}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.dob}
                                         </Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group as={Col} md="6" >
-                                        <Form.Label>City</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder="Example: New York"
-                                            name="city"
-                                            value={values.city}
-                                            onChange={handleChange}
-                                            isInvalid={!!errors.city}
-                                        />
-
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.city}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
 
                                 </Row>
+                                {errorMessage && (
+                                    <Alert variant={variant}>
+                                        {errorMessage}
+                                    </Alert>
+                                )}
                                 <div className="d-grid">
                                     <Button variant="primary" type="submit" disabled={isLoading} >
                                         {isLoading ? (<Spinner size="sm"></Spinner>)

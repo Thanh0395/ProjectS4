@@ -24,7 +24,42 @@ export const loginUser = async (email, password) => {
         throw error;
     }
 };
-
+export const registerUser = async (email, name, password, dateOfBirth ) => {
+    try {
+        const response = await api.post('/auth/register', {
+            email: email,
+            name: name,
+            password: password,
+            dateOfBirth: dateOfBirth,
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const sendVerifycodeMail = async (email) => {
+    try {
+        const response = await api.post('/auth/create-verify-email', {
+            toEmail: email,
+            subject: "Ultimate Learning Activation",
+            content: "Your verify code is: ",
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const activeUser = async (email, code) => {
+    try {
+        const response = await api.post('/auth/active-user', {
+            email: email,
+            code: code,
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 export const logoutUser = async () => {
     try {
         await api.get('/auth/logout');
