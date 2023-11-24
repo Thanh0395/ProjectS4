@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import { productReducer } from '../Reducer';
 import axios from 'axios';
-
 const ProductContext = createContext();
 const API = "https://fakestoreapi.com/products";
 const initProductState = {
