@@ -5,6 +5,7 @@ import { FaMagnifyingGlass } from 'react-icons/fa6';
 import { Navbar, NavDropdown, Form, Button, Nav, Container } from 'react-bootstrap'
 import './navbarHome.css';
 import { logoutUser } from '../../services/api/userAPI';
+import UserProfileDropdown from '../UserProfileDropdown';
 
 function NavbarHome(props) {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
@@ -25,18 +26,17 @@ function NavbarHome(props) {
                 <Link to="" >
                     <img src={logo} className="App-logo" alt="logo" />
                 </Link>
-                {isLoggedIn ?
-                    <>
-                        Hi, {currentUser.name}
-                        <Nav.Link as={Link} to={"/"} onClick={handleLogout} >Log out</Nav.Link>
-                    </>
-                    : <Nav.Link as={Link} to={"login"}>Login</Nav.Link>
-                }
-
+                {isLoggedIn ? (
+                    <UserProfileDropdown currentUser={currentUser} onLogout={handleLogout} className="mr-30" />
+                ) : (
+                    <Nav.Link as={Link} to={'login'}>
+                        Login
+                    </Nav.Link>
+                )}
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" className='border' />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav
-                        className="justify-content-center flex-grow-1 pe-3"
+                        className="justify-content-center flex-grow-1"
                     >
                         <Nav.Link as={NavLink} to={"/"} >Home</Nav.Link>
                         <Nav.Link as={NavLink} to={"contact"}>Contact</Nav.Link>
@@ -61,7 +61,9 @@ function NavbarHome(props) {
                             className="me-2"
                             aria-label="Search"
                         />
-                        <Button variant="outline"><FaMagnifyingGlass /></Button>
+                        <Button variant="outline" type="submit">
+                            <FaMagnifyingGlass />
+                        </Button>
                     </Form>
                     <div>&nbsp;</div>
                 </Navbar.Collapse>
