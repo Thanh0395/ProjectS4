@@ -23,13 +23,21 @@ function FilterCourse(props) {
   };
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products/categories")
+    fetch("http://localhost:8080/api/project4/categories/list-category")
       .then((res) => res.json())
       .then((data) => setCategories(data));
   }, []);
   const handlePriceChange = (event, newValue) => {
     proDispatch({ type: "SET_PRICE", payload: newValue });
   };
+  const handleSearchChange = (event) => {
+    console.log("event", event);
+    const searchTerm = event.target.value;
+    proDispatch({ type: "SET_SEARCH", payload: searchTerm });
+  };
+
+  // Assuming you have a search term in your state
+
   const [swiperRef, setSwiperRef] = useState(null);
 
   let appendNumber = 4;
@@ -45,25 +53,34 @@ function FilterCourse(props) {
     <>
       <section className="course container">
         <div className="course-filter_custom">
-        <label className="course-filter_custom_price">
-          <span>Filter by price</span>
-          <Box sx={{ width: 500 }}>
-            <Slider
-              getAriaLabel={() => "Price range"}
-              size="small"
-              max={1000}
-              defaultValue={[0, 1000]}
-              onChange={handlePriceChange}
-              valueLabelDisplay="auto"
+          <label className="course-filter_custom_price">
+            <span className="text-secondary">
+              Price Range: ${proState.filterBy.price[0] || 0} - $
+              {proState.filterBy.price[1] || 1000}
+            </span>
+
+            <Box sx={{ width: 500 }}>
+              <Slider
+                getAriaLabel={() => "Price range"}
+                size="small"
+                max={1000}
+                defaultValue={[0, 1000]}
+                onChange={handlePriceChange}
+                valueLabelDisplay="auto"
+              />
+            </Box>
+          </label>
+          <div className="course-filter_input">
+            <input
+              className=""
+              type="text"
+              placeholder="Search: courses, authors, teachers"
+              onChange={handleSearchChange}
             />
-          </Box>
-        </label>
-        <div className="course-filter_input">
-          <input className="" type="text" placeholder="filter here" />
-          <div className="course-filter_input_icon"></div>
+            <div className="course-filter_input_icon"></div>
+          </div>
         </div>
-        </div>
-        
+
         <div className="course-filter">
           <Swiper
             // install Swiper modules
@@ -108,12 +125,14 @@ function FilterCourse(props) {
                 <button
                   as={Link}
                   key={index}
-                  onClick={() => handleCategoryChange(item)}
+                  onClick={() => handleCategoryChange(item.categoryName)}
                   className={`cate-filter ${
-                    proState.filterBy.category === item ? "active" : ""
+                    proState.filterBy.category === item.categoryName
+                      ? "active"
+                      : ""
                   }`}
                 >
-                  {item}
+                  {item.categoryName}
                 </button>
               </SwiperSlide>
             ))}

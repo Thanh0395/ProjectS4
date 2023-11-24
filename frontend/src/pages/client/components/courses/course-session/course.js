@@ -15,7 +15,7 @@ import Author_03 from "../../../../../assets/author-03.jpg";
 
 const CourseSession = () => {
   // Pagination
-  const itemsPerPage = 8;
+  const itemsPerPage = 6;
   const navigate = useNavigate();
   const handleGetPageDetail = (item) => {
     navigate(`/products/detail/${item.id}`, { state: { product: item } });
@@ -73,21 +73,19 @@ const CourseSession = () => {
                 <div className="card course-list_card" key={course.id}>
                   <div className="card-body">
                     <div className="course-list_card_image">
-                      <img className="course-list_card_image_course" src={course.image} alt={course.title} />
+                      <img className="course-list_card_image_course" src={Course_02} alt={course.title} />
                     </div>
                     <div className="course-list_card_title">
-                      <div className="course-list_card_title_image">
+                      {course.title}
+                      </div>
+                    <div className="course-list_card_title_author">
+                      <div className="course-list_card_title_author_image">
                         <img src={Author_01} alt="course-01" />
                       </div>
-                      <div className="course-list_card_title_detail">
-                        <h6>{course.title}</h6>
+                      <div className="course-list_card_title_author_detail">
+                        <h6>{course.authorName} <i class="bi bi-pause"></i> {course.categoryName}</h6>
                       </div>
-                    </div>
-                    <div>
-                      <h6>
-                        Data Science and Machine Learning with Python - Hands
-                        On!
-                      </h6>
+                  
                     </div>
                     <div className="course-list_card_title_percent_price">
                       <h6>{progress}% Discount</h6>
@@ -101,12 +99,12 @@ const CourseSession = () => {
                       <div className="course-list_card_title_progress_line"></div>
                     </div>
                     <div className="course-list_card_title_progress_rating">
-                      <Rating
+                      {/* <Rating
                         name="half-rating-read"
                         defaultValue={course.rating.rate}
                         precision={0.1}
                         readOnly
-                      />
+                      /> */}
                       <button className="course-list_card_title_detail">
                         Course Detail
                       </button>

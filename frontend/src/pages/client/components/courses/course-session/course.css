@@ -42,6 +42,7 @@
 .course .course-filter_custom {
     display: flex;
     align-items: center;
+    gap: 4rem;
     padding: 1rem 0px;
     justify-content: space-between;
 }
@@ -57,7 +58,7 @@
     border: 1px solid rgb(228, 228, 228);
     background-color: white;
     border-radius: 1rem;
-    width: 50%;
+    width: 100%;
     padding: 0.8rem 2rem;
     position: relative;
     cursor: pointer;
@@ -71,6 +72,7 @@
 .course .course-filter_input input {
     border: none;
     outline: none;
+    width: 100%;
 }
 
 .course .course-filter_input_icon {
@@ -118,24 +120,31 @@
     transform: scale(1.1);
 
 }
-.course-list .course-list_card_title {
-    padding: 2rem 0 1rem;
+.course-list .course-list_card_title{
+    padding: 1rem 0 0rem;
+
+}
+.course-list .course-list_card_title_author {
+    padding: 1rem 0 1rem;
     display: flex;
     gap: 1rem;
     align-items: center;
 }
 
-.course-list .course-list_card_title_image img {
+.course-list .course-list_card_title_author_image img {
     width: 50px;
     height: 50px;
     border-radius: 100%;
 
 }
 
-.course-list .course-list_card_title_detail h6 {
+.course-list .course-list_card_title_author_detail h6 {
     font-weight: 200;
 }
-
+.course-list .course-list_card_title_author_detail i{
+    font-size: 1rem;
+    color: rgb(188, 188, 188)
+}
 .course-list .course-list_card_title_percent_price {
     position: relative;
     padding: 0.5rem 0;
