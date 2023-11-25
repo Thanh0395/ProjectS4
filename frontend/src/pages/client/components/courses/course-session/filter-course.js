@@ -55,7 +55,7 @@ function FilterCourse(props) {
         <div className="course-filter_custom">
           <label className="course-filter_custom_price">
             <span className="text-secondary">
-              Price Range: ${proState.filterBy.price[0] || 0} - $
+              Coin Range: <i class="bi bi-gem px-2 text-primary"></i>{proState.filterBy.price[0] || 0} <span className="px-2">-</span> <i class="bi bi-gem pe-2 text-primary"></i>
               {proState.filterBy.price[1] || 1000}
             </span>
 
@@ -77,7 +77,7 @@ function FilterCourse(props) {
               placeholder="Search: courses, authors, teachers"
               onChange={handleSearchChange}
             />
-            <div className="course-filter_input_icon"></div>
+            <div className="course-filter_input_icon"><i class="bi bi-search"></i></div>
           </div>
         </div>
 
