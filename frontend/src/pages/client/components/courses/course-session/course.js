@@ -15,7 +15,7 @@ import Author_03 from "../../../../../assets/author-03.jpg";
 
 const CourseSession = () => {
   // Pagination
-  const itemsPerPage = 8;
+  const itemsPerPage = 6;
   const navigate = useNavigate();
   const handleGetPageDetail = (item) => {
     navigate(`/products/detail/${item.id}`, { state: { product: item } });
@@ -57,7 +57,7 @@ const CourseSession = () => {
 
   return (
     <>
-    <FilterCourse />
+      <FilterCourse />
       {proState.isLoading ? (
         <>
           <Spinner animation="border" variant="primary" />{" "}
@@ -73,25 +73,30 @@ const CourseSession = () => {
                 <div className="card course-list_card" key={course.id}>
                   <div className="card-body">
                     <div className="course-list_card_image">
-                      <img className="course-list_card_image_course" src={course.image} alt={course.title} />
+                      <img
+                        className="course-list_card_image_course"
+                        src={Course_02}
+                        alt={course.title}
+                      />
                     </div>
-                    <div className="course-list_card_title">
-                      <div className="course-list_card_title_image">
+                    <div className="course-list_card_title">{course.title}</div>
+                    <div className="course-list_card_title_author">
+                      <div className="course-list_card_title_author_image">
                         <img src={Author_01} alt="course-01" />
                       </div>
-                      <div className="course-list_card_title_detail">
-                        <h6>{course.title}</h6>
+                      <div className="course-list_card_title_author_detail">
+                        <h6>
+                          {course.authorName} <i class="bi bi-pause"></i>{" "}
+                          {course.categoryName}
+                        </h6>
                       </div>
                     </div>
-                    <div>
-                      <h6>
-                        Data Science and Machine Learning with Python - Hands
-                        On!
-                      </h6>
-                    </div>
                     <div className="course-list_card_title_percent_price">
-                      <h6>{progress}% Discount</h6>
-                      <h6>{course.price} $</h6>
+                      <h6>{progress}% Completed</h6>
+                      <h6>
+                        {course.price}{" "}
+                        <i class="bi bi-gem px-2 text-primary"></i>
+                      </h6>
                       <div
                         className="course-list_card_title_progress"
                         style={{
@@ -100,17 +105,9 @@ const CourseSession = () => {
                       />
                       <div className="course-list_card_title_progress_line"></div>
                     </div>
-                    <div className="course-list_card_title_progress_rating">
-                      <Rating
-                        name="half-rating-read"
-                        defaultValue={course.rating.rate}
-                        precision={0.1}
-                        readOnly
-                      />
-                      <button className="course-list_card_title_detail">
-                        Course Detail
-                      </button>
-                    </div>
+                    <button className="course-list_card_button_detail">
+                      Course Detail
+                    </button>
                   </div>
                 </div>
               ))
@@ -118,25 +115,25 @@ const CourseSession = () => {
           </section>
         </>
       )}
-         <ReactPaginate
-            previousLabel="<"
-            nextLabel=">"
-            breakLabel="..."
-            onPageChange={handlePageClick}
-            pageCount={pageCount}
-            renderOnZeroPageCount={null}
-            forcePage={proState.currentPage}
-            containerClassName="pagination"
-            activeClassName="active"
-            pageClassName="page-item"
-            pageLinkClassName="page-link"
-            previousClassName="page-item"
-            previousLinkClassName="page-link"
-            nextClassName="page-item"
-            nextLinkClassName="page-link"
-            breakClassName="page-item"
-            breakLinkClassName="page-link"
-          />
+      <ReactPaginate
+        previousLabel="<"
+        nextLabel=">"
+        breakLabel="..."
+        onPageChange={handlePageClick}
+        pageCount={pageCount}
+        renderOnZeroPageCount={null}
+        forcePage={proState.currentPage}
+        containerClassName="pagination"
+        activeClassName="active"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+      />
     </>
   );
 };

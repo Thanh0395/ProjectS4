@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import { productReducer } from '../Reducer';
 import axios from 'axios';
 const ProductContext = createContext();
-const API = "https://fakestoreapi.com/products";
+const API = "http://localhost:8080/api/project4/thanh/lesson/list";
 const initProductState = {
     isLoading: false,
     isError: false,
