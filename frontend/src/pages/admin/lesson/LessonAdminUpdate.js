@@ -3,7 +3,7 @@ import * as formik from 'formik';
 import * as yup from 'yup';
 import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { Link, useParams } from 'react-router-dom';
-import { fetchCategories, fetchLessonById } from '../../../services/api/lessonApi'
+import { fetchCategories, fetchLessonById, listCategory } from '../../../services/api/lessonApi'
 import QuestionEditor from '../../../components/admin/QuestionEditor';
 import TagsEdittor from '../../../components/admin/TagsEdittor';
 import ReactQuill from 'react-quill';
@@ -26,7 +26,7 @@ function LessonAdminUpdate(props) {
         const fetchData = async () => {
             try {
                 const postData = await fetchLessonById(params.id);
-                const cateData = await fetchCategories();
+                const cateData = await listCategory();
                 const tagsData = await fetchCategories();
                 setLesson(postData);
                 setCategories(cateData);
@@ -107,7 +107,7 @@ function LessonAdminUpdate(props) {
                                             name="title"
                                             value={values.title}
                                             onChange={handleChange}
-                                            isInvalid={!!errors.title}
+                                            isInvalid={touched.title && !!errors.title}
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.title}
@@ -122,10 +122,10 @@ function LessonAdminUpdate(props) {
                                             as="select"
                                             value={values.category}
                                             onChange={handleChange}
-                                            isInvalid={!!errors.category}
+                                            isInvalid={touched.category && !!errors.category}
                                         >
                                             {categories.map((category, index) =>
-                                                <option key={index} value={category}>{category}</option>
+                                                <option key={category.categoryId} value={category.categoryId}>{category.categoryName}</option>
                                             )}
                                         </Form.Control>
                                         <Form.Control.Feedback type="invalid">
