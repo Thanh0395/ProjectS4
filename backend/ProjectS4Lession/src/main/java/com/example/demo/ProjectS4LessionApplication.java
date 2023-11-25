@@ -12,9 +12,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.demo.config.initializationProperties;
+import com.example.demo.entity.FileEntity;
 import com.example.demo.entity.PostEntity;
 import com.example.demo.entity.RoleEntity;
 import com.example.demo.entity.UserEntity;
+import com.example.demo.service.FileService;
 import com.example.demo.service.PostService;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.StorageService;
@@ -46,6 +48,7 @@ public class ProjectS4LessionApplication {
 			RoleService roleService, 
 			UserService userService, 
 			PostService postService,
+			FileService fileService,
 			initializationProperties appConfig) {
 	    return args -> {
 	    	boolean initializationEnabled = appConfig.isInitializationEnabled();
@@ -115,6 +118,41 @@ public class ProjectS4LessionApplication {
 						new PostEntity(
 								"video06", "image06", 600, 600, "title06", "content06", "test", new Timestamp(new java.util.Date().getTime())));
 			}
+	        if(!fileService.checkAnyPostExist()) 
+	        {
+	        	fileService.createFile(
+	        			FileEntity
+	        			.builder()
+	        			.name("user_default.png")
+	        			.type("image/png")
+	        			.filePath("uploads\\images\\user\\user_default.png")
+	        			.build()
+	        			);
+	        	fileService.createFile(
+	        			FileEntity
+	        			.builder()
+	        			.name("post_default.png")
+	        			.type("image/png")
+	        			.filePath("uploads\\images\\post\\post_default.png")
+	        			.build()
+	        			);
+	        	fileService.createFile(
+	        			FileEntity
+	        			.builder()
+	        			.name("category_default.png")
+	        			.type("image/png")
+	        			.filePath("uploads\\images\\category\\category_default.png")
+	        			.build()
+	        			);
+	        	fileService.createFile(
+	        			FileEntity
+	        			.builder()
+	        			.name("post_video_default.png")
+	        			.type("video/mp4")
+	        			.filePath("uploads\\video\\post\\post_video_default.mp4")
+	        			.build()
+	        			);
+	        }
 	        else {
 	            System.out.println("Initialization is disabled or records already exist.");
 	        }
@@ -131,5 +169,4 @@ public class ProjectS4LessionApplication {
 		boolean postsExist = postService.checkAnyPostExist();
 		return postsExist;
 	}
-
 }
