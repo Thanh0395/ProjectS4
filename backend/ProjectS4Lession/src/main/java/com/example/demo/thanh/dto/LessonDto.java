@@ -5,7 +5,7 @@ import java.util.*;
 
 public class LessonDto {
 	
-	private int postId;
+	private int id;
 	
 	private String featureImage;
 	
@@ -45,7 +45,7 @@ public class LessonDto {
 	public LessonDto(int id, String image, String title, String content, int price,
 			int userId,String userName,int cateId, String categoryName, Timestamp createDate, Timestamp updateDate) {
 		super();
-        this.postId = id;
+        this.id = id;
         this.featureImage = image;
         this.title = title;
         this.content = content;
@@ -60,7 +60,7 @@ public class LessonDto {
 	public LessonDto(int id, String image, String video, String title, String content, int price,
 			String userName, String categoryName) {
 		super();
-        this.postId = id;
+        this.id = id;
         this.featureImage = image;
         this.video = video;
         this.title = title;
@@ -70,11 +70,11 @@ public class LessonDto {
         this.categoryName = categoryName;
     }
 // Detail when user payed
-	public LessonDto(int postId, String featureImage, String video, int price, String title, String content,
+	public LessonDto(int id, String featureImage, String video, int price, String title, String content,
 			Timestamp creatatedAt, Timestamp updatedAt, Timestamp deletedAt, int authorId, String authorName,
 			int categoryId, String categoryName, List<QuestionDto> questions, List<FeedbackDto> comments) {
 		super();
-		this.postId = postId;
+		this.id = id;
 		this.featureImage = featureImage;
 		this.video = video;
 		this.price = price;
@@ -91,11 +91,11 @@ public class LessonDto {
 		this.comments = comments;
 	}
 // Detail when user is NOT payed
-	public LessonDto(int postId, String featureImage, int price, String title, String content, Timestamp creatatedAt,
+	public LessonDto(int id, String featureImage, int price, String title, String content, Timestamp creatatedAt,
 			Timestamp updatedAt, Timestamp deletedAt, int authorId, String authorName, int categoryId,
 			String categoryName, List<FeedbackDto> comments) {
 		super();
-		this.postId = postId;
+		this.id = id;
 		this.featureImage = featureImage;
 		this.price = price;
 		this.title = title;
@@ -111,9 +111,9 @@ public class LessonDto {
 		this.errorMessage = "you must pay to watch the video";
 	}
 
-	public LessonDto(int postId, String image, String video, String title, String content, int price) {
+	public LessonDto(int id, String image, String video, String title, String content, int price) {
 		super();
-        this.postId = postId;
+        this.id = id;
         this.featureImage = image;
         this.video = video;
         this.title = title;
@@ -121,12 +121,12 @@ public class LessonDto {
         this.price = price;
 	}
 
-	public int getPostId() {
-		return postId;
+	public int getId() {
+		return id;
 	}
 
-	public void setPostId(int postId) {
-		this.postId = postId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getFeatureImage() {
