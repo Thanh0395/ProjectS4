@@ -14,7 +14,6 @@ export const fetchListLesson = async () => {
     try {
         const response = await apiWithToken.get('/thanh/lesson/list');
         const data = response.data;
-        console.log(data)
         return data;
     } catch (error) {
         throw error;

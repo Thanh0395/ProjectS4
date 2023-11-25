@@ -2,6 +2,11 @@ package com.example.demo.thanh.controller;
 
 import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
@@ -16,7 +21,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.FeedbackEntity;
 import com.example.demo.entity.PostEntity;
@@ -228,29 +235,36 @@ public class LessonController {
 					return new ResponseEntity<>("Do not allow to delete", HttpStatus.UNAUTHORIZED);
 			} else
 				return new ResponseEntity<>("Do not allow to delete, please login", HttpStatus.UNAUTHORIZED);
-//			if(HttpRequestService.hasRole(request, "USER")) {
-//				return new ResponseEntity<>("User has role User", HttpStatus.OK);
-//			}
-//			if(HttpRequestService.hasRole(request, "ADMIN")) {
-//				return new ResponseEntity<>("User has role ADMIN", HttpStatus.OK);
-//			}
-//			if (useEmail != "") {
-//				return new ResponseEntity<>(useEmail, HttpStatus.OK);
-//			}
 		} catch (Exception e) {
 			return new ResponseEntity<>("An error occurred while processing the request" + e,
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	private static final String UPLOAD_DIRECTORY = "src/main/resources/static/uploads/";
+	@PostMapping("/upload")
+    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
 
-//	@PostMapping(value="/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//	public ResponseEntity<PostEntity> createLesson(@PathVariable int lessonId) {
-//		try {
-//			PostEntity lesson = postService.getPostById(lessonId);
-//			return new ResponseEntity<>(lesson, HttpStatus.OK);
-//		} catch (Exception e) {
-//			// trả về message lỗi server khi nhận status 500 này
-//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//	}
+        if (file.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please select a file to upload");
+        }
+
+        try {
+            byte[] bytes = file.getBytes();
+
+            File uploadDir = new File(UPLOAD_DIRECTORY);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            Path path = Paths.get(UPLOAD_DIRECTORY + file.getOriginalFilename());
+
+            Files.write(path, bytes);
+
+            return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully!");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading the file");
+        }
+    }
 }
