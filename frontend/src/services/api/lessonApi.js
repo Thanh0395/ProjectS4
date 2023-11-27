@@ -10,9 +10,17 @@ export const fetchLessonById = async (lessonId) => {
         throw error;
     }
 };
-export const fetchListLesson = async () => {
+export const fetchLessonByIdDashboard = async (lessonId) => {
     try {
-        const response = await apiWithToken.get('/thanh/lesson/list');
+        const response = await apiWithToken.get(`/thanh/lesson/dashboard/${lessonId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const fetchListLessonDashboard = async () => {
+    try {
+        const response = await apiWithToken.get('/thanh/lesson/dashboard/list');
         const data = response.data;
         return data;
     } catch (error) {

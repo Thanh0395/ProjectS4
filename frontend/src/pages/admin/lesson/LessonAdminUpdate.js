@@ -3,7 +3,7 @@ import * as formik from 'formik';
 import * as yup from 'yup';
 import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { Link, useParams } from 'react-router-dom';
-import { fetchCategories, fetchLessonById, listCategory } from '../../../services/api/lessonApi'
+import { fetchCategories, fetchLessonByIdDashboard, listCategory } from '../../../services/api/lessonApi'
 import QuestionEditor from '../../../components/admin/QuestionEditor';
 import TagsEdittor from '../../../components/admin/TagsEdittor';
 import ReactQuill from 'react-quill';
@@ -25,7 +25,8 @@ function LessonAdminUpdate(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const postData = await fetchLessonById(params.id);
+                const postData = await fetchLessonByIdDashboard(params.id);
+                console.log("hello ",postData)
                 const cateData = await listCategory();
                 const tagsData = await fetchCategories();
                 setLesson(postData);

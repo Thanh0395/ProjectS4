@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, Tooltip, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions } from '@mui/material';
 import { VisibilityOutlined, ModeEditOutlineOutlined, DeleteOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { deletePost, fetchListLesson } from '../../../services/api/lessonApi';
+import { deletePost, fetchListLessonDashboard } from '../../../services/api/lessonApi';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Alert } from 'react-bootstrap';
 function LessonAdmin(props) {
@@ -22,7 +22,7 @@ function LessonAdmin(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetchListLesson();
+                const response = await fetchListLessonDashboard();
                 // const data = await response.json();
                 await setListLesson(response);
                 setLoading(false);
