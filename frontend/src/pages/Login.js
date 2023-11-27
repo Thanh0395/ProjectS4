@@ -1,31 +1,62 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import { Button, Container, FloatingLabel, Form, Spinner } from "react-bootstrap";
+import { Link, useNavigate } from 'react-router-dom';
+import { Alert, Button, Container, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import * as formik from 'formik';
 import * as yup from 'yup';
-import { loginUser } from '../services/api/userAPI';
+import { activeUser, loginUser, sendVerifycodeMail } from '../services/api/userAPI';
 
 function Login(props) {
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [showVerifyCode, setShowVerifyCode] = useState(false);
+    const [variant, setVariant] = useState('info');
+    const [currentEmail, setCurrentEmail] = useState(() => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        return currentUser ? currentUser.email : '';
+    });
+    const navigate = useNavigate();
 
     const { Formik } = formik;
     const schema = yup.object().shape({
         email: yup.string().email().required(),
         password: yup.string().min(3, "Please, at least 3 character!...").required(),
+        verify: yup.string(),
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
-            //setIsLoading(true);
-            // Call the API function to register the user
-            const userData = await loginUser(values.email, values.password);
-            console.log("email", values.email);
-            console.log('Login successful', userData);
+            setIsLoading(true);
+            setCurrentEmail(values.email);
+            if (values.verify != '') {
+                await activeUser(currentEmail, values.verify);
+            }
+            await loginUser(values.email, values.password);
+            navigate('/');
         } catch (error) {
-            console.error('Login error:', error);
+            const errorObj = error.response.data;
+            const errorMsg = errorObj['Error Message'];
+            if (errorMsg && errorMsg.includes('not active')) {
+                setVariant('warning');
+                setShowVerifyCode(true);
+            } else setVariant('danger');
+            setErrorMessage(errorMsg);
+            // console.log('Login error:', errorObj['Error Message']);
         } finally {
             setIsLoading(false);
             setSubmitting(false);
+        }
+    };
+    const handleResendVerification = async () => {
+        try {
+            setIsLoading(true);
+            await sendVerifycodeMail(currentEmail);
+            setVariant('info');
+            setErrorMessage('Verification code resent successfully.');
+        } catch (error) {
+            setVariant('danger');
+            setErrorMessage('Error resending verification code.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -40,8 +71,9 @@ function Login(props) {
                             validationSchema={schema}
                             onSubmit={handleSubmit}
                             initialValues={{
-                                email: '',
+                                email: currentEmail,
                                 password: '',
+                                verify: '',
                             }}
                         >
                             {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -53,7 +85,7 @@ function Login(props) {
                                                 name="email"
                                                 value={values.email}
                                                 onChange={handleChange}
-                                                isInvalid={!!errors.email}
+                                                isInvalid={touched.email && !!errors.email}
                                                 placeholder="name@example.com"
                                             />
 
@@ -73,7 +105,7 @@ function Login(props) {
                                                 name="password"
                                                 value={values.password}
                                                 onChange={handleChange}
-                                                isInvalid={!!errors.password}
+                                                isInvalid={touched.password && !!errors.password}
                                                 placeholder=""
                                             />
 
@@ -92,6 +124,35 @@ function Login(props) {
                                             </a>
                                         </p>
                                     </Form.Group>
+                                    {showVerifyCode && (
+                                        <>
+                                            <Form.Group className="mb-3" controlId="formBasicVerify">
+                                                <FloatingLabel label="Verification Code">
+                                                    <Form.Control
+                                                        type="text"
+                                                        name="verify"
+                                                        value={values.verify}
+                                                        onChange={handleChange}
+                                                        isInvalid={touched.verify && !!errors.verify}
+                                                        placeholder="Enter verification code"
+                                                    />
+                                                    <Form.Control.Feedback type="invalid">
+                                                        {errors.verify}
+                                                    </Form.Control.Feedback>
+                                                </FloatingLabel>
+                                            </Form.Group>
+                                            <p className="small">
+                                                <a className="text-primary" onClick={handleResendVerification}>
+                                                    Resend to mail {currentEmail}
+                                                </a>
+                                            </p>
+                                        </>
+                                    )}
+                                    {errorMessage && (
+                                        <Alert variant={variant}>
+                                            {errorMessage}
+                                        </Alert>
+                                    )}
                                     <div className="d-grid">
                                         <Button variant="primary" type="submit" disabled={isLoading} >
                                             {isLoading ? (<Spinner size="sm"></Spinner>)

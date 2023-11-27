@@ -1,19 +1,27 @@
 import axios from 'axios';
+import environment from '../../environment.json';
+
+const baseURL = environment.urls.dev;
 
 const getToken = () => {
-  const token = localStorage.getItem('token');
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  };
+  const token = JSON.parse(localStorage.getItem('token'));
+  return token;
 }
 
-const instance = axios.create({
-  // baseURL: 'https://fakestoreapi.com',
-  baseURL: 'http://localhost:8080/api/project4',
-  timeout: 10000,
-  ...getToken(), // Request timeout in milliseconds
+const createAxiosInstance = (tokenConfig = {}) => {
+  return axios.create({
+    baseURL: baseURL,
+    timeout: 10000,
+    ...tokenConfig,
+  });
+};
+
+const api = createAxiosInstance();
+
+const apiWithToken = createAxiosInstance({
+  headers: {
+    Authorization: `Bearer ${getToken()}`,
+  },
 });
 
 // // Set up the request interceptor to include the token in the headers
@@ -26,4 +34,4 @@ const instance = axios.create({
 //   return config;
 // });
 
-export default instance;
+export { api, apiWithToken };

@@ -8,6 +8,7 @@ const initUserState = {
     // object array
     user: {
         name: "",
+        email: "",
         avatar: "",
         role: "user",
         level: 0,

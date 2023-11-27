@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -31,7 +33,9 @@ public class SecurityConfig {
 	        .authorizeRequests()
 	            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 	            .requestMatchers(DEV_DOMAIN_API + "/auth/login").permitAll()
-	            .requestMatchers(DEV_DOMAIN_API + "/users/**").hasAuthority("USER")
+	            .requestMatchers(DEV_DOMAIN_API + "/auth/logout").permitAll()
+	            .requestMatchers(DEV_DOMAIN_API + "/users/**").hasAnyAuthority("USER","ADMIN","TEACHER")
+	            .requestMatchers(DEV_DOMAIN_API + "/users/create-user").permitAll()
 	            .anyRequest().permitAll().and()
 	        .authenticationProvider(authenticationProvider)
 	        .addFilterBefore(jwtAuthentiFilterConfig, UsernamePasswordAuthenticationFilter.class)

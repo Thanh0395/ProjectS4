@@ -29,7 +29,7 @@ function Sidebar(props) {
                     <ListItemIcon>
                         <CallToAction />
                     </ListItemIcon>
-                    <ListItemText primary="Dasboard" />
+                    <ListItemText primary="Dashboard" />
                 </ListItemButton>
 
                 <Divider className="sidebar-divider" textAlign="left">Main Items</Divider>
