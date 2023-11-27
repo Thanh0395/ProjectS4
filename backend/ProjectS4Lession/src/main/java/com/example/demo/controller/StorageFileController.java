@@ -67,5 +67,11 @@ public class StorageFileController {
 	    }
 	    return null;
 	}
+	
+	@PostMapping("/upload-video")
+	public ResponseEntity<?> uploadVideoToFileSystem(@RequestParam("file") MultipartFile file, String folderName, String folderPath) throws IOException{
+		String uploadImage = storageFileService.uploadVideotoSystem(file, folderName, folderPath);
+		return ResponseEntity.status(HttpStatus.OK).body(uploadImage);
+	}
 
 }
