@@ -16,24 +16,24 @@ import { FaAngleUp } from 'react-icons/fa6';
 
 function App() {
   //Fix loi resize khi co form
-  // useEffect(() => {
-  //   window.addEventListener('error', e => {
-  //     if (e.message === 'ResizeObserver loop limit exceeded') {
-  //       const resizeObserverErrDiv = document.getElementById(
-  //         'webpack-dev-server-client-overlay-div'
-  //       );
-  //       const resizeObserverErr = document.getElementById(
-  //         'webpack-dev-server-client-overlay'
-  //       );
-  //       if (resizeObserverErr) {
-  //         resizeObserverErr.setAttribute('style', 'display: none');
-  //       }
-  //       if (resizeObserverErrDiv) {
-  //         resizeObserverErrDiv.setAttribute('style', 'display: none');
-  //       }
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    window.addEventListener('error', e => {
+      if (e.message === 'ResizeObserver loop limit exceeded') {
+        const resizeObserverErrDiv = document.getElementById(
+          'webpack-dev-server-client-overlay-div'
+        );
+        const resizeObserverErr = document.getElementById(
+          'webpack-dev-server-client-overlay'
+        );
+        if (resizeObserverErr) {
+          resizeObserverErr.setAttribute('style', 'display: none');
+        }
+        if (resizeObserverErrDiv) {
+          resizeObserverErrDiv.setAttribute('style', 'display: none');
+        }
+      }
+    });
+  }, []);
   // Scroll TOP button, The back-to-top button is hidden at the beginning
   const [showButton, setShowButton] = useState(false);
   useEffect(() => {
