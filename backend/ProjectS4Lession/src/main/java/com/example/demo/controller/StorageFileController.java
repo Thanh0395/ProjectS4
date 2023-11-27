@@ -34,9 +34,38 @@ public class StorageFileController {
 	
 	@GetMapping("/download/{fileName}")
 	public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable String fileName) throws IOException {
-		byte[] imageData = storageFileService.downloadImageFromFileSystem(fileName);
-		return ResponseEntity.status(HttpStatus.OK)
-				.contentType(MediaType.valueOf("image/png"))
-				.body(imageData);
+	    byte[] imageData = storageFileService.downloadImageFromFileSystem(fileName);
+	    String fileExtension = getFileExtension(fileName);
+	    MediaType mediaType = MediaType.IMAGE_PNG;
+	    if (fileExtension != null) {
+	        switch (fileExtension.toLowerCase()) {
+	            case "jpg":
+	            case "jpeg":
+	                mediaType = MediaType.IMAGE_JPEG;
+	                break;
+	            case "png":
+	                mediaType = MediaType.IMAGE_PNG;
+	                break;
+	            case "gif":
+	                mediaType = MediaType.IMAGE_GIF;
+	                break;
+	            default:
+	                mediaType = MediaType.APPLICATION_OCTET_STREAM;
+	                break;
+	        }
+	    }
+
+	    return ResponseEntity.status(HttpStatus.OK)
+	            .contentType(mediaType)
+	            .body(imageData);
 	}
+
+	private String getFileExtension(String fileName) {
+	    int lastDotIndex = fileName.lastIndexOf('.');
+	    if (lastDotIndex > 0) {
+	        return fileName.substring(lastDotIndex + 1);
+	    }
+	    return null;
+	}
+
 }
