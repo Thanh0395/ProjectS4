@@ -3,8 +3,9 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, Tooltip, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions } from '@mui/material';
 import { VisibilityOutlined, ModeEditOutlineOutlined, DeleteOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { deletePost, fetchListLesson } from '../../../services/api/lessonApi';
+import { deletePost, fetchListLessonDashboard } from '../../../services/api/lessonApi';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Alert } from 'react-bootstrap';
 function LessonAdmin(props) {
     // message delete box
     const [open, setOpen] = useState(false);
@@ -13,17 +14,17 @@ function LessonAdmin(props) {
         setOpen(false);
     };
     // end message delete box
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [variant, setVariant] = useState('info');
     const [loading, setLoading] = useState(true);
     const [listLesson, setListLesson] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetchListLesson();
+                const response = await fetchListLessonDashboard();
                 // const data = await response.json();
                 await setListLesson(response);
-                console.log(listLesson);
-
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -36,10 +37,17 @@ function LessonAdmin(props) {
         setSelectedItem(row)
     };
     const handleConfirmDelete = async () => {
-        const response = await deletePost(selectedItem.id);
-        const updateList = listLesson.filter(item => item.id !== selectedItem.id);
-        setListLesson(updateList);
-        setOpen(false);
+        try {
+            const response = await deletePost(selectedItem.id);
+            const updateList = listLesson.filter(item => item.id !== selectedItem.id);
+            setListLesson(updateList);
+            setErrorMessage(response);
+        } catch (error) {
+            setVariant('danger');
+            setErrorMessage('Not allow to delete, this is not your post');
+        } finally {
+            setOpen(false);
+        }
     };
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -47,16 +55,18 @@ function LessonAdmin(props) {
         { field: 'content', headerName: 'Content', width: 130 },
         { field: 'categoryName', headerName: 'Category', width: 130 },
         { field: 'authorName', headerName: 'Author', width: 130 },
-        { field: 'creatatedAt', headerName: 'Created Date', width: 160,valueFormatter: (params) => {
-            // Format the date using Intl.DateTimeFormat
-            const formattedDate = new Intl.DateTimeFormat('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-            }).format(new Date(params.value));
+        {
+            field: 'creatatedAt', headerName: 'Created Date', width: 160, valueFormatter: (params) => {
+                // Format the date using Intl.DateTimeFormat
+                const formattedDate = new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                }).format(new Date(params.value));
 
-            return formattedDate;
-        }, },
+                return formattedDate;
+            },
+        },
         {
             field: 'actions', headerName: 'Actions', width: 180, headerAlign: 'center', align: 'center', renderCell: (params) => {
                 return (
@@ -119,7 +129,12 @@ function LessonAdmin(props) {
             </Dialog>
             {/* end message delete box */}
             <h2 className="fw-bold mb-2 text-uppercase">List course</h2>
-                <p className="m-1">Here is list!</p>
+            <p className="m-1">Here is list!</p>
+            {errorMessage && (
+                <Alert variant={variant} dismissible>
+                    {errorMessage}
+                </Alert>
+            )}
             {loading ? (
                 <div className="loading-spinner">
                     <CircularProgress />

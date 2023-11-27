@@ -50,4 +50,8 @@ public class TagService {
 	public boolean checkAnyTagExist() {
 		return tagRepository.count() > 0;
 	}
+	//Thanh
+	public List<TagEntity> allTagByPostId(int postId){
+		 return tagRepository.findAllByPostId(postId);
+	}
 }
