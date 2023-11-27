@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserLoginResponseDto {
+public class UserResponseDto {
 	private int userId;
 	private String email;
 	private String name;
@@ -27,6 +27,6 @@ public class UserLoginResponseDto {
 	private Date dateOfBirth;
 	private String avatar;
 	private boolean isActive;
-	private List<UserRoleEntity> userRoles;
+	//private List<UserRoleEntity> userRoles;
 	private List<RoleEntity> roles;
 }

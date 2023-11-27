@@ -8,5 +8,8 @@ public interface GlobalStorage {
 	String SECRET_KEY_JWT  = "123456789";
 	String TOKEN_PREFIX = "Bearer ";
     String HEADER_STRING = "Authorization";
+    
+    //role
+    String DEFAULT_ROLE = "USER";
 }
 

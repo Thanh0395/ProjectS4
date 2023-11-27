@@ -20,7 +20,7 @@ public class BaseEntity {
     private Timestamp updatedAt;
     
     @Column(name = "deleted_at")
-    private Timestamp deleted_at;
+    private Timestamp deletedAt;
     
     @PrePersist
 	private void setCreatedAt() {

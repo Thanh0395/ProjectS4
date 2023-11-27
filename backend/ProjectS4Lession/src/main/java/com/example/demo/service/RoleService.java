@@ -41,4 +41,8 @@ public class RoleService {
 
 	    return rolesDb;
 	}	
+	
+	public RoleEntity getRoleByRoleName(String roleName) {
+		return roleRepository.findByName(roleName);
+	}
 }

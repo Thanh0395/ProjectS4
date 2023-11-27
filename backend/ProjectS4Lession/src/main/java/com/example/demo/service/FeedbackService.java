@@ -1,5 +1,5 @@
 package com.example.demo.service;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +11,9 @@ public class FeedbackService {
 
 	@Autowired
 	private FeedbackRepository feedbackRepository;
-	
-	public FeedbackEntity createFeedback(FeedbackEntity feedbackEntity) {
-		return feedbackRepository.save(feedbackEntity);
-	}
-	
-	public void deleteFeedback(FeedbackEntity feedbackEntity) {
-		feedbackRepository.delete(feedbackEntity);
-	}
+	//Thanh
+	public List<FeedbackEntity> getFeedbacksByPostId(int postId) {
+        return feedbackRepository.findByPostPostId(postId);
+    }
+
 }

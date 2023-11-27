@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "user_post_tbl")
-public class UserPostEntiy extends BaseEntity{
+public class UserPostEntity extends BaseEntity{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +30,9 @@ public class UserPostEntiy extends BaseEntity{
 	
 	@Column(name = "is_pass", columnDefinition = "BOOLEAN DEFAULT false")
 	private boolean isPass;
+	
+	@Column(name = "is_refunded")
+	private Boolean isRefunded;
 	
 	@Column(name = "score", columnDefinition = "INT DEFAULT 0")
 	private int score;
