@@ -69,7 +69,7 @@ public class StorageService {
 				.type(file.getContentType()).filePath(filePath).build());
 
 		if (fileData != null) {
-			return fileName.substring(1);
+			return filePath;
 		}
 		return null;
 	}
