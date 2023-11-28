@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.config.StorageFileProperties;
 import com.example.demo.entity.FileEntity;
+import com.example.demo.exception.EmptyFileException;
+import com.example.demo.exception.NotFoundException;
 import com.example.demo.repository.FileRepository;
 
 @Service
@@ -53,7 +55,12 @@ public class StorageService {
 		return "/" + folderName + "_" + uniqueId + "." + ext;
 	}
 
-	public String uploadImageToFileSystem(MultipartFile file, String folderName, String pathCustom) throws IOException {
+	public String uploadImageToFileSystem(MultipartFile file, String folderName, String pathCustom) 
+			throws IOException, EmptyFileException
+	{
+		if(file.isEmpty()) {
+			throw new EmptyFileException("File is empty");
+		}
 		String fileName = getUniqueFileName(file, folderName);
 		String filePath = rootLocation.resolve(pathCustom + fileName).toString();
 
@@ -69,8 +76,9 @@ public class StorageService {
 				.type(file.getContentType()).filePath(filePath).build());
 
 		if (fileData != null) {
-			return filePath;
-		}
+	        String relativePath = filePath.substring(filePath.indexOf("uploads"));
+	        return relativePath.replace("\\", "/"); // Replace backslashes with forward slashes for consistency
+	    }
 		return null;
 	}
 
