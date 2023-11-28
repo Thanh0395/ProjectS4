@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.dto.CategoryDto;
 import com.example.demo.entity.CategoryEntity;
 import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.EmptyFileException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.CategoryMapper;
 import com.example.demo.service.CategoryService;
@@ -51,7 +52,7 @@ public class CategoryController {
 	@PostMapping(value = "/create-category", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CategoryEntity> createCategory(
             @Valid CategoryDto categoryDto,
-            MultipartFile file) throws IOException {
+            MultipartFile file) throws IOException , EmptyFileException{
 
         if(file != null) {
         	String filePath = storageService.uploadImageToFileSystem(file, "Category", "images/category");

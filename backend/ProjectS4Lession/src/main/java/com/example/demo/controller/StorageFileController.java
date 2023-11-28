@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 
+import com.example.demo.exception.EmptyFileException;
 import com.example.demo.service.StorageService;
 
 
@@ -27,7 +28,9 @@ public class StorageFileController {
 	private StorageService storageFileService;
 	
 	@PostMapping("/upload")
-	public ResponseEntity<?> uploadImageToFileSystem(@RequestParam("file") MultipartFile file, String folderName, String folderPath) throws IOException{
+	public ResponseEntity<?> uploadImageToFileSystem(@RequestParam("file") MultipartFile file, String folderName, String folderPath) 
+			throws IOException, EmptyFileException
+	{
 		String uploadImage = storageFileService.uploadImageToFileSystem(file, folderName, folderPath);
 		return ResponseEntity.status(HttpStatus.OK).body(uploadImage);
 	}

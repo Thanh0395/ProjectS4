@@ -38,9 +38,17 @@ public class VerifyEmailService {
         return code.toString();
     }
 	
-	public boolean checkVerifyEmail(UserEntity user, String code) {
+	public boolean checkVerifyEmailToActiveLogin(UserEntity user, String code) {
         VerifyEmailEntity verifyEmailEntity = verifyEmailRepository.findByUser(user);
         if(verifyEmailEntity != null && verifyEmailEntity.getCode().equals(code)) {
+        	return true;
+        }
+        return false;
+    }
+	
+	public boolean checkVerifyEmailExist(UserEntity user) {
+        VerifyEmailEntity verifyEmailEntity = verifyEmailRepository.findByUser(user);
+        if(verifyEmailEntity != null) {
         	return true;
         }
         return false;

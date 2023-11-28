@@ -33,6 +33,7 @@ import com.example.demo.repository.UserRoleRepository;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 import com.example.demo.service.VerifyEmailService;
+import com.example.demo.utils.PasswordGenerator;
 
 import static com.example.demo.constans.GlobalStorage.DEFAULT_ROLE;
 import lombok.RequiredArgsConstructor;
@@ -64,7 +65,7 @@ public class AuthenticationService {
 	
 	@Autowired
 	private final VerifyEmailService verifyEmailService;
-
+	
 	public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest)
 			throws NotFoundException, CustomAuthenticationException, BadRequestException 
 	{
@@ -153,13 +154,37 @@ public class AuthenticationService {
 	{
 		UserEntity user = userRepository.findByEmail(activeUserRequestDto.getEmail())
 				.orElseThrow(() -> new NotFoundException("Not found user with email :" + activeUserRequestDto.getEmail()));
-		boolean isVerify = verifyEmailService.checkVerifyEmail(user, activeUserRequestDto.getCode());
+		boolean isVerify = verifyEmailService.checkVerifyEmailToActiveLogin(user, activeUserRequestDto.getCode());
 		if(isVerify) {
 			user.setActive(true);
 			userRepository.save(user);
 		}else {
 			throw new VerificationCodeMismatchException("Verification code does not match for user: " + activeUserRequestDto.getEmail());
 		}
+	}
+	
+	public void forgotPassword(String email) 
+			throws BadRequestException, NotFoundException 
+	{
+		UserEntity user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new NotFoundException("Not found user with email :" + email));
+		boolean isVerify = verifyEmailService.checkVerifyEmailExist(user);
+		boolean isActive = user.isActive();
+		if(!isVerify) {
+			throw new BadRequestException("User not verify email!");
+		}
+		if(!isActive) {
+			throw new BadRequestException("User not active!");
+		}
+		//generate a password	
+		String newPassword = PasswordGenerator.generatePassword();
+		user.setPassword(passwordEncoder.encode(newPassword));
+		UserEntity userUpdatedPass =  userRepository.save(user);
+		if(userUpdatedPass == null) 
+		{
+			throw new BadRequestException("Cannot update password!");
+		}
+		
 		
 	}
 }
