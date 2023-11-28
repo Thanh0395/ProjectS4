@@ -18,11 +18,11 @@ public class TagDto {
 		this.tagName = tagName;
 	}
 
-	public TagDto(int tagId, String tagName, int countPost) {
+	public TagDto(int tagId, String tagName, Long countPost) {
 		super();
 		this.tagId = tagId;
 		this.tagName = tagName;
-		this.countPost = countPost;
+		this.countPost = countPost != null ? countPost.intValue() : 0;
 	}
 
 	public int getTagId() {

@@ -32,6 +32,17 @@ public class QuestionDto {
 		this.answerC = answerC;
 		this.answerD = answerD;
 	}
+	public QuestionDto(Long questionId, String content, String answerA, String answerB, String answerC,
+			String answerD,  String answer) {
+		super();
+		this.questionId = questionId;
+		this.content = content;
+		this.answerA = answerA;
+		this.answerB = answerB;
+		this.answerC = answerC;
+		this.answerD = answerD;
+		this.rightAnswer = answer;
+	}
 
 	public Long getQuestionId() {
 		return questionId;

@@ -10,6 +10,7 @@ function Header(props) {
     const handleLogout = async () => {
         try {
             await logoutUser();
+            navigate('/');
             setCurrentUser(null);
         } catch (error) {
             navigate('/');
