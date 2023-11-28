@@ -15,6 +15,7 @@ function NavbarHome(props) {
         try {
             await logoutUser();
             setCurrentUser(null);
+            navigate('/');
         } catch (error) {
             navigate('login');
         }
