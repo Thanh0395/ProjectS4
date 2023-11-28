@@ -16,13 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.PostCreationDto;
 import com.example.demo.dto.PostUpdationDto;
-import com.example.demo.entity.EmailEntity;
 import com.example.demo.entity.PostEntity;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
-import com.example.demo.mapper.Mapper;
 import com.example.demo.mapper.PostMapper;
-import com.example.demo.service.EmailService;
 import com.example.demo.service.PostService;
 import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 
@@ -71,19 +68,5 @@ public class PostController {
 		return new ResponseEntity<PostEntity>(postUpdated, HttpStatus.OK);
 	}
 	
-	@Autowired
-	private EmailService emailService;
-
-	@PostMapping("/send-email")
-	public ResponseEntity<String> testSendMail(@RequestBody EmailEntity email) {
-		try {
-			emailService.sendMail(email);
-			return new ResponseEntity<String>("Send Email success", HttpStatus.OK); // Use ResponseEntity.ok() to return success
-		} catch (Exception e) {
-			// Handle the exception properly, for example:
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body("Failed to send email: " + e.getMessage());
-		}
-	}
 
 }

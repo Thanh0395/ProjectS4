@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.CustomAuthenticationException;
 import com.example.demo.exception.NotFoundException;
+import com.example.demo.exception.ResourceAlreadyExistsException;
+import com.example.demo.exception.VerificationCodeMismatchException;
 
 
 @RestControllerAdvice
@@ -47,6 +49,22 @@ public class ApplicationExceptionHandler {
 	@ExceptionHandler(CustomAuthenticationException.class)
 	public Map<String, String> handleCustomAuthenticationException(CustomAuthenticationException ex){
 		Map<String, String> errorMap = new HashMap<>();
+		errorMap.put("Error Message", ex.getMessage());
+		return errorMap;
+	}
+	
+	@ResponseStatus(HttpStatus.CONFLICT)
+	@ExceptionHandler(ResourceAlreadyExistsException.class)
+	public Map<String, String> handleResourceAlreadyExistsException (ResourceAlreadyExistsException ex){
+		Map<String, String> errorMap = new HashMap<String, String>();
+		errorMap.put("Error Message", ex.getMessage());
+		return errorMap;
+	}
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(VerificationCodeMismatchException.class)
+	public Map<String, String> handleVerificationCodeMismatchException (VerificationCodeMismatchException ex){
+		Map<String, String> errorMap = new HashMap<String, String>();
 		errorMap.put("Error Message", ex.getMessage());
 		return errorMap;
 	}

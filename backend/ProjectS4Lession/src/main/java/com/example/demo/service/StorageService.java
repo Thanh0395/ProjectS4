@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,7 +27,6 @@ public class StorageService {
 
 
 	private final Path rootLocation;
-	
 	@Autowired
 	private FileRepository fileRepository;
 
@@ -43,10 +40,8 @@ public class StorageService {
             Files.createDirectories(rootLocation.resolve("images/post"));
             Files.createDirectories(rootLocation.resolve("images/category"));
             Files.createDirectories(rootLocation.resolve("video/post"));
-
-
             System.out.print(rootLocation.toString());
-            System.out.println("Creating directory: " + rootLocation.resolve("images/user").toString());
+          
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to create directories: " + e.getMessage(), e);
@@ -75,7 +70,7 @@ public class StorageService {
 				.type(file.getContentType()).filePath(filePath).build());
 
 		if (fileData != null) {
-			return "File uploaded successfully: " + filePath;
+			return fileName.substring(1);
 		}
 		return null;
 	}
@@ -90,12 +85,9 @@ public class StorageService {
 			try (InputStream inputStream = Files.newInputStream(filePath)) {
 				return IOUtils.toByteArray(inputStream); // Using Apache Commons IO
 			} catch (IOException e) {
-				// Handle IOException (e.g., log the error or re-throw it)
 				throw e;
 			}
 		} else {
-			// Handle the case where the file is not found (e.g., return null or throw an
-			// exception)
 			throw new FileNotFoundException("File not found: " + fileName);
 		}
 	}

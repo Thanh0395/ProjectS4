@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.VerifyEmailEntity;
+import com.example.demo.exception.VerificationCodeMismatchException;
 import com.example.demo.repository.VerifyEmailRepository;
 import java.security.SecureRandom;
 
@@ -35,5 +36,13 @@ public class VerifyEmailService {
         }
 
         return code.toString();
+    }
+	
+	public boolean checkVerifyEmail(UserEntity user, String code) {
+        VerifyEmailEntity verifyEmailEntity = verifyEmailRepository.findByUser(user);
+        if(verifyEmailEntity != null && verifyEmailEntity.getCode().equals(code)) {
+        	return true;
+        }
+        return false;
     }
 }

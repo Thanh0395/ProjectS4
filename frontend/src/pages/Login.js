@@ -3,15 +3,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Button, Container, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import * as formik from 'formik';
 import * as yup from 'yup';
-import { loginUser } from '../services/api/userAPI';
+import { activeUser, loginUser, sendVerifycodeMail } from '../services/api/userAPI';
 
 function Login(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
-    const [showVerifyCode, setShowVerifyCode] = useState(true);
-    const [currentEmail, setCurrentEmail] = useState(()=>{
+    const [showVerifyCode, setShowVerifyCode] = useState(false);
+    const [variant, setVariant] = useState('info');
+    const [currentEmail, setCurrentEmail] = useState(() => {
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        return currentUser? currentUser.email : '';
+        return currentUser ? currentUser.email : '';
     });
     const navigate = useNavigate();
 
@@ -25,24 +26,37 @@ function Login(props) {
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             setIsLoading(true);
-            setCurrentEmail(values.email)
-            // Call the API function to register the user
-            await loginUser(values.email, values.password);
-            if(localStorage.getItem('currentUser')){
-                if(localStorage.getItem('currentUser').active){
-                    console.log('true');
-                }else{
-                    console.log('false');
-                }
+            setCurrentEmail(values.email);
+            if (values.verify != '') {
+                await activeUser(currentEmail, values.verify);
             }
+            await loginUser(values.email, values.password);
             navigate('/');
         } catch (error) {
             const errorObj = error.response.data;
-            setErrorMessage(errorObj['Error Message']);
+            const errorMsg = errorObj['Error Message'];
+            if (errorMsg && errorMsg.includes('not active')) {
+                setVariant('warning');
+                setShowVerifyCode(true);
+            } else setVariant('danger');
+            setErrorMessage(errorMsg);
             // console.log('Login error:', errorObj['Error Message']);
         } finally {
             setIsLoading(false);
             setSubmitting(false);
+        }
+    };
+    const handleResendVerification = async () => {
+        try {
+            setIsLoading(true);
+            await sendVerifycodeMail(currentEmail);
+            setVariant('info');
+            setErrorMessage('Verification code resent successfully.');
+        } catch (error) {
+            setVariant('danger');
+            setErrorMessage('Error resending verification code.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -59,6 +73,7 @@ function Login(props) {
                             initialValues={{
                                 email: currentEmail,
                                 password: '',
+                                verify: '',
                             }}
                         >
                             {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -110,24 +125,31 @@ function Login(props) {
                                         </p>
                                     </Form.Group>
                                     {showVerifyCode && (
-                                        <Form.Group className="mb-3" controlId="formBasicVerify">
-                                            <FloatingLabel label="Verification Code">
-                                                <Form.Control
-                                                    type="text"
-                                                    name="verify"
-                                                    value={values.verify}
-                                                    onChange={handleChange}
-                                                    isInvalid={touched.verify && !!errors.verify}
-                                                    placeholder="Enter verification code"
-                                                />
-                                                <Form.Control.Feedback type="invalid">
-                                                    {errors.verify}
-                                                </Form.Control.Feedback>
-                                            </FloatingLabel>
-                                        </Form.Group>
+                                        <>
+                                            <Form.Group className="mb-3" controlId="formBasicVerify">
+                                                <FloatingLabel label="Verification Code">
+                                                    <Form.Control
+                                                        type="text"
+                                                        name="verify"
+                                                        value={values.verify}
+                                                        onChange={handleChange}
+                                                        isInvalid={touched.verify && !!errors.verify}
+                                                        placeholder="Enter verification code"
+                                                    />
+                                                    <Form.Control.Feedback type="invalid">
+                                                        {errors.verify}
+                                                    </Form.Control.Feedback>
+                                                </FloatingLabel>
+                                            </Form.Group>
+                                            <p className="small">
+                                                <a className="text-primary" onClick={handleResendVerification}>
+                                                    Resend to mail {currentEmail}
+                                                </a>
+                                            </p>
+                                        </>
                                     )}
                                     {errorMessage && (
-                                        <Alert variant="danger">
+                                        <Alert variant={variant}>
                                             {errorMessage}
                                         </Alert>
                                     )}

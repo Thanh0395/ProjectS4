@@ -49,4 +49,14 @@ public class PostService {
 	public boolean checkAnyPostExist() {
 		return postRepository.count() > 0;
 	}
+//	Thanh
+	public List<PostEntity> getPostsByType(String type) {
+        return postRepository.findByType(type);
+    }
+	public List<PostEntity> getPostsByTypeAndNotDeleted(String type) {
+        return postRepository.findByTypeAndDeletedAtIsNull(type);
+    }
+	public List<PostEntity> getPostsByTypeByUserIdAndNotDeleted(int userId, String type) {
+        return postRepository.findPostsByUserIdAndTypeAndDeleteIsNull(userId, type);
+    }
 }

@@ -35,6 +35,4 @@ public class UserCreationDto {
 	
 	private String avatar;
 	
-	@Builder.Default
-	private int role = 1;
 }

@@ -1,4 +1,5 @@
-import "./App.css";
+import './constants/importedCss'
+
 import { Route, Routes } from "react-router-dom";
 import ClientLayout from "./layouts/client/ClientLayout";
 import AdminLayout from "./layouts/admin/AdminLayout";
@@ -9,7 +10,7 @@ import {
   Login, Register, NotFound, Unauthorized,
   Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin,
   LessonAdminCreate, LessonAdminDetail, LessonAdminUpdate,
-  ClientContact, ClientProducts, ClientDetailProduct, Home, Planning,
+  ClientContact, ClientProducts, ClientDetailProduct, Home, Planning, ClientCourse
 } from "./pages"
 import { useEffect, useState } from "react";
 import { FaAngleUp } from 'react-icons/fa6';
@@ -63,7 +64,7 @@ function App() {
             <Route path="planning" element={<Planning />} />
             <Route path="products/" >
               <Route exact path="" >
-                <Route path="" element={<ClientProducts />}></Route>
+                <Route path="" element={<ClientCourse />}></Route>
                 <Route path="category/:category" element={<ClientProducts />}></Route>
               </Route>
               <Route path="detail/:id" element={<ClientDetailProduct />} />
