@@ -4,8 +4,12 @@ function HomePage() {
     return (
         <>
             <Outlet />
+          
         </>
     );
 }
+
+
+
 
 export default HomePage;

@@ -1,76 +1,111 @@
-import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import logo from '../../logo.svg';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
-import { Navbar, NavDropdown, Form, Button, Nav, Container } from 'react-bootstrap'
-import './navbarHome.css';
-import { logoutUser } from '../../services/api/userAPI';
-import UserProfileDropdown from '../UserProfileDropdown';
+/* eslint-disable no-unused-expressions */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useEffect, useRef, useState } from "react";
+import logo from "../../../src/assets/images/logo/logo.svg";
+import hamburger from "../../../src/assets/images/svg/burger-menu-svgrepo-com.svg";
 
-function NavbarHome(props) {
-    const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
-    const isLoggedIn = !!currentUser;
-    const navigate = useNavigate();
-    const handleLogout = async () => {
-        try {
-            await logoutUser();
-            setCurrentUser(null);
-            navigate('/');
-        } catch (error) {
-            navigate('login');
-        }
-    };
-    return (
-        <Navbar collapseOnSelect expand="sm" className="bg-body-tertiary sticky-top p-0">
-            <Container fluid>
-                {/* <Navbar.Brand href="#">Navbar scroll</Navbar.Brand> */}
-                <Link to="" >
-                    <img src={logo} className="App-logo" alt="logo" />
-                </Link>
-                {isLoggedIn ? (
-                    <UserProfileDropdown currentUser={currentUser} onLogout={handleLogout} className="mr-30" />
-                ) : (
-                    <Nav.Link as={Link} to={'login'}>
-                        Login
-                    </Nav.Link>
-                )}
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" className='border' />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav
-                        className="justify-content-center flex-grow-1"
+import { Link } from "react-router-dom";
+import MobileMenu from "./mobile-menu";
+const Header = () => {
+  const [activeMobileMenu, setActiveMobileMenu] = useState(false);
+
+  const scrollNav = useRef(null);
+  useEffect(() => {
+    // scrolling nav
+    window.addEventListener("scroll", () => {
+      let windowScroll = window.scrollY > 100;
+      scrollNav.current.classList.toggle("rt-sticky-active", windowScroll);
+      scrollNav.current.classList.toggle("sticky", windowScroll);
+    });
+  }, []);
+
+  return (
+    <>
+      <header
+        className="site-header  home-one-header top-0 w-full z-[999] rt-sticky "
+        ref={scrollNav}
+      >
+        <div className="main-header py-6">
+          <div className="container">
+            <div className=" flex items-center justify-between">
+              <Link
+                to={"/react-templates/edumim"}
+                className="brand-logo flex-none lg:mr-10 md:w-auto max-w-[120px] "
+              >
+                <img src={logo} alt="logo" />
+              </Link>
+              <div className="flex items-center flex-1">
+                <div className="flex-1 main-menu relative mr-[74px]">
+                  <ul className="menu-active-classNames">
+                    <li>
+                      <Link to={"/"}>Home</Link>
+                    </li>
+
+                    <li>
+                      <Link to={"/products"}>Course</Link>
+                    </li>
+
+                    <li>
+                      <Link to={"/plaining"}>AI Search</Link>
+                    </li>
+
+                    <li className="menu-item-has-children">
+                      <a href="#">Categories</a>
+                      <ul className="sub-menu">
+                        <li>
+                          <Link to={"/#"}>
+                            Physic
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to={"/#"}>
+                            Chemistry
+                          </Link>
+                        </li>
+                        <li>
+                          <Link to={"/#"}>
+                            Math
+                          </Link>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <Link to={"contact"}>
+                        Contacts
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+                <div className="flex-none flex space-x-[18px]">
+                  <div className=" hidden lg:block">
+                    <a href="#" className="btn btn-primary py-[15px] px-8">
+                      Start Free Trial
+                    </a>
+                  </div>
+                  <div className=" block   lg:hidden">
+                    <button
+                      type="button"
+                      className=" text-black text-3xl md:w-[56px] h-10 w-10 md:h-[56px] rounded bg-[#F8F8F8] flex flex-col items-center justify-center
+                                        menu-click"
+                      onClick={() => setActiveMobileMenu(!activeMobileMenu)}
                     >
-                        <Nav.Link as={NavLink} to={"/"} >Home</Nav.Link>
-                        <Nav.Link as={NavLink} to={"contact"}>Contact</Nav.Link>
-                        <Nav.Link as={NavLink} to={"planning"}>AI-Chat</Nav.Link>
-                        <Nav.Link as={NavLink} to={"products"}>Product</Nav.Link>
-                        <NavDropdown title="Dropdown" className="mb-3">
-                            <NavDropdown.Item href="action3">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="action4">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Something else here
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
-                    <Form className="d-flex">
-                        <Form.Control
-                            name="search"
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline" type="submit">
-                            <FaMagnifyingGlass />
-                        </Button>
-                    </Form>
-                    <div>&nbsp;</div>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
-    );
-}
+                      <img src={hamburger} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      {activeMobileMenu && (
+        <MobileMenu
+          activeMenu={activeMobileMenu}
+          setActiveMenu={setActiveMobileMenu}
+        />
+      )}
+    </>
+  );
+};
 
-export default NavbarHome;
+export default Header;

@@ -1,11 +1,11 @@
 
-import CourseBannerSession from "./banner-session/banner";
+import PageBanner from "../../PageBanner";
 import CourseSession from "./course-session/course";
 
 function ClientCourse(props) {
     return (
       <div>
-           <CourseBannerSession/>
+        <PageBanner/>
            <CourseSession/>
       </div>
     );

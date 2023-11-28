@@ -1,52 +1,142 @@
-import React from 'react';
-import logo from '../../logo.svg'
-import { Col, Container, Row } from 'react-bootstrap';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React from "react";
+import footerLogo from "../../assets/images/logo/footer-logo-2.svg";
 
-function Footer(props) {
-    return (
-        <footer className="bg-dark text-light py-4 mt-4">
-            <Container>
-                <Row>
-                    <Col md={2} sm={12}>
-                        <div className="mb-4">
-                            <img
-                                src={logo}
-                                alt="Logo"
-                                className="img-fluid"
-                                width={100}
-                            />
-                        </div>
-                    </Col>
-
-                    <Col md={5} sm={6}>
-                        <address>
-                            Your Company Address<br />
-                            City, State, ZIP<br />
-                            Phone: (123) 456-7890<br />
-                            Email: info@example.com
-                        </address>
-                    </Col>
-
-                    <Col md={5} sm={6}>
-                        <h5>Members:</h5>
-                        <ul>
-                            <li>Tran Pham Duy Thanh</li>
-                            <li>Pham Trung Nhan</li>
-                            <li>Nguyen Tan Hung</li>
-                            <li>Tran Cao Tien Sy</li>
-                            <li>Pham Anh Doan</li>
-                            {/* Add more members as needed */}
-                        </ul>
-                    </Col>
-                </Row>
-                <Row>
-                    <div className='text-center'>
-                        <span className="small">Group01 ©2023 All Rights Reserved.</span>
-                    </div>
-                </Row>
-            </Container>
-        </footer>
-    );
-}
+const Footer = () => {
+  const updatedDate = new Date().getFullYear();
+  return (
+    <footer className="bg-black bg-[url('../images/all-img/footer-bg-1.png')] bg-cover bg-center bg-no-repeat">
+      <div className="section-padding container">
+        <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-3">
+          <div className="single-footer">
+            <div className="lg:max-w-[270px]">
+              <a href="#" className="mb-10 block">
+                <img src={footerLogo} alt="" />
+              </a>
+              <p className="text-white">
+                Lorem ipsum amet, consectetur adipiscing elit. Suspendis varius
+                enim eros elementum tristique. Duis cursus.
+              </p>
+              <ul className="flex space-x-4 pt-8">
+                <li>
+                  <a
+                    href="#"
+                    className="flex h-12 w-12 flex-col items-center justify-center rounded bg-white bg-opacity-[0.08] text-2xl text-white
+                    transition hover:bg-primary hover:text-white"
+                  >
+                    <iconify-icon icon="bxl:facebook"></iconify-icon>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex h-12 w-12 flex-col items-center justify-center rounded bg-white bg-opacity-[0.08] text-2xl text-white
+                    transition hover:bg-primary hover:text-white"
+                  >
+                    <iconify-icon icon="bxl:twitter"></iconify-icon>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex h-12 w-12 flex-col items-center justify-center rounded bg-white bg-opacity-[0.08] text-2xl text-white
+                    transition hover:bg-primary hover:text-white"
+                  >
+                    <iconify-icon icon="bxl:linkedin"></iconify-icon>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-white flex h-12 w-12 flex-col items-center justify-center rounded bg-white bg-opacity-[0.08] text-2xl text-white
+                    transition hover:bg-primary hover:text-white"
+                  >
+                    <iconify-icon icon="bxl:instagram"></iconify-icon>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="single-footer">
+            <div className="flex space-x-[80px]">
+              <div className="flex-1 lg:flex-none">
+                <h4 className="mb-8 text-2xl font-bold text-white">Links</h4>
+                <ul className="list-item space-y-5">
+                  <li>
+                    <a className="text-white" href="#">
+                      Home
+                    </a>
+                  </li>
+                  <li>
+                    <a className="text-white"  href="#">About Us</a>
+                  </li>
+                  <li>
+                    <a className="text-white" href="#">Pricing</a>
+                  </li>
+                  <li>
+                    <a className="text-white" href="#">Courses</a>
+                  </li>
+                  <li>
+                    <a className="text-white" href="#">Contact Us</a>
+                  </li>
+                  <li>
+                    <a className="text-white" href="#">Blog</a>
+                  </li>
+                </ul>
+              </div>
+              <div className="flex-1 lg:flex-none">
+                <h4 className="mb-8 text-2xl font-bold text-white">Legal</h4>
+                <ul className="list-item space-y-5">
+                  <li>
+                    <a className="text-white" href="#">Legal</a>
+                  </li>
+                  <li>
+                    <a className="text-white" href="#">Tearms of Use</a>
+                  </li>
+                  <li>
+                    <a className="text-white" href="#">Tearm & Condition</a>
+                  </li>
+                  <li>
+                    <a className="text-white" href="#">Payment Method</a>
+                  </li>
+                  <li>
+                    <a className="text-white" href="#">Privacy Policy</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="single-footer">
+            <h4 className="mb-8 text-2xl font-bold text-white">Newsletter</h4>
+            <div className="mb-8 text-white" >
+              Join over <span className="text-primary  underline">68,000</span>{" "}
+              people getting our emails Lorem ipsum dolor sit amet consectet
+            </div>
+            <div className="mb-4 flex items-center rounded-md bg-white py-[10px] pr-[10px] pl-6 shadow-e1">
+              <div className="flex-none">
+                <span className=" ">
+                  <img src="assets/images/icon/mail.svg" alt="" />
+                </span>
+              </div>
+              <div className="flex-1">
+                <input
+                  type="text"
+                  placeholder="Enter your mail"
+                  className="border-none focus:ring-0"
+                />
+              </div>
+            </div>
+            <button className="btn btn-primary block w-full text-center">
+              Subscribe Now
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className=" text-white container border-t border-white border-opacity-[0.1] py-8 text-center text-base">
+        &copy; Copyright {updatedDate} | Edumim Template | All Rights Reserved
+      </div>
+    </footer>
+  );
+};
 
 export default Footer;
