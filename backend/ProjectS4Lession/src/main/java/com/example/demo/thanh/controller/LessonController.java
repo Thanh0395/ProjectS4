@@ -230,7 +230,7 @@ public class LessonController {
 					questionDtos = questions.stream()
 							.map(question -> new QuestionDto(question.getQuestionId(), question.getContent(),
 									question.getAnswerA(), question.getAnswerB(), question.getAnswerC(),
-									question.getAnswerD()))
+									question.getAnswerD(), question.getRightAnswer()))
 							.collect(Collectors.toList());
 				}
 				//tags

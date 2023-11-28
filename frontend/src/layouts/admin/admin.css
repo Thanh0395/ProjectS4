@@ -57,3 +57,30 @@
   border: dashed 2px;
   border-color: red !important;
 }
+.title{
+  font-weight: bold;
+}
+.post-tag-container {
+  padding-top: 10px;
+}
+
+.post-tag-list {
+  list-style-type: none;
+  display: flex;
+  gap: 10px;
+  max-width: 800px;
+  flex-wrap: wrap;
+}
+
+.post-tag-list-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.post-tag-icon {
+  margin-left: 5px;
+}
