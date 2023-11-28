@@ -108,6 +108,7 @@ public class AuthenticationService {
 		if(userDb.isPresent()) {
 			throw new ResourceAlreadyExistsException("User already exist with email :" + user.getEmail());
 		}
+		user.setAvatar("uploads/images/user/User_default.jpg");
     	UserEntity userCreated = userService.createUser(user);
     	UserResponseDto userResponseDto = userMapper.UserEntityToUserResponse(userCreated);
     	//add default role user
