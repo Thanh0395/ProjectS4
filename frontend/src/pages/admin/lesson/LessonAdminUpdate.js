@@ -3,7 +3,7 @@ import * as formik from 'formik';
 import * as yup from 'yup';
 import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { Link, useParams } from 'react-router-dom';
-import { fetchCategories, fetchLessonByIdDashboard, listCategory } from '../../../services/api/lessonApi'
+import { fetchLessonByIdDashboard, listCategory } from '../../../services/api/lessonApi'
 import QuestionEditor from '../../../components/admin/QuestionEditor';
 import TagsEdittor from '../../../components/admin/TagsEdittor';
 import ReactQuill from 'react-quill';
@@ -15,6 +15,8 @@ function LessonAdminUpdate(props) {
     const [questions, setQuestions] = useState([]);
     const [tags, setTags] = useState([]);
     const [deletedQuestions, setDeletedQuestions] = useState([]);
+    const [initQuestions, setInitQuestions] = useState([]);
+
     function updateQuestion(ques) {
         setQuestions(ques);
     }
@@ -26,12 +28,14 @@ function LessonAdminUpdate(props) {
         const fetchData = async () => {
             try {
                 const postData = await fetchLessonByIdDashboard(params.id);
-                console.log("hello ",postData)
+                console.log("hello ", postData)
                 const cateData = await listCategory();
-                const tagsData = await fetchCategories();
+                const tagsData = postData.tags;
+                const questionsData = postData.questions;
                 setLesson(postData);
                 setCategories(cateData);
                 setTags(tagsData);
+                setInitQuestions(questionsData);
             } catch (error) {
                 console.error('Error fetching post:', error);
             }
@@ -39,29 +43,43 @@ function LessonAdminUpdate(props) {
         fetchData();
     }, [params.id]);
 
-    const datacontent = '<h1>ahaha, t test show editor ne</h1>';
-
     const [isLoading, setIsLoading] = useState(false);// loading nay khi submit form
     const { Formik } = formik;
     const schema = yup.object().shape({
         title: yup.string().required(),
-        category: yup.string().required(),
+        categoryId: yup.number().required(),
         price: yup.number().min(5).required(),
-        description: yup.string().required(),
-        image: yup
+        content: yup.string().required(),
+        newImage: yup
             .mixed().nullable()
-            .test('filesize', 'File is too large', function (file) {
+            .test('filesize', 'Image is too large >1MB', function (file) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
                 const maxSize = 1000000; // 1MB
                 return file.size <= maxSize;
             })
-            .test('fileformat', 'Unsupported file format', function (file) {
+            .test('fileformat', 'Unsupported image format', function (file) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
                 const supportedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+                return supportedFormats.includes(file.type);
+            }),
+        newVideo: yup
+            .mixed().nullable()
+            .test('filesize', 'Video is too large >100MB', function (file) {
+                if (!file) {
+                    return true; // Allow for empty or undefined values
+                }
+                const maxSize = 100000000; // 100MB
+                return file.size <= maxSize;
+            })
+            .test('fileformat', 'Unsupported video format', function (file) {
+                if (!file) {
+                    return true; // Allow for empty or undefined values
+                }
+                const supportedFormats = ['video/mp4'];
                 return supportedFormats.includes(file.type);
             }),
         tags: yup
@@ -76,8 +94,8 @@ function LessonAdminUpdate(props) {
             await console.log(values);
             await console.log('Questions', questions);
             await console.log('DeletedQuestion', deletedQuestions);
+            console.log(values.categoryId)
             // Optionally, you can redirect the user to a different page after successful registration
-            // history.push('/login'); // Import useHistory from 'react-router-dom'
             console.log('Registration successful');
         } catch (error) {
             console.error('Registration error:', error);
@@ -95,14 +113,14 @@ function LessonAdminUpdate(props) {
                     <Formik
                         validationSchema={schema}
                         onSubmit={handleSubmit}
-                        initialValues={{ ...lesson, image: null, tag: [{ id: 1, name: 'hahaa' }, { id: 2, name: 'test' }] }}
+                        initialValues={{ ...lesson }}
                     >
                         {({ handleSubmit, handleChange, values, touched, errors, setFieldValue }) => (
                             // noValidate: bỏ qua validate mặc định của browser
-                            <Form noValidate onSubmit={handleSubmit}>
+                            <Form onSubmit={handleSubmit} >
                                 <Row className="mb-3">
                                     <Form.Group as={Col} md="6" >
-                                        <Form.Label>Title</Form.Label>
+                                        <Form.Label className='title'>Title</Form.Label>
                                         <Form.Control
                                             type="text"
                                             name="title"
@@ -116,12 +134,12 @@ function LessonAdminUpdate(props) {
                                     </Form.Group>
 
                                     <Form.Group as={Col} md="6" >
-                                        <Form.Label>Category</Form.Label>
+                                        <Form.Label className='title'>Category</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            name="category"
+                                            name="categoryId"
                                             as="select"
-                                            value={values.category}
+                                            value={values.categoryId}
                                             onChange={handleChange}
                                             isInvalid={touched.category && !!errors.category}
                                         >
@@ -177,30 +195,50 @@ function LessonAdminUpdate(props) {
                                     /> */}
 
                                     <Form.Group as={Col} md="6" >
-                                        <img src={lesson.image} alt="Lesson" style={{ width: '150px' }} /><br />
-                                        <Form.Label> or New Image</Form.Label>
+                                        <img src={lesson.featureImage} alt="Lesson" style={{ width: '150px' }} /><br />
+                                        <Form.Label style={{ fontStyle: 'italic', color: 'blue' }}> or New Image</Form.Label>
                                         <Form.Control
                                             type="file"
-                                            name="image"
+                                            name="newImage"
                                             onChange={(event) => {
-                                                setFieldValue('image', event.currentTarget.files[0]); // Set the selected file as the value
+                                                // Set the selected file as the value(in the list file)
+                                                setFieldValue('newImage', event.currentTarget.files[0]);
                                             }}
-                                            isInvalid={!!errors.image}
+                                            isInvalid={touched.newImage && !!errors.newImage}
                                         />
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.image}
+                                            {errors.newImage}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+                                    <Form.Group as={Col} md="6" >
+                                        <video width="320" height="240" controls>
+                                            <source src={lesson.video} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <br />
+                                        <Form.Label style={{ fontStyle: 'italic', color: 'blue' }}> or New Video</Form.Label>
+                                        <Form.Control
+                                            type="file"
+                                            name="newVideo"
+                                            onChange={(event) => {
+                                                setFieldValue('newVideo', event.currentTarget.files[0]);
+                                            }}
+                                            isInvalid={touched.newVideo && !!errors.newVideo}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.newVideo}
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
 
                                     <Form.Group as={Col} md="6" >
-                                        <Form.Label>Price</Form.Label>
+                                        <Form.Label className='title'>Price</Form.Label>
                                         <Form.Control
                                             type="number"
                                             name="price"
                                             value={values.price}
                                             onChange={handleChange}
-                                            isInvalid={!!errors.price}
+                                            isInvalid={touched.price && !!errors.price}
                                         />
                                         <Form.Control.Feedback type="invalid" >
                                             {errors.price}
@@ -209,13 +247,13 @@ function LessonAdminUpdate(props) {
                                 </Row>
 
                                 <Row className="mb-3">
-                                    <Form.Group as={Col} md="6">
-                                        <Form.Label>Content</Form.Label>
+                                    <Form.Group as={Col} md="12">
+                                        <Form.Label className='title'>Content</Form.Label>
                                         <ReactQuill
-                                            name="description"
-                                            value={values.description}
-                                            onChange={(val) => setFieldValue('description', val)}
-                                            isInvalid={!!errors.description}
+                                            name="content"
+                                            value={values.content}
+                                            onChange={(val) => setFieldValue('content', val)}
+                                            isInvalid={touched.content && !!errors.content}
                                         />
                                         {/* <Form.Control
                                             type="text"
@@ -226,20 +264,15 @@ function LessonAdminUpdate(props) {
                                             isInvalid={!!errors.description}
                                         /> */}
                                         <Form.Control.Feedback type="invalid">
-                                            {errors.description}
+                                            {errors.content}
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-                                    <Form.Group as={Col} md="6">
-                                        <TagsEdittor lessonTags={tags}></TagsEdittor>
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.description}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
+
                                 </Row>
 
                                 <div className="d-grid">
-                                    <Button variant="primary" type="button" onClick={handleSubmit} disabled={isLoading} >
+                                    <Button variant="primary" type="submit" disabled={isLoading} >
                                         {isLoading ? (<Spinner size="sm"></Spinner>)
                                             : ("Update")}
                                     </Button>
@@ -247,9 +280,18 @@ function LessonAdminUpdate(props) {
                                         <Link to="/admin/lessons" >Back</Link>
                                     </p>
                                 </div>
-
+                                <Form.Group as={Col} md="12">
+                                    <TagsEdittor lessonTags={tags}></TagsEdittor>
+                                    {/* <Form.Control.Feedback type="invalid">
+                                            {errors.tags}
+                                        </Form.Control.Feedback> */}
+                                </Form.Group>
                                 <Row>
-                                    <QuestionEditor updateQuestion={updateQuestion} updateDeletedQuestion={updateDeletedQuestion}></QuestionEditor>
+                                    <QuestionEditor
+                                        updateQuestion={updateQuestion}
+                                        updateDeletedQuestion={updateDeletedQuestion}
+                                        initQuestions={initQuestions}
+                                    />
                                 </Row>
                             </Form>
                         )}
@@ -257,7 +299,6 @@ function LessonAdminUpdate(props) {
                 ) : (
                     <p>Loading...</p>
                 )}
-            <div dangerouslySetInnerHTML={{ __html: datacontent }} />
             </div>
         </div>
     );

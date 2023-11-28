@@ -154,6 +154,8 @@ function LessonAdmin(props) {
                                 rows={listLesson}
                                 columns={columns}
                                 hideFooterSelectedRowCount={true}
+                                showColumnVerticalBorder={true}
+                                showCellVerticalBorder={true}
                                 disableRowSelectionOnClick
                                 checkboxSelection
                                 onRowSelectionModelChange={

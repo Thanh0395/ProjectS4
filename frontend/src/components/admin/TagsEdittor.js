@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Button } from 'react-bootstrap';
-import { fetchCategories } from '../../services/api/lessonApi';
+import { fetchTags } from '../../services/api/lessonApi';
 
 function TagsEdittor({ lessonTags }) {
     const [allTags, setAllTags] = useState([]);
     const [tags, setTags] = useState(lessonTags);
-    const [selectedTag, setSelectedTag] = useState('');
+    const [resetTag, setResetTag] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const allTagsData = await fetchCategories();
+                const allTagsData = await fetchTags();
                 setAllTags(allTagsData);
-                console.log('Tags list:', allTagsData);
             } catch (error) {
                 console.error('Error fetching tags:', error);
             }
@@ -21,8 +20,8 @@ function TagsEdittor({ lessonTags }) {
         fetchData();
     }, []);
 
-    const handleRemoveTag = (index) => {
-        const updatedTags = [...tags.slice(0, index), ...tags.slice(index + 1)];
+    const handleRemoveTag = (tagId) => {
+        const updatedTags = tags.filter(tag => tag.tagId !== tagId);
         setTags(updatedTags);
     };
 
@@ -31,45 +30,53 @@ function TagsEdittor({ lessonTags }) {
     };
 
     const handleTagSelection = (event) => {
-        const selected = event.target.value;
-        setSelectedTag(selected);
-        if (!tags.includes(selected)) {
-            const updatedTags = [...tags, selected];
+        const selectedId = Number(event.target.value);
+        const aTag = allTags.find(tag => tag.tagId === selectedId);
+        if (!tags.some(tag => tag.tagId === selectedId)) {
+            const updatedTags = [...tags, aTag];
             setTags(updatedTags);
-            console.log('Updated tags:', updatedTags);
         }
+        setResetTag('');
     };
 
     return (
         <div className='admin-tag-container'>
-            <div className='title'>Tags</div>
-            <div className='detail'>
-                <Button variant="primary" type="button" onClick={() => handleClearAllTags()}>
-                    Clear all tags
-                </Button>
-            </div>
-            <div className='content'>
-                <ul>
-                    {tags.map((tag, index) => (
-                        <li key={index}>
-                            {tag}
-                            <ClearIcon onClick={() => handleRemoveTag(index)} />
-                        </li>
-                    ))}
+            <div className='row'>
+                <div className='col-md-2' style={{ fontWeight: 'bold' }}>
+                    Tags
+                </div>
+                <div className='col-md-5' >
                     <select
-                        value={selectedTag}
+                        value={resetTag}
                         onChange={handleTagSelection}
-                        placeholder="Click to see all tags"
+                        placeholder="Click to add a tag"
+                        className="form-select col-md-4"
                     >
-                        <option value='' disabled hidden>
-                            Click to see all tags
+                        <option value='' disabled>
+                            Click to add a tag
                         </option>
                         {allTags.map((tag, index) => (
-                            <option key={index} value={tag}>
-                                {tag}
+                            <option key={index} value={tag.tagId}>
+                                {tag.tagName}
                             </option>
                         ))}
                     </select>
+                </div>
+                <div className='col-md-5'>
+                    <Button className='col-md-4' size='sm' variant="danger" type="button" onClick={() => handleClearAllTags()}>
+                        Clear all
+                    </Button>
+                </div>
+            </div>
+
+            <div className='row post-tag-container'>
+                <ul className='post-tag-list'>
+                    {tags.map((tag, index) => (
+                        <li key={index} className='post-tag-list-item'>
+                            {tag.tagName}
+                            <ClearIcon fontSize='small' color='error' onClick={() => handleRemoveTag(tag.tagId)} className='post-tag-icon' />
+                        </li>
+                    ))}
                 </ul>
             </div>
         </div>

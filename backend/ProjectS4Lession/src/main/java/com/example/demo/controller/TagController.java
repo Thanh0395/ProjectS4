@@ -31,9 +31,9 @@ public class TagController {
 	private TagService tagService;
 		
 	@GetMapping("/list-tag")
-	public ResponseEntity<List<TagEntity>> getAllTag() throws BadRequestException {
-		List<TagEntity> tags = tagService.getAllTag();
-		return new ResponseEntity<>(tags, HttpStatus.OK);
+	public ResponseEntity<List<TagDto>> getAllTag() throws BadRequestException {
+		List<TagDto> tagDtos = tagService.allTagCount();
+		return new ResponseEntity<>(tagDtos, HttpStatus.OK);
 	}
 	
 	@PostMapping("/create-tag")

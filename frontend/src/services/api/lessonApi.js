@@ -52,3 +52,11 @@ export const deletePost = async (postId) => {
         throw error;
     }
 };
+export const fetchTags = async () => {
+    try {
+        const response = await api.get('/tags/list-tag');
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
