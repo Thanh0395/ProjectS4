@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.PostEntity;
 
 
@@ -23,5 +24,6 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer>{
 	           "AND p.deletedAt IS NULL")
 	    List<PostEntity> findPostsByUserIdAndTypeAndDeleteIsNull(@Param("userId") int userId,
 	                                                             @Param("type") String type);
-
+	
+	List<PostEntity> findFirst5ByTypeAndCategoryOrderByCreatedAtDesc(String type, CategoryEntity category);
 }

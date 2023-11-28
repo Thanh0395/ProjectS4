@@ -3,7 +3,6 @@ package com.example.demo.thanh.controller;
 import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,23 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.GemEntity;
-import com.example.demo.entity.PostEntity;
-import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.UserLevelEntity;
 import com.example.demo.service.AchievementService;
 import com.example.demo.service.GemService;
-import com.example.demo.service.RewardService;
 import com.example.demo.service.UserLevelService;
-import com.example.demo.service.UserService;
 import com.example.demo.thanh.dto.AchievementUserDto;
-import com.example.demo.thanh.dto.LessonDto;
 import com.example.demo.thanh.dto.UserGameDto;
 
 @RestController
 @RequestMapping(DEV_DOMAIN_API + "/thanh/game")
 public class GameController {
-	@Autowired
-	private UserService userService;
 
 	@Autowired
 	private GemService gemService;
@@ -41,8 +33,6 @@ public class GameController {
 	@Autowired
 	private AchievementService achieveService;
 
-	@Autowired
-	private RewardService rewardService;
 	@GetMapping("/user-data/{userId}")
 	public ResponseEntity<UserGameDto> getUserGameData(@PathVariable int userId) {
 		try {

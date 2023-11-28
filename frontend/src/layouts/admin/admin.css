@@ -62,6 +62,10 @@
 }
 .post-tag-container {
   padding-top: 10px;
+  border: 1px solid #c6d7eb;
+  margin: 10px 0px;
+  border-radius: 10px;
+  background-color: #f1f1f1;
 }
 
 .post-tag-list {
@@ -79,6 +83,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 2px;
+  background-color: white;
 }
 
 .post-tag-icon {

@@ -69,7 +69,7 @@ function TagsEdittor({ lessonTags }) {
                 </div>
             </div>
 
-            <div className='row post-tag-container'>
+            <div className='post-tag-container'>
                 <ul className='post-tag-list'>
                     {tags.map((tag, index) => (
                         <li key={index} className='post-tag-list-item'>
