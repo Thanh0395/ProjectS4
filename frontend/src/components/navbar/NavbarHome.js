@@ -41,8 +41,8 @@ function NavbarHome(props) {
                     >
                         <Nav.Link as={NavLink} to={"/"} >Home</Nav.Link>
                         <Nav.Link as={NavLink} to={"contact"}>Contact</Nav.Link>
-                        <Nav.Link as={NavLink} to={"planning"}>AI-Chat</Nav.Link>
-                        <Nav.Link as={NavLink} to={"products"}>Product</Nav.Link>
+                        {/* <Nav.Link as={NavLink} to={"planning"}>AI-Chat</Nav.Link> */}
+                        <Nav.Link as={NavLink} to={"products"}>Course</Nav.Link>
                         <NavDropdown title="Dropdown" className="mb-3">
                             <NavDropdown.Item href="action3">Action</NavDropdown.Item>
                             <NavDropdown.Item href="action4">
