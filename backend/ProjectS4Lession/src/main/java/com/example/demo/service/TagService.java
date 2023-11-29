@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.TagDto;
 import com.example.demo.entity.TagEntity;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.repository.TagRepository;
@@ -49,5 +50,12 @@ public class TagService {
 	
 	public boolean checkAnyTagExist() {
 		return tagRepository.count() > 0;
+	}
+	//Thanh
+	public List<TagEntity> allTagByPostId(int postId){
+		 return tagRepository.findAllByPostId(postId);
+	}
+	public List<TagDto> allTagCount(){
+		 return tagRepository.countPostsPerTag();
 	}
 }

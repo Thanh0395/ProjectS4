@@ -20,11 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.config.StorageFileProperties;
 import com.example.demo.entity.FileEntity;
+import com.example.demo.exception.EmptyFileException;
+import com.example.demo.exception.NotFoundException;
 import com.example.demo.repository.FileRepository;
 
 @Service
 public class StorageService {
-
 
 	private final Path rootLocation;
 	@Autowired
@@ -35,27 +36,32 @@ public class StorageService {
 	}
 
 	public void init() {
-        try {
-            Files.createDirectories(rootLocation.resolve("images/user"));
-            Files.createDirectories(rootLocation.resolve("images/post"));
-            Files.createDirectories(rootLocation.resolve("images/category"));
-            Files.createDirectories(rootLocation.resolve("video/post"));
-            System.out.print(rootLocation.toString());
-          
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to create directories: " + e.getMessage(), e);
-        }
-    }
+		try {
+			Files.createDirectories(rootLocation.resolve("images/user"));
+			Files.createDirectories(rootLocation.resolve("images/post"));
+			Files.createDirectories(rootLocation.resolve("images/category"));
+			Files.createDirectories(rootLocation.resolve("video/post"));
+			System.out.print(rootLocation.toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Failed to create directories: " + e.getMessage(), e);
+		}
+	}
 
 	public String getUniqueFileName(MultipartFile file, String folderName) {
 		String ext = FilenameUtils.getExtension(file.getOriginalFilename());
 		String uniqueId = UUID.randomUUID().toString().replace("-", "");
 		return "/" + folderName + "_" + uniqueId + "." + ext;
 	}
-	
-	public String uploadImageToFileSystem(MultipartFile file, String folderName, String pathCustom) throws IOException {
-		String fileName = getUniqueFileName(file,folderName);
+
+	public String uploadImageToFileSystem(MultipartFile file, String folderName, String pathCustom) 
+			throws IOException, EmptyFileException
+	{
+		if(file.isEmpty()) {
+			throw new EmptyFileException("File is empty");
+		}
+		String fileName = getUniqueFileName(file, folderName);
 		String filePath = rootLocation.resolve(pathCustom + fileName).toString();
 
 		// Create the directory if it doesn't exist
@@ -70,11 +76,12 @@ public class StorageService {
 				.type(file.getContentType()).filePath(filePath).build());
 
 		if (fileData != null) {
-			return fileName.substring(1);
-		}
+	        String relativePath = filePath.substring(filePath.indexOf("uploads"));
+	        return relativePath.replace("\\", "/"); // Replace backslashes with forward slashes for consistency
+	    }
 		return null;
 	}
-	
+
 	@Transactional
 	public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
 		Optional<FileEntity> fileDataOptional = fileRepository.findFirstByName(fileName);
@@ -92,6 +99,23 @@ public class StorageService {
 		}
 	}
 
+	public String uploadVideotoSystem(MultipartFile file, String folderName, String pathCustom) throws IOException {
+		String fileName = getUniqueFileName(file, folderName);
+		String filePath = rootLocation.resolve(pathCustom + fileName).toString();
+		
+		// create directory to store file
+		File directory = new File(rootLocation.toString() + "/" + pathCustom);
+		if (!directory.exists()) {
+			directory.mkdirs(); // Create the directory and any missing parent directories
+		}
+		Files.copy(file.getInputStream(), Path.of(filePath), StandardCopyOption.REPLACE_EXISTING);
+		FileEntity fileData = fileRepository.save(FileEntity.builder().name(fileName.substring(1))
+				.type(file.getContentType()).filePath(filePath).build());
 
+		if (fileData != null) {
+			return fileName.substring(1);
+		}
+		return null;
+	}
 
 }

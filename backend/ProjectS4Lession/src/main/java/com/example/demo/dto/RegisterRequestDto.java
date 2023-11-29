@@ -33,5 +33,6 @@ public class RegisterRequestDto {
 	
 	private Date dateOfBirth;
 	
-	private String avatar;
+	@Builder.Default
+	private String avatar = "uploads\\images\\user\\User_default.jpg";
 }

@@ -15,14 +15,6 @@ public class HttpRequestService {
         if (authentication != null && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
             userEmail = (String) principal;
-//            if (principal instanceof UserEntity) {
-//                UserEntity userEntity = (UserEntity) principal;
-//                userID = userEntity.getUserId();
-//                return userID;
-//            } else {
-//                // Log or print a message to identify unexpected principal type
-//                System.out.println("Unexpected principal type: " + principal);
-//            }
         } else {
             System.out.println("User is not authenticated");
         }

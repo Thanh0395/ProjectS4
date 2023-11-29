@@ -1,24 +1,52 @@
 package com.example.demo.dto;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor 
-@NoArgsConstructor
-@Builder
 public class TagDto {
 	
 	private int tagId;
-	
-	@Column(name = "tag_name", nullable = false)
-	@NotNull(message = "Tag Name must not be null!")
-	@NotBlank(message = "Tag Name must not be left blank!")
+
 	private String tagName;
+	
+	private int countPost;
+
+	public TagDto() {
+		super();
+	}
+
+	public TagDto(int tagId, String tagName) {
+		super();
+		this.tagId = tagId;
+		this.tagName = tagName;
+	}
+
+	public TagDto(int tagId, String tagName, Long countPost) {
+		super();
+		this.tagId = tagId;
+		this.tagName = tagName;
+		this.countPost = countPost != null ? countPost.intValue() : 0;
+	}
+
+	public int getTagId() {
+		return tagId;
+	}
+
+	public void setTagId(int tagId) {
+		this.tagId = tagId;
+	}
+
+	public String getTagName() {
+		return tagName;
+	}
+
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
+	}
+
+	public int getCountPost() {
+		return countPost;
+	}
+
+	public void setCountPost(int countPost) {
+		this.countPost = countPost;
+	}
 	
 }

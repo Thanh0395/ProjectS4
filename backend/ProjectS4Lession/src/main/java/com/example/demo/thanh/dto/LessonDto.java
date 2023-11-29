@@ -3,6 +3,8 @@ package com.example.demo.thanh.dto;
 import java.sql.Timestamp;
 import java.util.*;
 
+import com.example.demo.dto.TagDto;
+
 public class LessonDto {
 	
 	private int id;
@@ -35,6 +37,8 @@ public class LessonDto {
 	private List<QuestionDto> questions;
 	
 	private List<FeedbackDto> comments;
+	
+	private List<TagDto> tags;
 	
 	private String errorMessage;
 	
@@ -72,7 +76,7 @@ public class LessonDto {
 // Detail when user payed
 	public LessonDto(int id, String featureImage, String video, int price, String title, String content,
 			Timestamp creatatedAt, Timestamp updatedAt, Timestamp deletedAt, int authorId, String authorName,
-			int categoryId, String categoryName, List<QuestionDto> questions, List<FeedbackDto> comments) {
+			int categoryId, String categoryName, List<QuestionDto> questions, List<FeedbackDto> comments, List<TagDto> tags) {
 		super();
 		this.id = id;
 		this.featureImage = featureImage;
@@ -89,11 +93,12 @@ public class LessonDto {
 		this.categoryName = categoryName;
 		this.questions = questions;
 		this.comments = comments;
+		this.tags = tags;
 	}
 // Detail when user is NOT payed
 	public LessonDto(int id, String featureImage, int price, String title, String content, Timestamp creatatedAt,
 			Timestamp updatedAt, Timestamp deletedAt, int authorId, String authorName, int categoryId,
-			String categoryName, List<FeedbackDto> comments) {
+			String categoryName, List<FeedbackDto> comments, List<TagDto> tags) {
 		super();
 		this.id = id;
 		this.featureImage = featureImage;
@@ -108,6 +113,7 @@ public class LessonDto {
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
 		this.comments = comments;
+		this.tags = tags;
 		this.errorMessage = "you must pay to watch the video";
 	}
 
@@ -255,6 +261,12 @@ public class LessonDto {
 
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
+	}
+	public List<TagDto> getTags() {
+		return tags;
+	}
+	public void setTags(List<TagDto> tags) {
+		this.tags = tags;
 	}
 	
 	
