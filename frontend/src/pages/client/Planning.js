@@ -45,7 +45,8 @@ function Planning(props) {
         }
     };
     return (
-        <>
+        <div className='container'>
+            <br/>
             <Col className="align-items-center justify-content-center">
                 <Formik
                     validationSchema={schema}
@@ -105,7 +106,7 @@ function Planning(props) {
                     )}
                 </Formik>
             </Col>
-        </>
+        </div>
     );
 }
 

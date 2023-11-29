@@ -8,6 +8,7 @@ import QuestionEditor from '../../../components/admin/QuestionEditor';
 import TagsEdittor from '../../../components/admin/TagsEdittor';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import env from '../../../environment.json';
 
 function LessonAdminUpdate(props) {
     const [lesson, setLesson] = useState();
@@ -16,6 +17,7 @@ function LessonAdminUpdate(props) {
     const [tags, setTags] = useState([]);
     const [deletedQuestions, setDeletedQuestions] = useState([]);
     const [initQuestions, setInitQuestions] = useState([]);
+    const urlMedia = env.urls.media;
 
     function updateQuestion(ques) {
         setQuestions(ques);
@@ -195,7 +197,7 @@ function LessonAdminUpdate(props) {
                                     /> */}
 
                                     <Form.Group as={Col} md="6" >
-                                        <img src={lesson.featureImage} alt="Lesson" style={{ width: '150px' }} /><br />
+                                        <img src={urlMedia + lesson.featureImage} alt="Lesson" style={{ width: '150px' }} /><br />
                                         <Form.Label style={{ fontStyle: 'italic', color: 'blue' }}> or New Image</Form.Label>
                                         <Form.Control
                                             type="file"
@@ -212,7 +214,7 @@ function LessonAdminUpdate(props) {
                                     </Form.Group>
                                     <Form.Group as={Col} md="6" >
                                         <video width="320" height="240" controls>
-                                            <source src={lesson.video} type="video/mp4" />
+                                            <source src={urlMedia + lesson.video} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
                                         <br />

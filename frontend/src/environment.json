@@ -2,7 +2,8 @@
   "urls": {
     "dev": "http://localhost:8080/api/project4",
     "test": "http://localhost:8080/api/project4",
-    "prod": "http://localhost:8080/api/project4"
+    "prod": "http://localhost:8080/api/project4",
+    "media": "http://localhost:8080/"
   },
   "apikey":{
     "chatGPT": "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",
