@@ -81,10 +81,12 @@ public class FavoriteController {
 		try {
 			String useEmail = HttpRequestService.getUserEmail(request);
 			UserEntity user = userService.getUserByEmail(useEmail);
+			List<CategoryEntity> listCate = categoryService.getAllCategory();
 			List<CategoryEntity> listFavCate = faCaService.getFavoriteCategoriesByUser(user);
 			List<CategoryDto> cateDtos = new ArrayList<>();
-			cateDtos = listFavCate.stream()
-					.map(cate -> new CategoryDto(cate.getCategoryId(), cate.getCategoryName(), cate.getFeatureImage()))
+			cateDtos = listCate
+					.stream().map(cate -> new CategoryDto(cate.getCategoryId(), cate.getCategoryName(),
+							cate.getFeatureImage(), listFavCate.contains(cate) ? true : false))
 					.collect(Collectors.toList());
 			return new ResponseEntity<List<CategoryDto>>(cateDtos, HttpStatus.OK);
 		} catch (Exception e) {
