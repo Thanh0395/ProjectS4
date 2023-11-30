@@ -71,12 +71,15 @@ function TagsEdittor({ lessonTags }) {
 
             <div className='post-tag-container'>
                 <ul className='post-tag-list'>
-                    {tags.map((tag, index) => (
+                    {tags.length > 0? 
+                    tags.map((tag, index) => (
                         <li key={index} className='post-tag-list-item'>
                             {tag.tagName}
                             <ClearIcon fontSize='small' color='error' onClick={() => handleRemoveTag(tag.tagId)} className='post-tag-icon' />
                         </li>
-                    ))}
+                    ))
+                    : <p>No tag yet!</p>
+                    }
                 </ul>
             </div>
         </div>

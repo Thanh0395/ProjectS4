@@ -9,6 +9,8 @@ public class CategoryDto {
 	private String featureImage;
 	
 	private int countPost;
+	
+	private boolean isFavorite;
 
 	public CategoryDto() {
 		super();
@@ -27,6 +29,14 @@ public class CategoryDto {
 		this.categoryName = categoryName;
 		this.featureImage = featureImage;
 		this.countPost = countPost;
+	}
+	
+	public CategoryDto(int categoryId, String categoryName, String featureImage, boolean favorite) {
+		super();
+		this.categoryId = categoryId;
+		this.categoryName = categoryName;
+		this.featureImage = featureImage;
+		this.isFavorite = favorite;
 	}
 
 	public int getCategoryId() {
@@ -59,6 +69,14 @@ public class CategoryDto {
 
 	public void setCountPost(int countPost) {
 		this.countPost = countPost;
+	}
+
+	public boolean isFavorite() {
+		return isFavorite;
+	}
+
+	public void setFavorite(boolean isFavorite) {
+		this.isFavorite = isFavorite;
 	}
 	
 }

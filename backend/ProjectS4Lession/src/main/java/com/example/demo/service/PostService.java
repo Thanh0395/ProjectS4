@@ -57,8 +57,9 @@ public class PostService {
 	}
 
 	public List<PostEntity> getPostsByTypeAndNotDeleted(String type) {
-		return postRepository.findByTypeAndDeletedAtIsNull(type);
+		return postRepository.findByTypeAndDeletedAtIsNullOrderByCreatedAtDesc(type);
 	}
+	
 
 	public List<PostEntity> getPostsByTypeByUserIdAndNotDeleted(int userId, String type) {
 		return postRepository.findPostsByUserIdAndTypeAndDeleteIsNull(userId, type);

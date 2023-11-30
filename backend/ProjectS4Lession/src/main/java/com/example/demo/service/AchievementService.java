@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.AchievementEntity;
 import com.example.demo.repository.AchievementRepository;
 import com.example.demo.thanh.dto.AchievementUserDto;
 
@@ -18,5 +19,11 @@ public class AchievementService {
 	//Thanh
 	public List<AchievementUserDto> findAchievementsByUserId(int UserId){
 		return achievementRepository.findAchievementsByUserId(UserId);
+	}
+	public int findScore(int achieveID){
+		return achievementRepository.findByAchievementId(achieveID).getScore();
+	}
+	public AchievementEntity getAchievementById(int achieveId) {
+		return achievementRepository.findByAchievementId(achieveId);
 	}
 }
