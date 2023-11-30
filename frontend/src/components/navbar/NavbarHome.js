@@ -6,6 +6,7 @@ import { Navbar, NavDropdown, Form, Button, Nav, Container } from 'react-bootstr
 import './navbarHome.css';
 import { logoutUser } from '../../services/api/userAPI';
 import UserProfileDropdown from '../UserProfileDropdown';
+import GemPopup from '../payment/GemPopup';
 
 function NavbarHome(props) {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
@@ -20,6 +21,15 @@ function NavbarHome(props) {
             navigate('login');
         }
     };
+    // Gem Popup
+    const [showGemPopup, setShowGemPopup] = useState(false);
+    const handleGemClick = () => {
+        setShowGemPopup(true);
+    };
+    const handleCloseGemPopup = () => {
+        setShowGemPopup(false);
+    };
+    //End Gem Popup 
     return (
         <Navbar collapseOnSelect expand="sm" className="bg-body-tertiary sticky-top p-0">
             <Container fluid>
@@ -43,6 +53,7 @@ function NavbarHome(props) {
                         <Nav.Link as={NavLink} to={"contact"}>Contact</Nav.Link>
                         {/* <Nav.Link as={NavLink} to={"planning"}>AI-Chat</Nav.Link> */}
                         <Nav.Link as={NavLink} to={"products"}>Course</Nav.Link>
+
                         <NavDropdown title="Dropdown" className="mb-3">
                             <NavDropdown.Item href="action3">Action</NavDropdown.Item>
                             <NavDropdown.Item href="action4">
@@ -53,21 +64,26 @@ function NavbarHome(props) {
                                 Something else here
                             </NavDropdown.Item>
                         </NavDropdown>
+                        <Form className="d-flex">
+                            <Form.Control
+                                name="search"
+                                type="search"
+                                placeholder="Search"
+                                className="me-2"
+                                aria-label="Search"
+                            />
+                            <Button variant="outline" type="submit">
+                                <FaMagnifyingGlass />
+                            </Button>
+                        </Form>
                     </Nav>
-                    <Form className="d-flex">
-                        <Form.Control
-                            name="search"
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline" type="submit">
-                            <FaMagnifyingGlass />
-                        </Button>
-                    </Form>
                     <div>&nbsp;</div>
                 </Navbar.Collapse>
+                <Nav.Link onClick={handleGemClick}>
+                    <i className="bi bi-gem px-2 text-primary"></i>GEM
+                </Nav.Link>
+                <div>&nbsp;</div>
+                {showGemPopup && <GemPopup onClose={handleCloseGemPopup} />}
             </Container>
         </Navbar>
     );
