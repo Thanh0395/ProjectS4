@@ -1,10 +1,12 @@
 import "./App.css";
+import env from "./environment.json";
 import { Route, Routes } from "react-router-dom";
 import ClientLayout from "./layouts/client/ClientLayout";
 import AdminLayout from "./layouts/admin/AdminLayout";
 import HomePage from "./pages/HomePage";
 import AdminPage from "./pages/AdminPage";
 import { UserProvider } from './components/context/UserContext';
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import {
   Login, Register, NotFound, Unauthorized,
   Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin,
@@ -55,49 +57,51 @@ function App() {
   // End Scroll TOP button
   return (
     <>
-      <UserProvider>
-        <Routes>
-          <Route path="/" element={<ClientLayout>   <HomePage />  </ClientLayout>}>
-            <Route exact path="" element={<Home />} />
-            <Route path="contact" element={<ClientContact />} />
-            <Route path="planning" element={<Planning />} />
-            <Route path="products/" >
-              <Route exact path="" >
-                <Route path="" element={<ClientCourse />}></Route>
-                <Route path="category/:category" element={<ClientProducts />}></Route>
+      <PayPalScriptProvider options={{ "client-id": env.REACT_APP_PAYPAL_CLIENT_ID }}>
+        <UserProvider>
+          <Routes>
+            <Route path="/" element={<ClientLayout>   <HomePage />  </ClientLayout>}>
+              <Route exact path="" element={<Home />} />
+              <Route path="contact" element={<ClientContact />} />
+              <Route path="planning" element={<Planning />} />
+              <Route path="products/" >
+                <Route exact path="" >
+                  <Route path="" element={<ClientCourse />}></Route>
+                  <Route path="category/:category" element={<ClientProducts />}></Route>
+                </Route>
+                <Route path="detail/:id" element={<ClientDetailProduct />} />
               </Route>
-              <Route path="detail/:id" element={<ClientDetailProduct />} />
             </Route>
-          </Route>
 
-          <Route path="/admin/" element={<AdminLayout>  <AdminPage />  </AdminLayout>}>
-            <Route exact path="" element={<Dashboard />} />
-            <Route path="lessons/" >
-              <Route path="" element={<LessonAdmin />} />
-              <Route path="detail/:id" element={<LessonAdminDetail />} />
-              <Route path="create" element={<LessonAdminCreate />} />
-              <Route path="update/:id" element={<LessonAdminUpdate />} />
+            <Route path="/admin/" element={<AdminLayout>  <AdminPage />  </AdminLayout>}>
+              <Route exact path="" element={<Dashboard />} />
+              <Route path="lessons/" >
+                <Route path="" element={<LessonAdmin />} />
+                <Route path="detail/:id" element={<LessonAdminDetail />} />
+                <Route path="create" element={<LessonAdminCreate />} />
+                <Route path="update/:id" element={<LessonAdminUpdate />} />
+              </Route>
+              <Route path="exams" element={<ExamAdmin />} />
+              <Route path="users" element={<UserAdmin />} />
+              <Route path="categories" element={<CategoryAdmin />} />
+              <Route path="tags" element={<TagAdmin />} />
+              <Route path="rewards" element={<RewardAdmin />} />
+              <Route path="achievements" element={<AchievementAdmin />} />
             </Route>
-            <Route path="exams" element={<ExamAdmin />} />
-            <Route path="users" element={<UserAdmin />} />
-            <Route path="categories" element={<CategoryAdmin />} />
-            <Route path="tags" element={<TagAdmin />} />
-            <Route path="rewards" element={<RewardAdmin />} />
-            <Route path="achievements" element={<AchievementAdmin />} />
-          </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
 
-        {/* Scroll TOP button */}
-        {showButton && (
-          <button onClick={scrollToTop} className="back-to-top">
-            <FaAngleUp></FaAngleUp>
-          </button>
-        )}
-      </UserProvider>
+          {/* Scroll TOP button */}
+          {showButton && (
+            <button onClick={scrollToTop} className="back-to-top">
+              <FaAngleUp></FaAngleUp>
+            </button>
+          )}
+        </UserProvider>
+      </PayPalScriptProvider>
     </>
   );
 }
