@@ -84,7 +84,7 @@ const ContactForm = () => {
           onChange={(e) => setMessage(e.target.value)}
         ></textarea>
       </div>
-      <button class="btn btn-primary mt-[10px]" type="submit" name="submit">
+      <button className="btn btn-primary mt-[10px]" type="submit" name="submit">
         {loading ? "sending.." : "Send Message"}
       </button>
     </form>

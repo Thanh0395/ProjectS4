@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -103,6 +104,26 @@ public class PaymentController {
 
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Failed to buy", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("/buy-gem")
+	public ResponseEntity<String> buyGem(HttpServletRequest request, @RequestBody int gem) {
+		try {
+			String useEmail = HttpRequestService.getUserEmail(request);
+			UserEntity user = userService.getUserByEmail(useEmail);
+			if (user == null) {
+				return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
+			}
+			GemEntity gemEntity = gemService.getOrCreateGemByUserId(user.getUserId());
+			int currentGem =  gemEntity.getCurrent() + gem;
+			gemEntity.setCurrent(currentGem);
+			gemRepository.save(gemEntity);
+
+			return new ResponseEntity<>("Yah! You have "+ currentGem +" gem", HttpStatus.OK);
+
 		} catch (Exception e) {
 			return new ResponseEntity<>("Failed to buy", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
