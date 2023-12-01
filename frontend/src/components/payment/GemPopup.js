@@ -1,5 +1,5 @@
 import React from 'react';
-import Checkout from './Checkout';
+import Bundles from './Bundles';
 import './gempopup.css';
 
 function GemPopup({ onClose }) {
@@ -11,7 +11,7 @@ function GemPopup({ onClose }) {
                 </button>
                 <br></br>
             </p>
-            <Checkout />
+            <Bundles onClose = {onClose} />
         </div>
     );
 }

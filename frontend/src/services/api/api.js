@@ -34,4 +34,4 @@ const apiWithToken = createAxiosInstance({
 //   return config;
 // });
 
-export { api, apiWithToken };
+export { api, apiWithToken, getToken, baseURL };
