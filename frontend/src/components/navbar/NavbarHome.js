@@ -1,24 +1,37 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo from '../../logo.svg';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
-import { Navbar, NavDropdown, Form, Button, Nav, Container } from 'react-bootstrap'
+// import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { Navbar, NavDropdown, Nav, Container } from 'react-bootstrap'
 import './navbarHome.css';
 import { logoutUser } from '../../services/api/userAPI';
 import UserProfileDropdown from '../UserProfileDropdown';
+import GemPopup from '../payment/GemPopup';
 
 function NavbarHome(props) {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
+    const [gameData, setgameData] = useState(JSON.parse(localStorage.getItem('userGameData')));
     const isLoggedIn = !!currentUser;
     const navigate = useNavigate();
     const handleLogout = async () => {
         try {
             await logoutUser();
             setCurrentUser(null);
+            setgameData(null);
+            navigate('/');
         } catch (error) {
             navigate('login');
         }
     };
+    // Gem Popup
+    const [showGemPopup, setShowGemPopup] = useState(false);
+    const handleGemClick = () => {
+        setShowGemPopup(!showGemPopup);
+    };
+    const handleCloseGemPopup = () => {
+        setShowGemPopup(false);
+    };
+    //End Gem Popup 
     return (
         <Navbar collapseOnSelect expand="sm" className="bg-body-tertiary sticky-top p-0">
             <Container fluid>
@@ -27,12 +40,15 @@ function NavbarHome(props) {
                     <img src={logo} className="App-logo" alt="logo" />
                 </Link>
                 {isLoggedIn ? (
-                    <UserProfileDropdown currentUser={currentUser} onLogout={handleLogout} className="mr-30" />
+                    <UserProfileDropdown gameData={gameData} currentUser={currentUser} onLogout={handleLogout} className="mr-30" />
                 ) : (
                     <Nav.Link as={Link} to={'login'}>
                         Login
                     </Nav.Link>
                 )}
+                <Nav.Link onClick={handleGemClick}>
+                    <i className="bi bi-gem px-2 text-primary"></i>GEM
+                </Nav.Link>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" className='border' />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav
@@ -40,8 +56,9 @@ function NavbarHome(props) {
                     >
                         <Nav.Link as={NavLink} to={"/"} >Home</Nav.Link>
                         <Nav.Link as={NavLink} to={"contact"}>Contact</Nav.Link>
-                        <Nav.Link as={NavLink} to={"planning"}>AI-Chat</Nav.Link>
-                        <Nav.Link as={NavLink} to={"products"}>Product</Nav.Link>
+                        {/* <Nav.Link as={NavLink} to={"planning"}>AI-Chat</Nav.Link> */}
+                        <Nav.Link as={NavLink} to={"products"}>Course</Nav.Link>
+
                         <NavDropdown title="Dropdown" className="mb-3">
                             <NavDropdown.Item href="action3">Action</NavDropdown.Item>
                             <NavDropdown.Item href="action4">
@@ -52,21 +69,23 @@ function NavbarHome(props) {
                                 Something else here
                             </NavDropdown.Item>
                         </NavDropdown>
+                        {/* <Form className="d-flex">
+                            <Form.Control
+                                name="search"
+                                type="search"
+                                placeholder="Search"
+                                className="me-2"
+                                aria-label="Search"
+                            />
+                            <Button variant="outline" type="submit">
+                                <FaMagnifyingGlass />
+                            </Button>
+                        </Form> */}
                     </Nav>
-                    <Form className="d-flex">
-                        <Form.Control
-                            name="search"
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline" type="submit">
-                            <FaMagnifyingGlass />
-                        </Button>
-                    </Form>
                     <div>&nbsp;</div>
                 </Navbar.Collapse>
+                <div>&nbsp;</div>
+                {showGemPopup && <GemPopup onClose={handleCloseGemPopup} />}
             </Container>
         </Navbar>
     );

@@ -230,7 +230,7 @@ public class LessonController {
 					questionDtos = questions.stream()
 							.map(question -> new QuestionDto(question.getQuestionId(), question.getContent(),
 									question.getAnswerA(), question.getAnswerB(), question.getAnswerC(),
-									question.getAnswerD()))
+									question.getAnswerD(), question.getRightAnswer()))
 							.collect(Collectors.toList());
 				}
 				//tags
@@ -297,24 +297,23 @@ public class LessonController {
 		}
 	}
 
-	@PostMapping("buy/{userId}/{lessonId}")
-	public ResponseEntity<LessonDto> buyLesson(@PathVariable int userId, @PathVariable int lessonId) {
-		try {
-			LessonDto lessonDto = new LessonDto();
-			UserPostEntity userBuy = userPostService.UserPayPost(userId, lessonId);
-			if (userBuy != null) {
-
-				return new ResponseEntity<>(lessonDto, HttpStatus.OK);
-			} else {
-				lessonDto.setErrorMessage("You already bought this!");
-				return new ResponseEntity<>(lessonDto, HttpStatus.PAYMENT_REQUIRED);
-			}
-
-		} catch (Exception e) {
-			// trả về message lỗi server khi nhận status 500 này
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+//	@PostMapping("buy/{userId}/{lessonId}")
+//	public ResponseEntity<LessonDto> buyLesson(@PathVariable int userId, @PathVariable int lessonId) {
+//		try {
+//			LessonDto lessonDto = new LessonDto();
+//			UserPostEntity userBuy = userPostService.UserPayPost(userId, lessonId);
+//			if (userBuy != null) {
+//				lessonDto.setErrorMessage("You already bought this!");
+//				return new ResponseEntity<>(lessonDto, HttpStatus.PAYMENT_REQUIRED);
+//			} else {
+//				return new ResponseEntity<>(lessonDto, HttpStatus.OK);
+//			}
+//
+//		} catch (Exception e) {
+//			// trả về message lỗi server khi nhận status 500 này
+//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
 
 	@DeleteMapping("/delete/{lessonId}")
 	public ResponseEntity<?> deleteById(HttpServletRequest request, @PathVariable int lessonId) {
@@ -324,10 +323,12 @@ public class LessonController {
 			PostEntity postEntity = postService.getPostById(lessonId);
 			if (HttpRequestService.hasRole(request, "ADMIN")) {
 				postEntity.setDeletedAt(Timestamp.from(Instant.now()));
+				postService.createPost(postEntity);
 				return new ResponseEntity<>("Delete successfully", HttpStatus.OK);
 			} else if (HttpRequestService.hasRole(request, "TEACHER")) {
 				if (postEntity.getUser().getUserId() == userId) {
 					postEntity.setDeletedAt(Timestamp.from(Instant.now()));
+					postService.createPost(postEntity);
 					return new ResponseEntity<>("Delete successfully", HttpStatus.OK);
 				} else
 					return new ResponseEntity<>("Do not allow to delete", HttpStatus.UNAUTHORIZED);

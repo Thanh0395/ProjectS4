@@ -169,34 +169,35 @@ function QuestionEditor(props) {
     function EditToolbar(props) {
         const { setRows, setRowModesModel } = props;
     
-        const handleClick = () => {
-            const id = parseInt(Date.now());
-            setRows((oldRows) => [...oldRows, { id, question: '', answerA: '', answerB: '', answerC: '', answerD: '', answerCorrect: 'A', isNew: true }]);
+        const handleClickAdd = () => {
+            const questionId = parseInt(Date.now());
+            setRows((oldRows) => [...oldRows, { questionId:questionId, content: '', answerA: '', answerB: '', answerC: '', answerD: '', rightAnswer: 'A', isNew: true }]);
             setIsValid(false);
+            console.log('Add new ne ',rows)
             setRowModesModel((oldModel) => ({
                 ...oldModel,
-                [id]: { mode: GridRowModes.Edit, fieldToFocus: 'question' },
+                [questionId]: { mode: GridRowModes.Edit, fieldToFocus: 'content' },
             }));
         };
     
         return (
             <GridToolbarContainer>
-                <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+                <Button color="primary" startIcon={<AddIcon />} onClick={handleClickAdd}>
                     Add question
                 </Button>
             </GridToolbarContainer>
         );
     }
     
-    const initData = [
-        { id: 10, question: "Question 01", answerA: "19", answerB: "60", answerC: "24", answerD: "40", answerCorrect: "A" },
-        { id: 12, question: "Question 02", answerA: "as", answerB: "ms", answerC: "hp", answerD: "mp", answerCorrect: "C" },
-        { id: 13, question: "Question 03", answerA: "22", answerB: "12", answerC: "13", answerD: "14", answerCorrect: "B" },
-        { id: 14, question: "Question 04", answerA: "45", answerB: "54", answerC: "11", answerD: "23", answerCorrect: "A" },
-        { id: 15, question: "Question 05", answerA: "AA", answerB: "BB", answerC: "CC", answerD: "DD", answerCorrect: "D" },
-        { id: 16, question: "Question 06", answerA: "A", answerB: "B", answerC: "C", answerD: "D", answerCorrect: "C" },
-    ]
-    const [rows, setRows] = React.useState(initData);
+    // const initData = [
+    //     { id: 10, question: "Question 01", answerA: "19", answerB: "60", answerC: "24", answerD: "40", answerCorrect: "A" },
+    //     { id: 12, question: "Question 02", answerA: "as", answerB: "ms", answerC: "hp", answerD: "mp", answerCorrect: "C" },
+    //     { id: 13, question: "Question 03", answerA: "22", answerB: "12", answerC: "13", answerD: "14", answerCorrect: "B" },
+    //     { id: 14, question: "Question 04", answerA: "45", answerB: "54", answerC: "11", answerD: "23", answerCorrect: "A" },
+    //     { id: 15, question: "Question 05", answerA: "AA", answerB: "BB", answerC: "CC", answerD: "DD", answerCorrect: "D" },
+    //     { id: 16, question: "Question 06", answerA: "A", answerB: "B", answerC: "C", answerD: "D", answerCorrect: "C" },
+    // ]
+    const [rows, setRows] = React.useState(props.initQuestions);
     const [deletedQuestionIds, setDeletedQuestionIds] = React.useState([]);
     const [rowModesModel, setRowModesModel] = React.useState({});
     const [isValid, setIsValid] = React.useState(true);
@@ -240,7 +241,7 @@ function QuestionEditor(props) {
         setDeleteId(id);
     };
     const handleConfirmDelete = () => {
-        const updatedRows = rows.filter((row) => row.id !== deleteId);
+        const updatedRows = rows.filter((row) => row.questionId !== deleteId);
         setRows(updatedRows);
         const deletedIds = [...deletedQuestionIds, deleteId];
         setDeletedQuestionIds(deletedIds)
@@ -255,15 +256,15 @@ function QuestionEditor(props) {
             [id]: { mode: GridRowModes.View, ignoreModifications: true },
         });
 
-        const editedRow = rows.find((row) => row.id === id);
+        const editedRow = rows.find((row) => row.questionId === id);
         if (editedRow.isNew) {
-            setRows(rows.filter((row) => row.id !== id));
+            setRows(rows.filter((row) => row.questionId !== id));
         }
     };
 
     const processRowUpdate = (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
-        const updatedRows = rows.map((row) => (row.id === newRow.id ? updatedRow : row));
+        const updatedRows = rows.map((row) => (row.questionId === newRow.questionId ? updatedRow : row));
         setRows(updatedRows);
         props.updateQuestion(updatedRows);
         return updatedRow;
@@ -275,7 +276,7 @@ function QuestionEditor(props) {
 
     const columns = [
         {
-            field: 'question', headerName: 'Question', width: 250, editable: true,
+            field: 'content', headerName: 'Question', width: 250, editable: true,
             preProcessEditCellProps: (params: GridEditCellPropsChangeParams) => {
                 const hasError = params.props.value.length < 1;
                 setIsValid(!hasError);
@@ -319,7 +320,7 @@ function QuestionEditor(props) {
                 return { ...params.props, error: hasError };
             },
         },
-        { field: 'answerCorrect', headerName: 'Answer', width: 80, editable: true, type: "singleSelect", valueOptions: ["A", "B", "C", "D"] },
+        { field: 'rightAnswer', headerName: 'Answer', width: 80, editable: true, type: "singleSelect", valueOptions: ["A", "B", "C", "D"] },
         {
             field: 'actions',
             type: 'actions',
@@ -350,14 +351,14 @@ function QuestionEditor(props) {
 
                 return [
                     <GridActionsCellItem
-                        icon={<EditIcon />}
+                        icon={<EditIcon color='primary' />}
                         label="Edit"
                         className="textPrimary"
                         onClick={handleEditClick(id)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
-                        icon={<DeleteIcon />}
+                        icon={<DeleteIcon color='error'/>}
                         label="Delete"
                         onClick={handleDeleteClick(id)}
                         color="inherit"
@@ -367,6 +368,7 @@ function QuestionEditor(props) {
         },
     ];
 
+    const getRowId = (row) => row.questionId;
     return (
         <Box
             sx={{
@@ -389,6 +391,7 @@ function QuestionEditor(props) {
                 onRowEditStop={handleRowEditStop}
                 processRowUpdate={processRowUpdate}
                 showErrorSnackbar={true}
+                getRowId={getRowId}
                 showColumnVerticalBorder={true}
                 showCellVerticalBorder={true}
                 slots={{
@@ -432,7 +435,7 @@ function QuestionEditor(props) {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete this question?
+                        Are you sure you want to delete a question?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

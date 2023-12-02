@@ -28,3 +28,6 @@ ul.pagination li.page-item a.page-link:hover {
   background-color: var(--light-primary-color);
   border: inherit;
 }
+.img-fluid{
+  border-radius: 50%;
+}

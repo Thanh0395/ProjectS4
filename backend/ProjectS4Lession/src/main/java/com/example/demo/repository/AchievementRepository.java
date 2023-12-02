@@ -20,4 +20,6 @@ public interface AchievementRepository extends JpaRepository<AchievementEntity, 
 	           "WHERE ua.user.userId = :userId AND ua.isReceivedBadge = true " +
 		       "ORDER BY a.achievementId ASC")
 	    List<AchievementUserDto> findAchievementsByUserId(@Param("userId") int userId);
+	
+	AchievementEntity findByAchievementId(int achievementId);
 }

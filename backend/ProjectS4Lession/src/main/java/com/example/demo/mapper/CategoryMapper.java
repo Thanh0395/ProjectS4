@@ -10,15 +10,15 @@ import com.example.demo.entity.CategoryEntity;
 @Component
 public class CategoryMapper {
 
-	public CategoryDto CategoryEntityToCategoryDto(CategoryEntity categoryEntity) {
-		CategoryDto categoryDto = CategoryDto
-				.builder()
-				.categoryName(categoryEntity.getCategoryName())
-				.featureImage(categoryEntity.getFeatureImage())
-				//.file()
-				.build();
-		return categoryDto;
-	}
+//	public CategoryDto CategoryEntityToCategoryDto(CategoryEntity categoryEntity) {
+//		CategoryDto categoryDto = CategoryDto
+//				.builder()
+//				.categoryName(categoryEntity.getCategoryName())
+//				.featureImage(categoryEntity.getFeatureImage())
+//				//.file()
+//				.build();
+//		return categoryDto;
+//	}
 	
 	public CategoryEntity insertCategoryDtoToCategoryEntity(CategoryDto categoryDto) {
 		CategoryEntity categoryEntity = CategoryEntity

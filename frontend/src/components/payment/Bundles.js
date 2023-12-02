@@ -1,0 +1,119 @@
+import React, { useState } from 'react';
+import { Card, Row, Col, Badge } from 'react-bootstrap';
+import PaypalCheckoutButton from './PaypalCheckoutButton';
+import bundle1 from './gem-bundle-1.png';
+import bundle2 from './gem-bundle-2.png';
+import bundle3 from './gem-bundle-3.png';
+import { useNavigate } from 'react-router-dom';
+
+function Bundles({ onClose }) {
+    const bundles = [
+        {
+            id: 0,
+            price: 1,
+            gem: 50,
+            description: 'Description of Starter bundle.',
+        },
+        {
+            id: 1,
+            price: 4.12,
+            gem: 400,
+            description: 'Description of Middle bundle.',
+        },
+        {
+            id: 2,
+            price: 15.33,
+            gem: 2000,
+            description: 'Description of Senior bundle.',
+        },
+    ];
+    const [selectedBundle, setSelectedBundle] = useState(bundles[1]);
+    const navigate = useNavigate();
+    const handleBuyClick = () => {
+        onClose();
+        navigate('/checkout');
+    }
+
+    const handleBundleClick = (id) => {
+        const selected = bundles.find(bundle => bundle.id === id);
+        setSelectedBundle(selected);
+    };
+
+    return (
+        <>
+            <Row>
+                {/* Card 1 */}
+                <Col xs={12} md={4}>
+                    <Card
+                        className={`gembundle-card ${selectedBundle.id === 0 ? 'active' : ''}`}
+                        onClick={() => handleBundleClick(0)}
+                    >
+                        <Card.Img
+                            className="gembundle-card-img"
+                            variant="top"
+                            src={bundle1}
+                            alt="Starter Bundle"
+                        />
+                        <Card.Body>
+                            <Card.Title className='gembundle-title'>Starter <i className="bi bi-gem px-2 text-primary"></i>{bundles[0].gem}</Card.Title>
+                            <Card.Text>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+
+                {/* Card 2 */}
+                <Col xs={12} md={4}>
+                    <Card
+                        className={`gembundle-card ${selectedBundle.id === 1 ? 'active' : ''}`}
+                        onClick={() => handleBundleClick(1)}
+                    >
+                        <Card.Img
+                            className="gembundle-card-img"
+                            variant="top"
+                            src={bundle2}
+                            alt="Middle Bundle"
+                        />
+                        <Card.Body>
+                            <Card.Title className='gembundle-title'>Middle <i className="bi bi-gem px-2 text-primary"></i>{bundles[1].gem}</Card.Title>
+                            <Card.Text>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+
+                {/* Card 3 */}
+                <Col xs={12} md={4}>
+                    <Card
+                        className={`gembundle-card ${selectedBundle.id === 2 ? 'active' : ''}`}
+                        onClick={() => handleBundleClick(2)}
+                    >
+                        <Card.Img
+                            className="gembundle-card-img"
+                            variant="top"
+                            src={bundle3}
+                            alt="Senior Bundle"
+                        />
+                        <Card.Body>
+                            <Card.Title className='gembundle-title'>Senior  <i className="bi bi-gem px-2 text-primary"></i>{bundles[2].gem}</Card.Title>
+                            <Card.Text>
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+            <Row>
+                <center>
+                    <p className='popup-price' hidden>
+                        <Badge bg='warning' text='light' onClick={handleBuyClick}>
+                            BUY for ${selectedBundle.price}
+                        </Badge>
+                    </p>
+                    <PaypalCheckoutButton bundle={selectedBundle}></PaypalCheckoutButton>
+                </center>
+            </Row>
+        </>
+    );
+}
+
+export default Bundles;
