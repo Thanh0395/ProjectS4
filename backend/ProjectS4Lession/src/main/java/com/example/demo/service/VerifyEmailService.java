@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.VerifyEmailEntity;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.VerificationCodeMismatchException;
 import com.example.demo.repository.VerifyEmailRepository;
 import java.security.SecureRandom;
+import java.util.List;
 
 @Service
 public class VerifyEmailService {
@@ -38,19 +40,34 @@ public class VerifyEmailService {
         return code.toString();
     }
 	
-	public boolean checkVerifyEmailToActiveLogin(UserEntity user, String code) {
-        VerifyEmailEntity verifyEmailEntity = verifyEmailRepository.findByUser(user);
-        if(verifyEmailEntity != null && verifyEmailEntity.getCode().equals(code)) {
-        	return true;
-        }
-        return false;
-    }
+	public boolean checkVerifyEmailToActiveLogin(UserEntity user, String code) 
+			throws BadRequestException, VerificationCodeMismatchException
+	{
+	    VerifyEmailEntity latestVerifyEmail = verifyEmailRepository.findFirstByUserOrderByCreatedAtDesc(user);
+	    if(latestVerifyEmail == null) {
+	    	throw new BadRequestException("User with email " + user.getEmail() + " not exist verify code");
+	    }
+	    if (!latestVerifyEmail.getCode().equals(code)) {
+	        throw new VerificationCodeMismatchException("Verification code does not match for user: " + user.getEmail());
+	    }
+	    return true;
+	}
 	
+	public boolean checkVerifyEmailToResetPassword(UserEntity user, String code) 
+			throws BadRequestException, VerificationCodeMismatchException
+	{
+	    VerifyEmailEntity latestVerifyEmail = verifyEmailRepository.findFirstByUserOrderByCreatedAtDesc(user);
+	    if(latestVerifyEmail == null) {
+	    	throw new BadRequestException("User with email " + user.getEmail() + " not exist verify code");
+	    }
+	    if (!latestVerifyEmail.getCode().equals(code)) {
+	        throw new VerificationCodeMismatchException("Verification code does not match for user: " + user.getEmail());
+	    }
+	    return true;
+	}
+
 	public boolean checkVerifyEmailExist(UserEntity user) {
-        VerifyEmailEntity verifyEmailEntity = verifyEmailRepository.findByUser(user);
-        if(verifyEmailEntity != null) {
-        	return true;
-        }
-        return false;
-    }
+	    List<VerifyEmailEntity> allVerifyEmailsByUser = verifyEmailRepository.findAllByUserOrderByCreatedAtDesc(user);
+	    return !allVerifyEmailsByUser.isEmpty();
+	}
 }

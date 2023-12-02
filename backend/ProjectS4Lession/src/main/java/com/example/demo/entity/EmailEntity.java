@@ -14,4 +14,6 @@ public class EmailEntity {
 	private String toEmail;
     private String subject;
     private String content;
+    private String deevLink;
+    private String action;
 }
