@@ -2,10 +2,10 @@ package com.example.demo.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.example.demo.dto.RegisterRequestDto;
 import com.example.demo.dto.UserCreationDto;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.dto.UserUpdationDto;
+import com.example.demo.dto.AuthDto.RegisterRequestDto;
 import com.example.demo.entity.UserEntity;
 
 @Component
