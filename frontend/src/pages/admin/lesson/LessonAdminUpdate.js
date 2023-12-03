@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import * as formik from 'formik';
 import * as yup from 'yup';
-import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
+import { Row, Col, Button, Form, Spinner, Alert } from "react-bootstrap";
 import { Link, useParams } from 'react-router-dom';
-import { fetchLessonByIdDashboard, listCategory } from '../../../services/api/lessonApi'
+import { fetchLessonByIdDashboard, listCategory, updateLesson } from '../../../services/api/lessonApi'
 import QuestionEditor from '../../../components/admin/QuestionEditor';
 import TagsEditor from '../../../components/admin/TagsEditor';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import env from '../../../environment.json';
+import { uploadFile } from '../../../services/api/fileApi';
 
 function LessonAdminUpdate(props) {
     const [lesson, setLesson] = useState();
+    // const [fileImage, setFileImage] = useState();
+    // const [fileVideo, setFileVideo] = useState();
     const [categories, setCategories] = useState([]);
     const [questions, setQuestions] = useState([]);
     const [tags, setTags] = useState([]);
     const [deletedQuestions, setDeletedQuestions] = useState([]);
     const [initQuestions, setInitQuestions] = useState([]);
+    const [showAlert, setShowAlert] = useState(false);
+    const [variant, setVariant] = useState();
+    const [alertMsg, setAlertMsg] = useState();
     const urlMedia = env.urls.media;
 
     function updateQuestion(ques) {
@@ -30,7 +36,6 @@ function LessonAdminUpdate(props) {
         const fetchData = async () => {
             try {
                 const postData = await fetchLessonByIdDashboard(params.id);
-                console.log(postData)
                 const cateData = await listCategory();
                 const tagsData = postData.tags;
                 const questionsData = postData.questions;
@@ -54,12 +59,14 @@ function LessonAdminUpdate(props) {
         content: yup.string().required(),
         newImage: yup
             .mixed().nullable()
-            .test('filesize', 'Image is too large >1MB', function (file) {
+            .test('filesize', 'Image is too large >500kB', function (file) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
-                const maxSize = 1000000; // 1MB
-                return file.size <= maxSize;
+                const maxSize = 500000; // 1MB
+                const valid = file.size <= maxSize;
+                // if (valid) setFileImage(file);
+                return valid;
             })
             .test('fileformat', 'Unsupported image format', function (file) {
                 if (!file) {
@@ -81,7 +88,7 @@ function LessonAdminUpdate(props) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
-                const supportedFormats = ['video/mp4','video/avi','video/mov','video/mpeg-4'];
+                const supportedFormats = ['video/mp4', 'video/avi', 'video/mov', 'video/mpeg-4'];
                 return supportedFormats.includes(file.type);
             }),
         tags: yup
@@ -92,14 +99,27 @@ function LessonAdminUpdate(props) {
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             setIsLoading(true);
+            setSubmitting(true);
             // Call the API function to register the user
-            await console.log(values.newImage?true:false);
-            await console.log(values.newVideo);
-            await console.log('Questions', questions);
-            await console.log('DeletedQuestion', deletedQuestions);
+            var featureImage = '';
+            var video = '';
+            if (values.newImage) {
+                featureImage = await uploadFile(values.newImage, 'post', 'images/post');
+            }
+            if (values.newVideo) {
+                video = await uploadFile(values.newVideo, 'post', 'video/post');
+            }
+            await updateLesson(lesson.id, values.categoryId, values.title, values.content, values.price, featureImage, video);
+            await ('Questions', questions);
+            await ('DeletedQuestion', deletedQuestions);
+            setShowAlert(true);
+            setVariant('success');
+            setAlertMsg('Update has been Successful.');
             // Optionally, you can redirect the user to a different page after successful registration
-            console.log('Registration successful');
         } catch (error) {
+            setShowAlert(true);
+            setVariant('danger');
+            setAlertMsg('Fail: ',error);
             console.error('Registration error:', error);
         } finally {
             setIsLoading(false);
@@ -107,7 +127,7 @@ function LessonAdminUpdate(props) {
         }
     };
     return (
-        <div className="">
+        <div className="container">
             <div className="">
                 <h2 className="fw-bold mb-2 text-uppercase">Update page</h2>
                 <p className="mb-5">Here is your update form!</p>
@@ -231,7 +251,6 @@ function LessonAdminUpdate(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
 
-
                                     <Form.Group as={Col} md="6" >
                                         <Form.Label className='title'>Price</Form.Label>
                                         <Form.Control
@@ -250,12 +269,14 @@ function LessonAdminUpdate(props) {
                                 <Row className="mb-3">
                                     <Form.Group as={Col} md="12">
                                         <Form.Label className='title'>Content</Form.Label>
-                                        <ReactQuill
-                                            name="content"
-                                            value={values.content}
-                                            onChange={(val) => setFieldValue('content', val)}
-                                            isInvalid={touched.content && !!errors.content}
-                                        />
+                                        <div style={{ 'height': '800' }}>
+                                            <ReactQuill
+                                                name="content"
+                                                value={values.content}
+                                                onChange={(val) => setFieldValue('content', val)}
+                                                isInvalid={touched.content && !!errors.content}
+                                            />
+                                        </div>
                                         {/* <Form.Control
                                             type="text"
                                             name="description"
@@ -271,7 +292,10 @@ function LessonAdminUpdate(props) {
 
 
                                 </Row>
-
+                                {showAlert ?
+                                    <Alert variant={variant} dismissible>{alertMsg}</Alert>
+                                    : <></>
+                                }
                                 <div className="d-grid">
                                     <Button variant="primary" type="submit" disabled={isLoading} >
                                         {isLoading ? (<Spinner size="sm"></Spinner>)

@@ -140,4 +140,27 @@ export const deleteQuestion = async (lessonId, questionId) => {
     } catch (error) {
         console.error('An error Network occurred while delete question', error);
     }
+};
+export const updateLesson = async (id, categoryId, title, content, price, featureImage, video) => {
+    try {
+        const response = await axios.put(`${baseURL}/thanh/lesson/update`,
+            {
+                id: id,
+                categoryId: categoryId,
+                title: title,
+                content: content,
+                price: price,
+                featureImage: featureImage,
+                video: video,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+        return response.data;
+    } catch (error) {
+        console.error('An error Network occurred while delete question', error);
+    }
 }; 

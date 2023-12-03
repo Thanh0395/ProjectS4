@@ -13,6 +13,28 @@ function LessonAdmin(props) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const [openDelList, setOpenDelList] = useState(false);
+    const handleCloseDelList =  () => {
+        setOpenDelList(false);
+    }
+    const onClickDelList =  () => {
+        setOpenDelList(true);
+    }
+    const onConfirmDelList =  () => {
+        try {
+            const updatedLessons = listLesson.filter(lesson => !selectedRows.includes(lesson));
+            setListLesson(updatedLessons);
+            //Api cal
+            const listOfIds = selectedRows.map(item => item.id);
+            console.log(listOfIds)
+        } catch (error) {
+            setVariant('danger');
+            setErrorMessage('Not allow to delete, this is not your post');
+        } finally {
+            setOpenDelList(false);
+        }
+    }
     // end message delete box
     const [errorMessage, setErrorMessage] = useState(null);
     const [variant, setVariant] = useState('info');
@@ -127,6 +149,26 @@ function LessonAdmin(props) {
                     <Button onClick={handleConfirmDelete} autoFocus>Ok</Button>
                 </DialogActions>
             </Dialog>
+
+            <Dialog
+                open={openDelList}
+                onClose={handleCloseDelList}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Confirm
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete {selectedRows.length} lessons?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDelList}>Cancel</Button>
+                    <Button onClick={onConfirmDelList} autoFocus>Ok</Button>
+                </DialogActions>
+            </Dialog>
             {/* end message delete box */}
             <h2 className="fw-bold mb-2 text-uppercase">List course</h2>
             <p className="m-1">Here is list!</p>
@@ -141,7 +183,7 @@ function LessonAdmin(props) {
                 </div>
             ) : (
                 <div className='container'>
-                    <div className='d-flex justify-content-end'>
+                    <div className='d-flex justify-content-end' onClick={onClickDelList}>
                         <span>{selectedRows.length} selected&emsp;</span>
                         <Tooltip title="Delete">
                             <DeleteOutline className="delete-row" style={{ color: 'red' }} />

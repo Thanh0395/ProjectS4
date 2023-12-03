@@ -447,7 +447,7 @@ public class LessonController {
 				questionDto.setQuestionId(questionEntity.getQuestionId());
 				return new ResponseEntity<>(questionDto, HttpStatus.OK);
 			} else
-				return new ResponseEntity<>("Do not allow to remove tag for this lesson, please login",
+				return new ResponseEntity<>("Do not allow to do this, please login",
 						HttpStatus.UNAUTHORIZED);
 		} catch (Exception e) {
 			return new ResponseEntity<>("An error occurred while processing the request" + e.getMessage(),
@@ -465,7 +465,7 @@ public class LessonController {
 				questionRepo.deleteById(questionId);
 				return new ResponseEntity<>("Delete OK", HttpStatus.OK);
 			} else
-				return new ResponseEntity<>("Do not allow to remove tag for this lesson, please login",
+				return new ResponseEntity<>("Do not allow to remove this, please login",
 						HttpStatus.UNAUTHORIZED);
 		} catch (Exception e) {
 			return new ResponseEntity<>("An error occurred while processing the request" + e,
@@ -473,23 +473,52 @@ public class LessonController {
 		}
 	}
 	
-	@PutMapping("/update/{lessonId}")
-	public ResponseEntity<?> updateLesson(HttpServletRequest request, @RequestBody LessonDto lessonDto,
-			@PathVariable int lessonId) {
+	@PutMapping("/update")
+	public ResponseEntity<?> updateLesson(HttpServletRequest request, @RequestBody LessonDto lessonDto) {
 		try {
 			String useEmail = HttpRequestService.getUserEmail(request);
 			int userId = userService.getUserByEmail(useEmail).getUserId();
-			PostEntity lesson = postService.getPostById(lessonId);
+			PostEntity lesson = postService.getPostById(lessonDto.getId());
 			if (HttpRequestService.hasRole(request, "ADMIN") || lesson.getUser().getUserId() == userId) {
 				lesson.setTitle(lessonDto.getTitle());
 				lesson.setCategory(cateService.getCategoryById(lessonDto.getCategoryId()));
 				lesson.setPrice(lessonDto.getPrice());
 				lesson.setContent(lessonDto.getContent());
+				if (!lessonDto.getFeatureImage().isBlank()) lesson.setFeatureImage(lessonDto.getFeatureImage());
+				if (!lessonDto.getVideo().isBlank()) lesson.setVideo(lessonDto.getVideo());
 				postService.createPost(lesson);
-				return new ResponseEntity<>("OK", HttpStatus.OK);
+				return new ResponseEntity<>("Update successfully!", HttpStatus.OK);
 			} else
-				return new ResponseEntity<>("Do not allow to remove tag for this lesson, please login",
+				return new ResponseEntity<>("Do not allow to update this lesson, please login",
 						HttpStatus.UNAUTHORIZED);
+		} catch (Exception e) {
+			return new ResponseEntity<>("An error occurred while processing the request" + e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	@DeleteMapping("/delete-list")
+	public ResponseEntity<?> deleteListLesson(HttpServletRequest request, @RequestBody List<Integer> listId) {
+		try {
+			String useEmail = HttpRequestService.getUserEmail(request);
+			int userId = userService.getUserByEmail(useEmail).getUserId();
+			if (HttpRequestService.hasRole(request, "ADMIN")) {
+				for (Integer postId : listId) {
+					PostEntity post = postService.getPostById(postId);
+					post.setDeletedAt(Timestamp.from(Instant.now()));
+					postService.createPost(post);
+				}
+				return new ResponseEntity<>("Delete list successfully!", HttpStatus.OK);
+			} else {
+				for (Integer postId : listId) {
+					PostEntity post = postService.getPostById(postId);
+					if (post.getUser().getUserId() == userId) {						
+						post.setDeletedAt(Timestamp.from(Instant.now()));
+						postService.createPost(post);
+					} else
+						return new ResponseEntity<>("Delete list successfully!", HttpStatus.OK);
+				}
+				return new ResponseEntity<>("Do not allow to delete the lesson!", HttpStatus.UNAUTHORIZED);
+			}
 		} catch (Exception e) {
 			return new ResponseEntity<>("An error occurred while processing the request" + e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
