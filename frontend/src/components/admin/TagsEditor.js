@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Button } from 'react-bootstrap';
-import { fetchTags } from '../../services/api/lessonApi';
+import { addTag, fetchTags, removeAllTag, removeTag } from '../../services/api/lessonApi';
 
-function TagsEdittor({ lessonTags }) {
+function TagsEditor({ lessonTags, postId }) {
+    const myId = postId;
     const [allTags, setAllTags] = useState([]);
     const [tags, setTags] = useState(lessonTags);
     const [resetTag, setResetTag] = useState();
@@ -21,11 +22,13 @@ function TagsEdittor({ lessonTags }) {
     }, []);
 
     const handleRemoveTag = (tagId) => {
+        removeTag(myId,tagId);
         const updatedTags = tags.filter(tag => tag.tagId !== tagId);
         setTags(updatedTags);
     };
 
     const handleClearAllTags = () => {
+        removeAllTag(myId);
         setTags([]);
     };
 
@@ -35,6 +38,7 @@ function TagsEdittor({ lessonTags }) {
         if (!tags.some(tag => tag.tagId === selectedId)) {
             const updatedTags = [...tags, aTag];
             setTags(updatedTags);
+            addTag(myId,selectedId);
         }
         setResetTag('');
     };
@@ -63,7 +67,7 @@ function TagsEdittor({ lessonTags }) {
                     </select>
                 </div>
                 <div className='col-md-5'>
-                    <Button className='col-md-4' size='sm' variant="danger" type="button" onClick={() => handleClearAllTags()}>
+                    <Button className='col-md-4' variant="danger" type="button" onClick={() => handleClearAllTags()}>
                         Clear all
                     </Button>
                 </div>
@@ -71,14 +75,14 @@ function TagsEdittor({ lessonTags }) {
 
             <div className='post-tag-container'>
                 <ul className='post-tag-list'>
-                    {tags.length > 0? 
-                    tags.map((tag, index) => (
-                        <li key={index} className='post-tag-list-item'>
-                            {tag.tagName}
-                            <ClearIcon fontSize='small' color='error' onClick={() => handleRemoveTag(tag.tagId)} className='post-tag-icon' />
-                        </li>
-                    ))
-                    : <p>No tag yet!</p>
+                    {tags.length > 0 ?
+                        tags.map((tag, index) => (
+                            <li key={index} className='post-tag-list-item'>
+                                {tag.tagName}
+                                <ClearIcon fontSize='small' color='error' onClick={() => handleRemoveTag(tag.tagId)} className='post-tag-icon' />
+                            </li>
+                        ))
+                        : <p>No tag yet!</p>
                     }
                 </ul>
             </div>
@@ -86,4 +90,4 @@ function TagsEdittor({ lessonTags }) {
     );
 }
 
-export default TagsEdittor;
+export default TagsEditor;

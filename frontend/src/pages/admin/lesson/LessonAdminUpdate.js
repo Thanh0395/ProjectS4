@@ -5,7 +5,7 @@ import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { Link, useParams } from 'react-router-dom';
 import { fetchLessonByIdDashboard, listCategory } from '../../../services/api/lessonApi'
 import QuestionEditor from '../../../components/admin/QuestionEditor';
-import TagsEdittor from '../../../components/admin/TagsEdittor';
+import TagsEditor from '../../../components/admin/TagsEditor';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import env from '../../../environment.json';
@@ -30,7 +30,7 @@ function LessonAdminUpdate(props) {
         const fetchData = async () => {
             try {
                 const postData = await fetchLessonByIdDashboard(params.id);
-                console.log("hello ", postData)
+                console.log(postData)
                 const cateData = await listCategory();
                 const tagsData = postData.tags;
                 const questionsData = postData.questions;
@@ -50,7 +50,7 @@ function LessonAdminUpdate(props) {
     const schema = yup.object().shape({
         title: yup.string().required(),
         categoryId: yup.number().required(),
-        price: yup.number().min(5).required(),
+        price: yup.number().min(30).required(),
         content: yup.string().required(),
         newImage: yup
             .mixed().nullable()
@@ -81,7 +81,7 @@ function LessonAdminUpdate(props) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
-                const supportedFormats = ['video/mp4'];
+                const supportedFormats = ['video/mp4','video/avi','video/mov','video/mpeg-4'];
                 return supportedFormats.includes(file.type);
             }),
         tags: yup
@@ -93,10 +93,10 @@ function LessonAdminUpdate(props) {
         try {
             setIsLoading(true);
             // Call the API function to register the user
-            await console.log(values);
+            await console.log(values.newImage?true:false);
+            await console.log(values.newVideo);
             await console.log('Questions', questions);
             await console.log('DeletedQuestion', deletedQuestions);
-            console.log(values.categoryId)
             // Optionally, you can redirect the user to a different page after successful registration
             console.log('Registration successful');
         } catch (error) {
@@ -197,7 +197,7 @@ function LessonAdminUpdate(props) {
                                     /> */}
 
                                     <Form.Group as={Col} md="6" >
-                                        <img src={urlMedia + lesson.featureImage} alt="Lesson" style={{ width: '150px' }} /><br />
+                                        <img src={urlMedia + lesson.featureImage} alt="Lesson" style={{ width: '90%' }} /><br />
                                         <Form.Label style={{ fontStyle: 'italic', color: 'blue' }}> or New Image</Form.Label>
                                         <Form.Control
                                             type="file"
@@ -213,11 +213,10 @@ function LessonAdminUpdate(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group as={Col} md="6" >
-                                        <video width="320" height="240" controls>
+                                        <video width="90%" height="100%" controls>
                                             <source src={urlMedia + lesson.video} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
-                                        <br />
                                         <Form.Label style={{ fontStyle: 'italic', color: 'blue' }}> or New Video</Form.Label>
                                         <Form.Control
                                             type="file"
@@ -283,7 +282,7 @@ function LessonAdminUpdate(props) {
                                     </p>
                                 </div>
                                 <Form.Group as={Col} md="12">
-                                    <TagsEdittor lessonTags={tags}></TagsEdittor>
+                                    <TagsEditor postId={lesson.id} lessonTags={tags} />
                                     {/* <Form.Control.Feedback type="invalid">
                                             {errors.tags}
                                         </Form.Control.Feedback> */}
@@ -293,6 +292,7 @@ function LessonAdminUpdate(props) {
                                         updateQuestion={updateQuestion}
                                         updateDeletedQuestion={updateDeletedQuestion}
                                         initQuestions={initQuestions}
+                                        postId={lesson.id}
                                     />
                                 </Row>
                             </Form>

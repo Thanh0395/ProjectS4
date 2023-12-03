@@ -16,7 +16,6 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         setTokenValid(false);
         return;
       }
-
       try {
         const decodedToken = jwtDecode(token);
         if (decodedToken && decodedToken.exp * 1000 > Date.now()) {
@@ -27,6 +26,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         }
       } catch (error) {
         setTokenValid(false);
+        setShowToast(true);
       }
     };
 
