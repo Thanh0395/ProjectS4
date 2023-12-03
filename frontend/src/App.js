@@ -11,7 +11,7 @@ import {
   Login, Register, NotFound, Unauthorized,
   Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin,
   LessonAdminCreate, LessonAdminDetail, LessonAdminUpdate,
-  ClientContact, ClientProducts, ClientDetailProduct, Home, Planning, ClientCourse
+  ClientContact, ClientProducts, ClientDetailProduct, Home, Planning, ClientCourse, ClientCourseDetail
 } from "./pages"
 import { useEffect, useState } from "react";
 import { FaAngleUp } from 'react-icons/fa6';
@@ -69,7 +69,7 @@ function App() {
                   <Route path="" element={<ClientCourse />}></Route>
                   <Route path="category/:category" element={<ClientProducts />}></Route>
                 </Route>
-                <Route path="detail/:id" element={<ClientDetailProduct />} />
+                <Route path="detail/:id" element={<ClientCourseDetail />} />
               </Route>
             </Route>
 
