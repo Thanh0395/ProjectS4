@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.AuthDto;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class VerifyEmailResponseDto {
 
+	private String action;
 	private String code;
     private String email;
     private String message;

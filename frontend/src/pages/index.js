@@ -24,3 +24,4 @@ export { default as ClientCourse} from './client/components/courses/ClientCourse
 export { default as ClientDetailProduct } from './client/ClientDetailProduct';
 export { default as ClientCourseDetail } from './client/components/courses/course-detail/course-detail';
 export { default as Planning } from './client/Planning';
+export { default as Checkout } from '../components/payment/Checkout';

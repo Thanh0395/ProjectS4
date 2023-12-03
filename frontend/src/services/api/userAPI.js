@@ -1,4 +1,5 @@
-import {api} from './api';
+import axios from 'axios';
+import { api, baseURL } from './api';
 
 export const loginUser = async (email, password) => {
     try {
@@ -13,9 +14,9 @@ export const loginUser = async (email, password) => {
         const roles = userData.user.roles;
         let listRole = [];
         roles.forEach(role => {
-            listRole.push(role.name); 
+            listRole.push(role.name);
         });
-        localStorage.setItem('roles',JSON.stringify(listRole));
+        localStorage.setItem('roles', JSON.stringify(listRole));
         return userData;
     } catch (error) {
         if (error.response && error.response.status === 403) {
@@ -24,7 +25,24 @@ export const loginUser = async (email, password) => {
         throw error;
     }
 };
-export const registerUser = async (email, name, password, dateOfBirth ) => {
+
+export const fetchGameData = async (userId) => {
+    try {
+        const response = await axios.get(`${baseURL}/thanh/game/user-data/${userId}`);
+        const userData = response.data;
+        if (response.status === 200) {
+            localStorage.setItem('userGameData', JSON.stringify(userData));
+        }
+        return userData;
+    } catch (error) {
+        if (error.response && error.response.status === 403) {
+            console.error('Forbidden: You do not have permission to access this resource.');
+        }
+        throw error;
+    }
+};
+
+export const registerUser = async (email, name, password, dateOfBirth) => {
     try {
         const response = await api.post('/auth/register', {
             email: email,
@@ -67,6 +85,8 @@ export const logoutUser = async () => {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('roles');
+        localStorage.removeItem('userGameData');
+        localStorage.removeItem('purchaseBundle');
         return 'Ok';
     } catch (error) {
         if (error.response && error.response.status === 403) {

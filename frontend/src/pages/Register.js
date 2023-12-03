@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, Form, Container, Spinner, Alert } from "react-bootstrap";
+import { Row, Col, Button, Form, Spinner, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import * as formik from 'formik';
 import * as yup from 'yup';
@@ -46,7 +46,7 @@ function Register(props) {
         }
     };
     return (
-        <Container>
+        <>
             <div className="register-container">
                 <div className="register-content">
                     <h2 className="fw-bold mb-2 text-uppercase">Ultimate Learning</h2>
@@ -164,7 +164,7 @@ function Register(props) {
                     </div>
                 </div>
             </div>
-        </Container>
+        </>
     );
 }
 
