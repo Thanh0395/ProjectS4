@@ -15,6 +15,8 @@ import {
 } from "./pages"
 import { useEffect, useState } from "react";
 import { FaAngleUp } from 'react-icons/fa6';
+import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   //Fix loi resize khi co form
@@ -90,6 +92,10 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            
+            {/* Hung add route */}
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
