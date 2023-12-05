@@ -68,9 +68,10 @@ export const listCategory = async () => {
 export const deletePost = async (postId) => {
     try {
         const response = await apiWithToken.delete(`/thanh/lesson/delete/${postId}`);
-        return response.data;
+        return response;
     } catch (error) {
         console.error('An error Network occurred while delete a resource', error);
+        return error.response;
     }
 };
 export const fetchTags = async () => {
@@ -141,7 +142,7 @@ export const deleteQuestion = async (lessonId, questionId) => {
         console.error('An error Network occurred while delete question', error);
     }
 };
-export const updateLesson = async (id, categoryId, title, content, price, featureImage, video) => {
+export const updateLesson = async (id, categoryId, title, content, price, prize, featureImage, video) => {
     try {
         const response = await axios.put(`${baseURL}/thanh/lesson/update`,
             {
@@ -150,6 +151,7 @@ export const updateLesson = async (id, categoryId, title, content, price, featur
                 title: title,
                 content: content,
                 price: price,
+                prize: prize,
                 featureImage: featureImage,
                 video: video,
             },
@@ -163,4 +165,49 @@ export const updateLesson = async (id, categoryId, title, content, price, featur
     } catch (error) {
         console.error('An error Network occurred while delete question', error);
     }
-}; 
+};
+
+export const deleleListLesson = async (listId) => {
+    try {
+        let data = JSON.stringify(listId);
+
+        let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: `${baseURL}/thanh/lesson/delete-list`,
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'application/json',
+            },
+            data: data
+        };
+        const response = await axios.request(config);
+        return response;
+    } catch (error) {
+        console.error('An error Network occurred while delete list', error);
+        return error.response;
+    }
+};
+export const addLesson = async (categoryId, title, content, price, prize, featureImage, video) => {
+    try {
+        const response = await axios.post(`${baseURL}/thanh/lesson/add`,
+            {
+                categoryId: categoryId,
+                title: title,
+                content: content,
+                price: price,
+                prize: prize,
+                featureImage: featureImage,
+                video: video,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+        return response.data;
+    } catch (error) {
+        console.error('An error Network occurred while add course', error);
+    }
+};

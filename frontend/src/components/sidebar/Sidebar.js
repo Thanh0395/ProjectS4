@@ -1,13 +1,12 @@
 
 import React from 'react';
 import './sidebar.css';
-
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import { NavLink } from 'react-router-dom';
-import { CallToAction, Language, Article, Draw, People, Class, LocalOffer, EmojiEvents, MilitaryTech } from '@mui/icons-material';
+import { CallToAction, Language, Article, People, Class, LocalOffer, EmojiEvents, MilitaryTech } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 
 
@@ -40,12 +39,12 @@ function Sidebar(props) {
                     <ListItemText primary="Lesson" />
                 </ListItemButton>
 
-                <ListItemButton component={NavLink} to="exams">
+                {/* <ListItemButton component={NavLink} to="exams">
                     <ListItemIcon>
                         <Draw />
                     </ListItemIcon>
                     <ListItemText primary="Exam" />
-                </ListItemButton>
+                </ListItemButton> */}
 
                 <ListItemButton component={NavLink} to="users">
                     <ListItemIcon>

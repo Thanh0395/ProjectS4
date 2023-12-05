@@ -11,7 +11,7 @@ function GemPopup({ onClose }) {
                 </button>
                 <br></br>
             </p>
-            <Bundles onClose = {onClose} />
+            <Bundles className='gem-container' onClose = {onClose} />
         </div>
     );
 }

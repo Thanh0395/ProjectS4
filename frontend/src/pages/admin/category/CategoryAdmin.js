@@ -27,18 +27,13 @@ function LessonAdmin(props) {
     }
     const onConfirmDelList = async () => {
         try {
+            const updatedLessons = listLesson.filter(lesson => !selectedRows.includes(lesson));
+            setListLesson(updatedLessons);
             //Api cal
             const listOfIds = selectedRows.map(item => item.id);
             const result = await deleleListLesson(listOfIds);
-            if (result.status === 200) {
-                const updatedLessons = listLesson.filter(lesson => !selectedRows.includes(lesson));
-                setListLesson(updatedLessons);
-                setVariant('success');
-                setErrorMessage(result.data);
-            } else {
-                setVariant('danger');
-                setErrorMessage(result.data);
-            }
+            setVariant('success');
+            setErrorMessage(result);
         } catch (error) {
             setVariant('danger');
             setErrorMessage('Not allow to delete, this is not your post');
@@ -74,14 +69,9 @@ function LessonAdmin(props) {
     const handleConfirmDelete = async () => {
         try {
             const response = await deletePost(selectedItem.id);
-            if (response.status === 200) {
-                const updateList = listLesson.filter(item => item.id !== selectedItem.id);
-                setListLesson(updateList);
-                setErrorMessage(response.data);
-            } else {
-                setVariant('danger')
-                setErrorMessage(response.data);
-            }
+            const updateList = listLesson.filter(item => item.id !== selectedItem.id);
+            setListLesson(updateList);
+            setErrorMessage(response);
         } catch (error) {
             setVariant('danger');
             setErrorMessage('Not allow to delete, this is not your post');
@@ -193,7 +183,7 @@ function LessonAdmin(props) {
                 <AddIcon /> Add course
             </button>
             {errorMessage && (
-                <Alert className='mt-2' variant={variant}>
+                <Alert variant={variant} dismissible>
                     {errorMessage}
                 </Alert>
             )}
@@ -202,10 +192,10 @@ function LessonAdmin(props) {
                     <CircularProgress />
                 </div>
             ) : (
-                <div className=''>
+                <div className='container'>
                     <div className='row'>
                         <Col className="col-md-8 m-1" >Here is list! {listLesson.length} items</Col>
-                        <Col className='col-md-3 d-flex justify-content-end' onClick={onClickDelList}>
+                        <Col className='col-md-2 d-flex justify-content-end' onClick={onClickDelList}>
                             <span>{selectedRows ? selectedRows.length : 0} selected&emsp;</span>
                             <Tooltip title="Delete">
                                 <DeleteOutline className="delete-row" style={{ color: 'red' }} />
