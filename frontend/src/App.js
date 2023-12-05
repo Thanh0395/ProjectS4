@@ -11,10 +11,12 @@ import {
   Login, Register, NotFound, Unauthorized,
   Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin,
   LessonAdminCreate, LessonAdminDetail, LessonAdminUpdate,
-  ClientContact, ClientProducts, ClientDetailProduct, Home, Planning, ClientCourse
+  ClientContact, ClientProducts, ClientDetailProduct, Home, Planning, ClientCourse, ClientCourseDetail
 } from "./pages"
 import { useEffect, useState } from "react";
 import { FaAngleUp } from 'react-icons/fa6';
+import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   //Fix loi resize khi co form
@@ -69,7 +71,7 @@ function App() {
                   <Route path="" element={<ClientCourse />}></Route>
                   <Route path="category/:category" element={<ClientProducts />}></Route>
                 </Route>
-                <Route path="detail/:id" element={<ClientDetailProduct />} />
+                <Route path="detail/:id" element={<ClientCourseDetail />} />
               </Route>
             </Route>
 
@@ -90,6 +92,10 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            
+            {/* Hung add route */}
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

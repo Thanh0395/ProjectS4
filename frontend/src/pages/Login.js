@@ -4,6 +4,7 @@ import { Alert, Button, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import * as formik from 'formik';
 import * as yup from 'yup';
 import { activeUser, fetchGameData, loginUser, sendVerifycodeMail } from '../services/api/userAPI';
+import { sendVerifycodeMailForgotPassword } from '../services/api/AuthApi';
 
 function Login(props) {
     const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +42,6 @@ function Login(props) {
                 setShowVerifyCode(true);
             } else setVariant('danger');
             setErrorMessage(errorMsg);
-            // console.log('Login error:', errorObj['Error Message']);
         } finally {
             setIsLoading(false);
             setSubmitting(false);
@@ -115,12 +115,16 @@ function Login(props) {
                                             </Form.Control.Feedback>
                                         </FloatingLabel>
                                     </Form.Group>
+                                    {/* Hung update */}
                                     <Form.Group
                                         className="mb-3"
                                         controlId="formBasicCheckbox"
                                     >
                                         <p className="small">
-                                            <Link className="text-primary">
+                                            <Link 
+                                                to="/forgot-password" 
+                                                className="text-primary"
+                                            >
                                                 Forgot password?
                                             </Link>
                                         </p>

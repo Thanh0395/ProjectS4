@@ -1,0 +1,91 @@
+.course-detail {
+    padding: 4rem;
+}
+
+.course-detail .course-detail_card {
+    gap: 0rem;
+}
+
+.course-detail .course-detail_card_image {
+    padding-right: 3rem;
+}
+
+.course-detail .course-detail_card_image img {
+    border-radius: 1rem;
+}
+
+.course-detail .course-detail_card_right {
+    border: 1px solid rgb(192, 255, 214);
+    padding: 3rem;
+    background-color: rgba(127, 255, 131, 0.166);
+    border-radius: 1rem;
+}
+
+.course-detail .course-detail_card_right_price {
+    text-align: center;
+    padding: 0rem 0rem 1rem;
+    border-bottom: 1px solid rgb(227, 227, 227);
+}
+
+.course-detail .course-detail_card_right_price h3 {
+    color: green;
+    font-weight: 800;
+    text-align: center;
+}
+
+.course-detail .course-common {
+    display: flex;
+    padding: 1rem 0rem 0.8rem;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgb(227, 227, 227);
+}
+
+.course-detail .course-common_text {
+    font-weight: 300;
+}
+
+.course-detail .course-detail_addCart  {
+    padding-top: 3rem;
+    text-align: center;
+
+}
+.course-detail .course-detail_addCart button{
+    border-radius: 1rem;
+    background-color: rgba(31, 108, 22, 0.836);
+    color: white;
+    border: none;
+    width: 10rem;
+    height: 4rem;
+    transition: 0.3s;
+}
+.course-detail .course-detail_addCart button:hover{
+    background-color: rgb(63, 171, 51);
+    color: white;
+}
+.course-detail .course-detail_card_title_author {
+    padding: 1rem 0 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.course-detail .course-detail_card_title_author_image img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+
+}
+.course-detail .course-detail_card_title_author_detail h6 {
+    font-weight: 500;
+}
+.course-detail .course-detail_card_title_author_detail i{
+    font-size: 1rem;
+    color: rgb(188, 188, 188)
+}
+.course-detail .comments-container{
+    
+    border: 1px solid rgb(231, 231, 231);
+    padding: 1rem;
+    border-radius: 1rem;
+}
