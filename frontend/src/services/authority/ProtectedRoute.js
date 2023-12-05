@@ -5,7 +5,7 @@ import { Toast, ToastContainer } from 'react-bootstrap';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
-  const userRoles = localStorage.getItem('roles').toLowerCase();
+  const userRoles = localStorage.getItem('roles') ? localStorage.getItem('roles').toLowerCase() : 'visitor';
   const isAllow = allowedRoles.some(role => userRoles.includes(role));
   const [showToast, setShowToast] = useState(false);
   const [isTokenValid, setTokenValid] = useState(true);

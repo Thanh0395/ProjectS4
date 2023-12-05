@@ -4,23 +4,32 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { buyGem } from '../../services/api/lessonApi';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import { isTokenValid } from '../../services/authority/tokenCheck';
+import QRCode from 'qrcode.react';
 
 function PaypalCheckoutButton(props) {
     const bundle = props.bundle;
+    const [jsonBundle, setJsonbundle] = useState()
     const [showAlert, setShowAlert] = useState(false);
     const [variant, setVariant] = useState();
     const [alertMsg, setAlertMsg] = useState();
     const [showToast, setShowToast] = useState(false);
+    const [showQr, setShowQr] = useState(false);
     useEffect(() => {
         localStorage.setItem('purchaseBundle', JSON.stringify(bundle));
+        const str = localStorage.getItem('purchaseBundle');
+        setJsonbundle(str);
     }, [bundle]);
     return (
         <>
             <div className='popup-price' >
-                <Badge bg='warning' text='light' >
+                <Badge className='m-2' bg='warning' text='light' >
                     BUY for ${bundle.price}
                 </Badge>
+                <Badge className='m-2' bg='info' text='light' onClick={()=>{setShowQr(!showQr);}}>
+                    Show QR code
+                </Badge>
             </div>
+                <QRCode value={jsonBundle}  className={showQr?'':'qr-hidden'} />
             {showAlert ?
                 <Alert variant={variant} dismissible>{alertMsg}</Alert>
                 : <></>

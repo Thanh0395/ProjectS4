@@ -15,6 +15,8 @@ public class LessonDto {
 	
 	private int price;
 	
+	private int prize;
+	
 	private String title;
 	
 	private String content;
@@ -74,7 +76,7 @@ public class LessonDto {
         this.categoryName = categoryName;
     }
 // Detail when user payed
-	public LessonDto(int id, String featureImage, String video, int price, String title, String content,
+	public LessonDto(int id, String featureImage, String video, int price,int prize, String title, String content,
 			Timestamp creatatedAt, Timestamp updatedAt, Timestamp deletedAt, int authorId, String authorName,
 			int categoryId, String categoryName, List<QuestionDto> questions, List<FeedbackDto> comments, List<TagDto> tags) {
 		super();
@@ -82,6 +84,7 @@ public class LessonDto {
 		this.featureImage = featureImage;
 		this.video = video;
 		this.price = price;
+		this.prize = prize;
 		this.title = title;
 		this.content = content;
 		this.creatatedAt = creatatedAt;
@@ -159,6 +162,12 @@ public class LessonDto {
 		this.price = price;
 	}
 
+	public int getPrize() {
+		return prize;
+	}
+	public void setPrize(int prize) {
+		this.prize = prize;
+	}
 	public String getTitle() {
 		return title;
 	}
