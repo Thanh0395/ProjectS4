@@ -90,13 +90,13 @@ function LessonAdmin(props) {
         }
     };
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'id', headerName: 'ID', width: 50 },
         { field: 'title', headerName: 'Title', width: 130 },
         { field: 'content', headerName: 'Content', width: 130 },
         { field: 'categoryName', headerName: 'Category', width: 130 },
         { field: 'authorName', headerName: 'Author', width: 130 },
         {
-            field: 'creatatedAt', headerName: 'Created Date', width: 160, valueFormatter: (params) => {
+            field: 'creatatedAt', headerName: 'Created Date', width: 120, valueFormatter: (params) => {
                 // Format the date using Intl.DateTimeFormat
                 const formattedDate = new Intl.DateTimeFormat('en-US', {
                     year: 'numeric',

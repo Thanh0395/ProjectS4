@@ -1,12 +1,16 @@
 package com.example.demo.dto;
 
 public class TagDto {
-	
+
 	private int tagId;
 
 	private String tagName;
-	
+
 	private int countPost;
+
+	private int countLesson;
+	
+	private int countExam;
 
 	public TagDto() {
 		super();
@@ -19,10 +23,18 @@ public class TagDto {
 	}
 
 	public TagDto(int tagId, String tagName, Long countPost) {
-		super();
 		this.tagId = tagId;
 		this.tagName = tagName;
 		this.countPost = countPost != null ? countPost.intValue() : 0;
+	}
+
+	public TagDto(int tagId, String tagName, Long lessonCount, Long examCount, Long totalCount) {
+		super();
+		this.tagId = tagId;
+		this.tagName = tagName;
+		this.countLesson = lessonCount != null ? lessonCount.intValue() : 0;
+		this.countExam = examCount != null ? examCount.intValue() : 0;
+		this.countPost = totalCount != null ? totalCount.intValue() : 0;
 	}
 
 	public int getTagId() {
@@ -48,5 +60,21 @@ public class TagDto {
 	public void setCountPost(int countPost) {
 		this.countPost = countPost;
 	}
-	
+
+	public int getCountLesson() {
+		return countLesson;
+	}
+
+	public void setCountLesson(int countLesson) {
+		this.countLesson = countLesson;
+	}
+
+	public int getCountExam() {
+		return countExam;
+	}
+
+	public void setCountExam(int countExam) {
+		this.countExam = countExam;
+	}
+
 }

@@ -180,8 +180,8 @@ function LessonAdminCreate(props) {
                             </Row>
                             <Row>
                                 <Form.Group as={Col} md="6" >
-                                    {previewImageURL && <img src={previewImageURL} alt="Lesson" style={{ width: '90%' }} />}
-                                    <Form.Label className='title'> Image</Form.Label>
+                                    <p><Form.Label className='title'> Image</Form.Label></p>
+                                    {previewImageURL && <img className='mb-2' src={previewImageURL} alt="Lesson" style={{ width: '90%' }} />}
                                     <Form.Control
                                         type="file"
                                         name="newImage"
@@ -205,11 +205,11 @@ function LessonAdminCreate(props) {
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group as={Col} md="6" >
+                                    <p><Form.Label className='title'>Video</Form.Label></p>
                                     {previewVideoURL && <video width="90%" controls>
                                         <source src={previewVideoURL} type="video/mp4" />
                                         Your browser does not support the video tag.
                                     </video>}
-                                    <Form.Label className='title'>Video</Form.Label>
                                     <Form.Control
                                         type="file"
                                         name="newVideo"
