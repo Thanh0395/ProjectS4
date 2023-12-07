@@ -1,4 +1,4 @@
-.breadcrumbs{
+/* .breadcrumbs{
     max-width: 1200px;
     margin: 20px auto;
 }
@@ -12,4 +12,15 @@
 }
 .breadcrumbs .crumb:last-child:after{
     display: none;
+} */
+.MuiTypography-root.MuiTypography-body1.MuiBreadcrumbs-root.css-63vwl1-MuiTypography-root-MuiBreadcrumbs-root{
+    padding: 10px 0px 10px 10px;
+    margin: 4px 0px 4px 0px;
+    border-radius: 6px;
+    background-color: rgb(239, 239, 239);
+    box-shadow: none;
+}
+.MuiBreadcrumbs-li .crumb a{
+    color: var(--primary-color);
+    text-decoration: none;
 }

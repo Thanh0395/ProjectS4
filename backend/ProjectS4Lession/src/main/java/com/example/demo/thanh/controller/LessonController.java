@@ -30,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.dto.TagDto;
 import com.example.demo.entity.FeedbackEntity;
 import com.example.demo.entity.PostEntity;
-import com.example.demo.entity.PostQuestionEntity;
 import com.example.demo.entity.QuestionEntity;
 import com.example.demo.entity.TagEntity;
 import com.example.demo.entity.UserEntity;
@@ -42,7 +41,6 @@ import com.example.demo.service.FeedbackService;
 import com.example.demo.service.PostQuestionService;
 import com.example.demo.service.PostService;
 import com.example.demo.service.QuestionService;
-import com.example.demo.service.StorageService;
 import com.example.demo.service.TagPostService;
 import com.example.demo.service.TagService;
 import com.example.demo.service.UserPostService;
@@ -51,8 +49,6 @@ import com.example.demo.thanh.dto.FeedbackDto;
 import com.example.demo.thanh.dto.LessonDto;
 import com.example.demo.thanh.dto.QuestionDto;
 import com.example.demo.thanh.service.HttpRequestService;
-
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -81,9 +77,6 @@ public class LessonController {
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private StorageService storageService;
 
 	@Autowired
 	private TagPostService tagpostService;

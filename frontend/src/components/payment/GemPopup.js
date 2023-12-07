@@ -5,12 +5,11 @@ import './gempopup.css';
 function GemPopup({ onClose }) {
     return (
         <div className="gem-popup">
-            <p>
+            {/* <p>
                 <button className="close-button" onClick={onClose}>
                     &times;
                 </button>
-                <br></br>
-            </p>
+            </p> */}
             <Bundles className='gem-container' onClose = {onClose} />
         </div>
     );
