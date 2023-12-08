@@ -2,17 +2,50 @@ import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, Tooltip, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions } from '@mui/material';
 import { VisibilityOutlined, ModeEditOutlineOutlined, DeleteOutline } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
-import { deletePost, fetchListLessonDashboard } from '../../../services/api/lessonApi';
+import { Link, useNavigate } from 'react-router-dom';
+import { deleleListLesson, deletePost, fetchListLessonDashboard } from '../../../services/api/lessonApi';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert } from 'react-bootstrap';
+import { Alert, Col } from 'react-bootstrap';
+import AddIcon from '@mui/icons-material/Add';
 function LessonAdmin(props) {
+    const navigate = useNavigate();
+    const handleAddCoure = () => { navigate('create'); }
     // message delete box
     const [open, setOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState();
     const handleClose = () => {
         setOpen(false);
     };
+
+    const [openDelList, setOpenDelList] = useState(false);
+    const handleCloseDelList = () => {
+        setOpenDelList(false);
+    }
+    const onClickDelList = () => {
+        if (selectedRows.length === 0) return;
+        setOpenDelList(true);
+    }
+    const onConfirmDelList = async () => {
+        try {
+            //Api cal
+            const listOfIds = selectedRows.map(item => item.id);
+            const result = await deleleListLesson(listOfIds);
+            if (result.status === 200) {
+                const updatedLessons = listLesson.filter(lesson => !selectedRows.includes(lesson));
+                setListLesson(updatedLessons);
+                setVariant('success');
+                setErrorMessage(result.data);
+            } else {
+                setVariant('danger');
+                setErrorMessage(result.data);
+            }
+        } catch (error) {
+            setVariant('danger');
+            setErrorMessage('Not allow to delete, this is not your post');
+        } finally {
+            setOpenDelList(false);
+        }
+    }
     // end message delete box
     const [errorMessage, setErrorMessage] = useState(null);
     const [variant, setVariant] = useState('info');
@@ -24,7 +57,9 @@ function LessonAdmin(props) {
             try {
                 const response = await fetchListLessonDashboard();
                 // const data = await response.json();
-                await setListLesson(response);
+                if (response) {
+                    await setListLesson(response);
+                } else setListLesson([]);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -39,9 +74,14 @@ function LessonAdmin(props) {
     const handleConfirmDelete = async () => {
         try {
             const response = await deletePost(selectedItem.id);
-            const updateList = listLesson.filter(item => item.id !== selectedItem.id);
-            setListLesson(updateList);
-            setErrorMessage(response);
+            if (response.status === 200) {
+                const updateList = listLesson.filter(item => item.id !== selectedItem.id);
+                setListLesson(updateList);
+                setErrorMessage(response.data);
+            } else {
+                setVariant('danger')
+                setErrorMessage(response.data);
+            }
         } catch (error) {
             setVariant('danger');
             setErrorMessage('Not allow to delete, this is not your post');
@@ -50,13 +90,13 @@ function LessonAdmin(props) {
         }
     };
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'id', headerName: 'ID', width: 50 },
         { field: 'title', headerName: 'Title', width: 130 },
         { field: 'content', headerName: 'Content', width: 130 },
         { field: 'categoryName', headerName: 'Category', width: 130 },
         { field: 'authorName', headerName: 'Author', width: 130 },
         {
-            field: 'creatatedAt', headerName: 'Created Date', width: 160, valueFormatter: (params) => {
+            field: 'creatatedAt', headerName: 'Created Date', width: 120, valueFormatter: (params) => {
                 // Format the date using Intl.DateTimeFormat
                 const formattedDate = new Intl.DateTimeFormat('en-US', {
                     year: 'numeric',
@@ -127,11 +167,33 @@ function LessonAdmin(props) {
                     <Button onClick={handleConfirmDelete} autoFocus>Ok</Button>
                 </DialogActions>
             </Dialog>
+
+            <Dialog
+                open={openDelList}
+                onClose={handleCloseDelList}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    Confirm
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete {selectedRows ? selectedRows.length : 0} lessons?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDelList}>Cancel</Button>
+                    <Button onClick={onConfirmDelList} autoFocus>Ok</Button>
+                </DialogActions>
+            </Dialog>
             {/* end message delete box */}
             <h2 className="fw-bold mb-2 text-uppercase">List course</h2>
-            <p className="m-1">Here is list!</p>
+            <button style={{'color': 'white'}} onClick={handleAddCoure} className="btn btn-primary">
+                <AddIcon /> Add course
+            </button>
             {errorMessage && (
-                <Alert variant={variant} dismissible>
+                <Alert className='mt-2' variant={variant}>
                     {errorMessage}
                 </Alert>
             )}
@@ -140,14 +202,16 @@ function LessonAdmin(props) {
                     <CircularProgress />
                 </div>
             ) : (
-                <div className='container'>
-                    <div className='d-flex justify-content-end'>
-                        <span>{selectedRows.length} selected&emsp;</span>
-                        <Tooltip title="Delete">
-                            <DeleteOutline className="delete-row" style={{ color: 'red' }} />
-                        </Tooltip>
+                <div className=''>
+                    <div className='row'>
+                        <Col className="col-md-8 m-1" >Here is list! {listLesson.length} items</Col>
+                        <Col className='col-md-3 d-flex justify-content-end' onClick={onClickDelList}>
+                            <span>{selectedRows ? selectedRows.length : 0} selected&emsp;</span>
+                            <Tooltip title="Delete">
+                                <DeleteOutline className="delete-row" style={{ color: 'red' }} />
+                            </Tooltip>
+                        </Col>
                     </div>
-
                     <div className='row'>
                         <div className='col-12'>
                             <DataGrid
@@ -158,6 +222,7 @@ function LessonAdmin(props) {
                                 showCellVerticalBorder={true}
                                 disableRowSelectionOnClick
                                 checkboxSelection
+                                autoHeight
                                 onRowSelectionModelChange={
                                     (ids) => {
                                         const selectedIDs = new Set(ids);

@@ -18,6 +18,7 @@ const CourseSession = () => {
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const handleGetPageDetail = (item) => {
+    console.log("Item:",item.id)
     navigate(`/products/detail/${item.id}`, { state: { product: item } });
   };
 
@@ -105,7 +106,7 @@ const CourseSession = () => {
                       />
                       <div className="course-list_card_title_progress_line"></div>
                     </div>
-                    <button className="course-list_card_button_detail">
+                    <button className="course-list_card_button_detail" onClick={() => handleGetPageDetail(course)}>
                       Course Detail
                     </button>
                   </div>

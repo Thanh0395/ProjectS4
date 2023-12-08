@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.auth.AuthenticationRequest;
 import com.example.demo.auth.AuthenticationResponse;
-import com.example.demo.dto.ActiveUserRequestDto;
-import com.example.demo.dto.AddPermissionDto;
-import com.example.demo.dto.RegisterRequestDto;
 import com.example.demo.dto.UserResponseDto;
-import com.example.demo.dto.VerifyEmailResponseDto;
+import com.example.demo.dto.AuthDto.ActiveUserRequestDto;
+import com.example.demo.dto.AuthDto.AddPermissionDto;
+import com.example.demo.dto.AuthDto.RegisterRequestDto;
+import com.example.demo.dto.AuthDto.ResetPasswordRequestDto;
+import com.example.demo.dto.AuthDto.VerifyEmailResponseDto;
 import com.example.demo.entity.EmailEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.UserRoleEntity;
@@ -88,27 +89,46 @@ public class AuthenticationController {
     
     @PostMapping("/create-verify-email")
     public ResponseEntity<VerifyEmailResponseDto> CreateVerifyEmail(@RequestBody EmailEntity email) 
-    		throws NotFoundException 
+    		throws NotFoundException ,BadRequestException
     {
-    	VerifyEmailResponseDto verifyEmailResponseDto = authenticationService.CreateVerifyEmailWithUser(email.getToEmail());
-    	emailService.sendMailVerifyCode(email, verifyEmailResponseDto.getCode());
+    	VerifyEmailResponseDto verifyEmailResponseDto = authenticationService.CreateVerifyEmailWithUser(email);
+    	try {    		
+    		emailService.sendMailVerifyCode(email, verifyEmailResponseDto.getCode());
+    	}catch (Exception e) {
+    		throw new BadRequestException("Error occurred while sending the email: " + e.getMessage());
+		}
     	return new ResponseEntity<>(verifyEmailResponseDto, HttpStatus.OK);
     }
     
     
     @PostMapping("/active-user")
     public ResponseEntity<String> activeLogin(@RequestBody ActiveUserRequestDto activeLoginRequestDto) 
-    		throws NotFoundException, VerificationCodeMismatchException 
+    		throws NotFoundException, VerificationCodeMismatchException, BadRequestException 
     {
     	authenticationService.ActiveUser(activeLoginRequestDto);
     	return new ResponseEntity<>("Account activation success", HttpStatus.OK);
     }
     
-    @GetMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody EmailEntity email){
-    	
-    	return null;
-    }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<VerifyEmailResponseDto> forgotPassword(@RequestBody EmailEntity email) 
+    		throws BadRequestException, NotFoundException
+    {
+    	VerifyEmailResponseDto verifyEmailResponseDto = authenticationService.CreateVerifyEmailWithUser(email);
+    	try {    		
+    		emailService.sendMailVerifyCode(email, verifyEmailResponseDto.getCode());
+    	}catch (Exception e) {
+    		throw new BadRequestException("Error occurred while sending the email: " + e.getMessage());
+		}
+//    	authenticationService.forgotPassword(email);
+    	return new ResponseEntity<>(verifyEmailResponseDto, HttpStatus.OK);
+    }     
     
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequestDto request) 
+    		throws NotFoundException, BadRequestException, VerificationCodeMismatchException   		
+    {
+    	authenticationService.resestPassword(request);
+    	return new ResponseEntity<>("Reset password success", HttpStatus.OK);
+    }
 }
 

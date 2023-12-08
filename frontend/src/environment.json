@@ -8,5 +8,8 @@
   "apikey":{
     "chatGPT": "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",
     "NhanchatGPT": "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"
-  }
+  },
+  "REACT_APP_PAYPAL_CLIENT_ID":"AQUfEDWFH5OXanka15cbkJnHUgbPkWi0RGorBso17-i2AMd2ydBOmoxBtWW6v_burACQRp_uIdK19LH1",
+  "PAYPAL_SANDBOX_EMAIL_ACCOUNT": "sb-ckwsu28473165@personal.example.com",
+  "PAYPAL_SANDBOX_EMAIL_PASSWORD": "DFok)7_^"
 }

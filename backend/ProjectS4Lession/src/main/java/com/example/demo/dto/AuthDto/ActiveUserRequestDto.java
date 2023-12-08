@@ -1,6 +1,4 @@
-package com.example.demo.dto;
-
-import java.sql.Date;
+package com.example.demo.dto.AuthDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddPermissionDto {
+public class ActiveUserRequestDto {
 
 	private String email;
-	
 	@Builder.Default
-	private String roleName = null;
+	private String code = "0";
+	
 }

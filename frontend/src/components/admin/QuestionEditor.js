@@ -146,7 +146,7 @@
 
 // export default QuestionEditor;
 
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
@@ -164,31 +164,41 @@ import {
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { deleteQuestion, updateAddQuestion } from '../../services/api/lessonApi';
 
 function QuestionEditor(props) {
+    const myId = props.postId;
     function EditToolbar(props) {
         const { setRows, setRowModesModel } = props;
-    
+        const [isAdding, setIsAdding] = useState(false);
+
         const handleClickAdd = () => {
-            const questionId = parseInt(Date.now());
-            setRows((oldRows) => [...oldRows, { questionId:questionId, content: '', answerA: '', answerB: '', answerC: '', answerD: '', rightAnswer: 'A', isNew: true }]);
+            setIsAdding(true);
+            const questionId = parseInt(new Date().getTime() / 1000);
+            setTimeout(() => { setIsAdding(false); }, 1000);
+            setRows((oldRows) => [...oldRows, { questionId: questionId, content: '', answerA: '', answerB: '', answerC: '', answerD: '', rightAnswer: 'A', isNew: true }]);
             setIsValid(false);
-            console.log('Add new ne ',rows)
             setRowModesModel((oldModel) => ({
                 ...oldModel,
                 [questionId]: { mode: GridRowModes.Edit, fieldToFocus: 'content' },
             }));
         };
-    
+
         return (
-            <GridToolbarContainer>
-                <Button color="primary" startIcon={<AddIcon />} onClick={handleClickAdd}>
-                    Add question
-                </Button>
+            <GridToolbarContainer >
+                {!isAdding ?
+                    (<button onClick={handleClickAdd} className="btn btn-info">
+                        <AddIcon />Add question
+                    </button>)
+                    :
+                    (<button onClick={handleClickAdd} className="btn btn-info" disabled>
+                        <AddIcon />Add question
+                    </button>)
+                }
             </GridToolbarContainer>
         );
     }
-    
+
     // const initData = [
     //     { id: 10, question: "Question 01", answerA: "19", answerB: "60", answerC: "24", answerD: "40", answerCorrect: "A" },
     //     { id: 12, question: "Question 02", answerA: "as", answerB: "ms", answerC: "hp", answerD: "mp", answerCorrect: "C" },
@@ -221,12 +231,12 @@ function QuestionEditor(props) {
     const handleEditClick = (id) => () => {
         setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
     };
-    
+
     const handleSaveClick = (id) => () => {
         if (isValid) {
             setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
         } else {
-            showErrorSnackbar("Question cannot be empty!");
+            showErrorSnackbar("Some question field is Invalid!");
         }
     };
     // message delete box
@@ -247,6 +257,8 @@ function QuestionEditor(props) {
         setDeletedQuestionIds(deletedIds)
         props.updateQuestion(updatedRows);
         props.updateDeletedQuestion(deletedIds);
+        //api call
+        deleteQuestion(myId, deleteId);
         setOpen(false);
     }
 
@@ -262,8 +274,11 @@ function QuestionEditor(props) {
         }
     };
 
-    const processRowUpdate = (newRow) => {
-        const updatedRow = { ...newRow, isNew: false };
+    const processRowUpdate = async (newRow) => {
+        //call api
+        const data = await updateAddQuestion(myId, newRow);
+        const newId = data.questionId;
+        const updatedRow = { ...newRow, questionId: newId, isNew: false };
         const updatedRows = rows.map((row) => (row.questionId === newRow.questionId ? updatedRow : row));
         setRows(updatedRows);
         props.updateQuestion(updatedRows);
@@ -280,7 +295,7 @@ function QuestionEditor(props) {
             preProcessEditCellProps: (params: GridEditCellPropsChangeParams) => {
                 const hasError = params.props.value.length < 1;
                 setIsValid(!hasError);
-                if (hasError) showErrorSnackbar("Question cannot be empty!");
+                if (hasError) showErrorSnackbar("Content Question cannot be empty!");
                 return { ...params.props, error: hasError };
             },
         },
@@ -289,7 +304,7 @@ function QuestionEditor(props) {
             preProcessEditCellProps: (params: GridEditCellPropsChangeParams) => {
                 const hasError = params.props.value.length < 1;
                 setIsValid(!hasError);
-                if (hasError) showErrorSnackbar("Question cannot be empty!");
+                if (hasError) showErrorSnackbar("Answer A cannot be empty!");
                 return { ...params.props, error: hasError };
             },
         },
@@ -298,7 +313,7 @@ function QuestionEditor(props) {
             preProcessEditCellProps: (params: GridEditCellPropsChangeParams) => {
                 const hasError = params.props.value.length < 1;
                 setIsValid(!hasError);
-                if (hasError) showErrorSnackbar("Question cannot be empty!");
+                if (hasError) showErrorSnackbar("Answer B cannot be empty!");
                 return { ...params.props, error: hasError };
             },
         },
@@ -307,7 +322,7 @@ function QuestionEditor(props) {
             preProcessEditCellProps: (params: GridEditCellPropsChangeParams) => {
                 const hasError = params.props.value.length < 1;
                 setIsValid(!hasError);
-                if (hasError) showErrorSnackbar("Question cannot be empty!");
+                if (hasError) showErrorSnackbar("Answer C cannot be empty!");
                 return { ...params.props, error: hasError };
             },
         },
@@ -316,7 +331,7 @@ function QuestionEditor(props) {
             preProcessEditCellProps: (params: GridEditCellPropsChangeParams) => {
                 const hasError = params.props.value.length < 1;
                 setIsValid(!hasError);
-                if (hasError) showErrorSnackbar("Question cannot be empty!");
+                if (hasError) showErrorSnackbar("Answer D cannot be empty!");
                 return { ...params.props, error: hasError };
             },
         },
@@ -358,7 +373,7 @@ function QuestionEditor(props) {
                         color="inherit"
                     />,
                     <GridActionsCellItem
-                        icon={<DeleteIcon color='error'/>}
+                        icon={<DeleteIcon color='error' />}
                         label="Delete"
                         onClick={handleDeleteClick(id)}
                         color="inherit"
@@ -372,7 +387,7 @@ function QuestionEditor(props) {
     return (
         <Box
             sx={{
-                height: 500,
+                height: '100%',
                 width: '100%',
                 '& .actions': {
                     color: 'text.secondary',
@@ -394,6 +409,7 @@ function QuestionEditor(props) {
                 getRowId={getRowId}
                 showColumnVerticalBorder={true}
                 showCellVerticalBorder={true}
+                autoHeight
                 slots={{
                     toolbar: EditToolbar,
                 }}

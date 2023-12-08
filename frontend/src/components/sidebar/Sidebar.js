@@ -1,13 +1,12 @@
 
 import React from 'react';
 import './sidebar.css';
-
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import { NavLink } from 'react-router-dom';
-import { CallToAction, Language, Article, Draw, People, Class, LocalOffer, EmojiEvents, MilitaryTech } from '@mui/icons-material';
+import { CallToAction, Language, Article, People, Class, LocalOffer, EmojiEvents, MilitaryTech } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 
 
@@ -20,14 +19,14 @@ function Sidebar(props) {
                 <Divider className="sidebar-divider" textAlign="left">Common</Divider>
                 <ListItemButton component={NavLink} to="/">
                     <ListItemIcon>
-                        <Language />
+                        <Language color='primary' />
                     </ListItemIcon>
                     <ListItemText primary="Website" />
                 </ListItemButton>
 
                 <ListItemButton component={NavLink} to="">
                     <ListItemIcon>
-                        <CallToAction />
+                        <CallToAction color='info' />
                     </ListItemIcon>
                     <ListItemText primary="Dashboard" />
                 </ListItemButton>
@@ -35,35 +34,35 @@ function Sidebar(props) {
                 <Divider className="sidebar-divider" textAlign="left">Main Items</Divider>
                 <ListItemButton component={NavLink} to="lessons">
                     <ListItemIcon>
-                        <Article />
+                        <Article color='primary' />
                     </ListItemIcon>
                     <ListItemText primary="Lesson" />
                 </ListItemButton>
 
-                <ListItemButton component={NavLink} to="exams">
+                {/* <ListItemButton component={NavLink} to="exams">
                     <ListItemIcon>
                         <Draw />
                     </ListItemIcon>
                     <ListItemText primary="Exam" />
-                </ListItemButton>
+                </ListItemButton> */}
 
                 <ListItemButton component={NavLink} to="users">
                     <ListItemIcon>
-                        <People />
+                        <People color='success' />
                     </ListItemIcon>
                     <ListItemText primary="User" />
                 </ListItemButton>
 
                 <ListItemButton component={NavLink} to="categories">
                     <ListItemIcon>
-                        <Class />
+                        <Class color='primary' />
                     </ListItemIcon>
                     <ListItemText primary="Category" />
                 </ListItemButton>
 
                 <ListItemButton component={NavLink} to="tags">
                     <ListItemIcon>
-                        <LocalOffer />
+                        <LocalOffer color='secondary' />
                     </ListItemIcon>
                     <ListItemText primary="Tag" />
                 </ListItemButton>
@@ -92,14 +91,14 @@ function Sidebar(props) {
                 <Divider className="sidebar-divider" textAlign="left">Game Items</Divider>
                 <ListItemButton component={NavLink} to="rewards">
                     <ListItemIcon>
-                        <MilitaryTech />
+                        <MilitaryTech color='error' />
                     </ListItemIcon>
                     <ListItemText primary="Reward" />
                 </ListItemButton>
 
                 <ListItemButton component={NavLink} to="achievements">
                     <ListItemIcon>
-                        <EmojiEvents />
+                        <EmojiEvents color='warning' />
                     </ListItemIcon>
                     <ListItemText primary="Achievement" />
                 </ListItemButton>

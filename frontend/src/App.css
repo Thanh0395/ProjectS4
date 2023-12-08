@@ -28,6 +28,8 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+    background: url('../src/assets/images/background.jpg') fixed;
+  background-size: 100vw 100vh;
 }
 
 .login-content {
@@ -37,7 +39,7 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: #ffffffe0;
 }
 /*Register */
 .register-container {
@@ -45,6 +47,8 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  background: url('../src/assets/images/background.jpg') fixed;
+  background-size: 100vw 100vh;
 }
 
 .register-content {
@@ -55,7 +59,10 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: #ffffffe0;
+}
+.user-nav-dropdown-container{
+  padding: 0px 20px;
 }
 
 

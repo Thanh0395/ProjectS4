@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.AuthDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ActiveUserRequestDto {
+public class ResetPasswordRequestDto {
 
 	private String email;
-	private String code;
+	private String newPassword;
+	private String confirmPassword;
 	
+	@Builder.Default
+	private String code = "0";
 }

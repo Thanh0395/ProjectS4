@@ -1,0 +1,14 @@
+.admin-lesson-invalid {
+    color: rgb(255, 49, 49);
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.admin-lesson-hidden {
+    display: none;
+}
+
+.admin-lesson-invalid-area {
+    border: 1px solid rgb(255, 49, 49);
+    box-shadow: 0 0 8px rgb(255, 49, 49);
+  }

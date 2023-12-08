@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import * as formik from 'formik';
 import * as yup from 'yup';
-import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
+import { Row, Col, Button, Form, Spinner, Alert } from "react-bootstrap";
 import { Link, useParams } from 'react-router-dom';
-import { fetchLessonByIdDashboard, listCategory } from '../../../services/api/lessonApi'
+import { fetchLessonByIdDashboard, listCategory, updateLesson } from '../../../services/api/lessonApi'
 import QuestionEditor from '../../../components/admin/QuestionEditor';
-import TagsEdittor from '../../../components/admin/TagsEdittor';
+import TagsEditor from '../../../components/admin/TagsEditor';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import env from '../../../environment.json';
+import { uploadFile } from '../../../services/api/fileApi';
+import CircularProgress from '@mui/material/CircularProgress';
+import './lesson.css'
 
 function LessonAdminUpdate(props) {
     const [lesson, setLesson] = useState();
+    // const [fileImage, setFileImage] = useState();
+    // const [fileVideo, setFileVideo] = useState();
     const [categories, setCategories] = useState([]);
     const [questions, setQuestions] = useState([]);
     const [tags, setTags] = useState([]);
     const [deletedQuestions, setDeletedQuestions] = useState([]);
     const [initQuestions, setInitQuestions] = useState([]);
+    const [showAlert, setShowAlert] = useState(false);
+    const [variant, setVariant] = useState();
+    const [alertMsg, setAlertMsg] = useState();
+    const [showInvalidContent, setShowInvalidContent] = useState(false);
+    const [previewImageURL, setPreviewImageURL] = useState('');
+    const [previewVideoURL, setPreviewVideoURL] = useState('');
     const urlMedia = env.urls.media;
 
     function updateQuestion(ques) {
@@ -30,7 +41,6 @@ function LessonAdminUpdate(props) {
         const fetchData = async () => {
             try {
                 const postData = await fetchLessonByIdDashboard(params.id);
-                console.log("hello ", postData)
                 const cateData = await listCategory();
                 const tagsData = postData.tags;
                 const questionsData = postData.questions;
@@ -50,16 +60,19 @@ function LessonAdminUpdate(props) {
     const schema = yup.object().shape({
         title: yup.string().required(),
         categoryId: yup.number().required(),
-        price: yup.number().min(5).required(),
+        price: yup.number().min(30).required(),
+        prize: yup.number().min(10).max(500).required(),
         content: yup.string().required(),
         newImage: yup
             .mixed().nullable()
-            .test('filesize', 'Image is too large >1MB', function (file) {
+            .test('filesize', 'Image is too large >500kB', function (file) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
-                const maxSize = 1000000; // 1MB
-                return file.size <= maxSize;
+                const maxSize = 500000; // 1MB
+                const valid = file.size <= maxSize;
+                // if (valid) setFileImage(file);
+                return valid;
             })
             .test('fileformat', 'Unsupported image format', function (file) {
                 if (!file) {
@@ -81,7 +94,7 @@ function LessonAdminUpdate(props) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
-                const supportedFormats = ['video/mp4'];
+                const supportedFormats = ['video/mp4', 'video/avi', 'video/mov', 'video/mpeg-4'];
                 return supportedFormats.includes(file.type);
             }),
         tags: yup
@@ -92,14 +105,31 @@ function LessonAdminUpdate(props) {
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
             setIsLoading(true);
+            setSubmitting(true);
+            setShowAlert(false);
             // Call the API function to register the user
-            await console.log(values);
-            await console.log('Questions', questions);
-            await console.log('DeletedQuestion', deletedQuestions);
-            console.log(values.categoryId)
+            var featureImage = '';
+            var video = '';
+            if (values.newImage) {
+                featureImage = await uploadFile(values.newImage, 'post', 'images/post');
+            }
+            if (values.newVideo) {
+                video = await uploadFile(values.newVideo, 'post', 'video/post');
+            }
+            if (!showInvalidContent) {
+                await updateLesson(lesson.id, values.categoryId, values.title, values.content, values.price, values.prize, featureImage, video);
+                setShowAlert(true);
+                setVariant('success');
+                setAlertMsg('Update has been Successful.');
+                console.log('first')
+            }
+            await ('Questions', questions);
+            await ('DeletedQuestion', deletedQuestions);
             // Optionally, you can redirect the user to a different page after successful registration
-            console.log('Registration successful');
         } catch (error) {
+            setShowAlert(true);
+            setVariant('danger');
+            setAlertMsg('Fail: ', error);
             console.error('Registration error:', error);
         } finally {
             setIsLoading(false);
@@ -107,7 +137,7 @@ function LessonAdminUpdate(props) {
         }
     };
     return (
-        <div className="">
+        <div className="container">
             <div className="">
                 <h2 className="fw-bold mb-2 text-uppercase">Update page</h2>
                 <p className="mb-5">Here is your update form!</p>
@@ -197,13 +227,23 @@ function LessonAdminUpdate(props) {
                                     /> */}
 
                                     <Form.Group as={Col} md="6" >
-                                        <img src={urlMedia + lesson.featureImage} alt="Lesson" style={{ width: '150px' }} /><br />
+                                        <img className='mt-2' src={urlMedia + lesson.featureImage} alt="Lesson" style={{ width: '90%' }} /><br />
                                         <Form.Label style={{ fontStyle: 'italic', color: 'blue' }}> or New Image</Form.Label>
+                                        {previewImageURL && <img className='mb-2' src={previewImageURL} alt="Lesson" style={{ width: '90%' }} />}
                                         <Form.Control
                                             type="file"
                                             name="newImage"
                                             onChange={(event) => {
-                                                // Set the selected file as the value(in the list file)
+                                                const file = event.currentTarget.files[0];
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => {
+                                                        setPreviewImageURL(reader.result);
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                } else {
+                                                    setPreviewImageURL('');
+                                                }
                                                 setFieldValue('newImage', event.currentTarget.files[0]);
                                             }}
                                             isInvalid={touched.newImage && !!errors.newImage}
@@ -213,16 +253,29 @@ function LessonAdminUpdate(props) {
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group as={Col} md="6" >
-                                        <video width="320" height="240" controls>
+                                        <video className='mt-2' width="90%" controls>
                                             <source src={urlMedia + lesson.video} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
-                                        <br />
                                         <Form.Label style={{ fontStyle: 'italic', color: 'blue' }}> or New Video</Form.Label>
+                                        {previewVideoURL && <video className='mb-2' width="90%" controls>
+                                            <source src={previewVideoURL} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>}
                                         <Form.Control
                                             type="file"
                                             name="newVideo"
                                             onChange={(event) => {
+                                                const file = event.currentTarget.files[0];
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => {
+                                                        setPreviewVideoURL(reader.result);
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                } else {
+                                                    setPreviewVideoURL('');
+                                                }
                                                 setFieldValue('newVideo', event.currentTarget.files[0]);
                                             }}
                                             isInvalid={touched.newVideo && !!errors.newVideo}
@@ -233,6 +286,8 @@ function LessonAdminUpdate(props) {
                                     </Form.Group>
 
 
+                                </Row>
+                                <Row>
                                     <Form.Group as={Col} md="6" >
                                         <Form.Label className='title'>Price</Form.Label>
                                         <Form.Control
@@ -246,17 +301,40 @@ function LessonAdminUpdate(props) {
                                             {errors.price}
                                         </Form.Control.Feedback>
                                     </Form.Group>
+                                    <Form.Group as={Col} md="6" >
+                                        <Form.Label className='title'>Prize</Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            name="prize"
+                                            value={values.prize}
+                                            onChange={handleChange}
+                                            isInvalid={touched.prize && !!errors.prize}
+                                        />
+                                        <Form.Control.Feedback type="invalid" >
+                                            {errors.prize}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
                                 </Row>
-
                                 <Row className="mb-3">
                                     <Form.Group as={Col} md="12">
                                         <Form.Label className='title'>Content</Form.Label>
-                                        <ReactQuill
-                                            name="content"
-                                            value={values.content}
-                                            onChange={(val) => setFieldValue('content', val)}
-                                            isInvalid={touched.content && !!errors.content}
-                                        />
+                                        <p className={showInvalidContent ? 'admin-lesson-invalid mt-2' : 'admin-lesson-hidden mt-2'}>
+                                            Not null content
+                                        </p>
+                                        <div style={{ 'height': '300' }} className={showInvalidContent ? 'admin-lesson-invalid-area' : ''}>
+                                            <ReactQuill
+                                                name="content"
+                                                style={{ 'height': '250px' }}
+                                                value={values.content}
+                                                onChange={(val) => {
+                                                    if (val === '<p><br></p>') {
+                                                        setShowInvalidContent(true)
+                                                    } else setShowInvalidContent(false);
+                                                    setFieldValue('content', val);
+                                                }}
+                                                isInvalid={touched.content && !!errors.content}
+                                            />
+                                        </div>
                                         {/* <Form.Control
                                             type="text"
                                             name="description"
@@ -272,7 +350,8 @@ function LessonAdminUpdate(props) {
 
 
                                 </Row>
-
+                                <br></br>
+                                <br></br>
                                 <div className="d-grid">
                                     <Button variant="primary" type="submit" disabled={isLoading} >
                                         {isLoading ? (<Spinner size="sm"></Spinner>)
@@ -282,8 +361,9 @@ function LessonAdminUpdate(props) {
                                         <Link to="/admin/lessons" >Back</Link>
                                     </p>
                                 </div>
+                                {showAlert && <Alert variant={variant} dismissible>{alertMsg}</Alert>}
                                 <Form.Group as={Col} md="12">
-                                    <TagsEdittor lessonTags={tags}></TagsEdittor>
+                                    <TagsEditor postId={lesson.id} lessonTags={tags} />
                                     {/* <Form.Control.Feedback type="invalid">
                                             {errors.tags}
                                         </Form.Control.Feedback> */}
@@ -293,13 +373,16 @@ function LessonAdminUpdate(props) {
                                         updateQuestion={updateQuestion}
                                         updateDeletedQuestion={updateDeletedQuestion}
                                         initQuestions={initQuestions}
+                                        postId={lesson.id}
                                     />
                                 </Row>
                             </Form>
                         )}
                     </Formik>
                 ) : (
-                    <p>Loading...</p>
+                    <div className="loading-spinner">
+                        <CircularProgress />
+                    </div>
                 )}
             </div>
         </div>

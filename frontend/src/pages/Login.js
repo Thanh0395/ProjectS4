@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Alert, Button, Container, FloatingLabel, Form, Spinner } from "react-bootstrap";
+import { Alert, Button, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import * as formik from 'formik';
 import * as yup from 'yup';
-import { activeUser, loginUser, sendVerifycodeMail } from '../services/api/userAPI';
+import { activeUser, fetchGameData, loginUser, sendVerifycodeMail } from '../services/api/userAPI';
+import { sendVerifycodeMailForgotPassword } from '../services/api/AuthApi';
 
 function Login(props) {
     const [isLoading, setIsLoading] = useState(false);
@@ -27,10 +28,11 @@ function Login(props) {
         try {
             setIsLoading(true);
             setCurrentEmail(values.email);
-            if (values.verify != '') {
+            if (values.verify !== '') {
                 await activeUser(currentEmail, values.verify);
             }
-            await loginUser(values.email, values.password);
+            const userData = await loginUser(values.email, values.password);
+            await fetchGameData(userData.user.userId);
             navigate('/');
         } catch (error) {
             const errorObj = error.response.data;
@@ -40,7 +42,6 @@ function Login(props) {
                 setShowVerifyCode(true);
             } else setVariant('danger');
             setErrorMessage(errorMsg);
-            // console.log('Login error:', errorObj['Error Message']);
         } finally {
             setIsLoading(false);
             setSubmitting(false);
@@ -61,7 +62,7 @@ function Login(props) {
     };
 
     return (
-        <Container>
+        <>
             <div className="login-container">
                 <div className="login-content">
                     <h2 className="fw-bold mb-2 text-uppercase">Ultimate Learning</h2>
@@ -114,14 +115,18 @@ function Login(props) {
                                             </Form.Control.Feedback>
                                         </FloatingLabel>
                                     </Form.Group>
+                                    {/* Hung update */}
                                     <Form.Group
                                         className="mb-3"
                                         controlId="formBasicCheckbox"
                                     >
                                         <p className="small">
-                                            <a className="text-primary" href="#!">
+                                            <Link 
+                                                to="/forgot-password" 
+                                                className="text-primary"
+                                            >
                                                 Forgot password?
-                                            </a>
+                                            </Link>
                                         </p>
                                     </Form.Group>
                                     {showVerifyCode && (
@@ -142,9 +147,9 @@ function Login(props) {
                                                 </FloatingLabel>
                                             </Form.Group>
                                             <p className="small">
-                                                <a className="text-primary" onClick={handleResendVerification}>
+                                                <Link className="text-primary" onClick={handleResendVerification}>
                                                     Resend to mail {currentEmail}
-                                                </a>
+                                                </Link>
                                             </p>
                                         </>
                                     )}
@@ -176,7 +181,7 @@ function Login(props) {
 
             </div>
 
-        </Container>
+        </>
 
     );
 }
