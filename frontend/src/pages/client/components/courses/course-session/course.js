@@ -76,7 +76,7 @@ const CourseSession = () => {
                     <div className="course-list_card_image">
                       <img
                         className="course-list_card_image_course"
-                        src={Course_02}
+                        src={course.featureImage}
                         alt={course.title}
                       />
                     </div>
