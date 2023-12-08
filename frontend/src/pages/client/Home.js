@@ -1,9 +1,18 @@
 import React from 'react';
+import Banner from './components/homepage/banner';
+import Brands from './components/homepage/brands';
+import Feature from './components/homepage/feature';
+import CourseSection from './components/homepage/course';
 
 function Home(props) {
     return (
         <div>
-            <h1>Day la trang Home (client) nek</h1>
+            <Banner/>
+            <Brands/>
+            <Feature/>
+            <CourseSection/>
+
+            
         </div>
     );
 }
