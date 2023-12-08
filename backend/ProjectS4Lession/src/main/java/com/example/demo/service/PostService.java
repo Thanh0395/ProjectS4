@@ -79,6 +79,7 @@ public class PostService {
 		return listPostEntity;
 	}
 
-	
-	 
+		public List<PostEntity> getPostByCateId (int cateId){
+			return postRepository.findByCategoryCategoryId(cateId);
+		}
 }
