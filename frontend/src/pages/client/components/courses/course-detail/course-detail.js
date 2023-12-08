@@ -43,7 +43,7 @@ function CourseDetail(props) {
           </div>
           <div className="text-start col-sm-4 course-detail_card_right">
             <div className="course-detail_card_right_price">
-              <h3>${productA.price}</h3>
+              <h3><i class="bi bi-gem fs-4 px-2 text-success"></i>{productA.price}</h3>
             </div>
             <div className="course-common course-detail_card_right_authorname">
               <h6 className="">Author</h6>

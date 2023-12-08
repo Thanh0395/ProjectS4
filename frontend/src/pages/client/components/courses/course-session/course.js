@@ -12,13 +12,15 @@ import Course_03 from "../../../../../assets/courses-03.jpg";
 import Author_01 from "../../../../../assets/author-01.jpg";
 import Author_02 from "../../../../../assets/author-02.jpg";
 import Author_03 from "../../../../../assets/author-03.jpg";
-
+import env from "../../../../../environment.json";
 const CourseSession = () => {
+  const urlMedia = env.urls.media;
+
   // Pagination
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const handleGetPageDetail = (item) => {
-    console.log("Item:",item.id)
+    console.log("Item:", item.id);
     navigate(`/products/detail/${item.id}`, { state: { product: item } });
   };
 
@@ -76,7 +78,7 @@ const CourseSession = () => {
                     <div className="course-list_card_image">
                       <img
                         className="course-list_card_image_course"
-                        src={course.featureImage}
+                        src={urlMedia + course.featureImage}
                         alt={course.title}
                       />
                     </div>
@@ -93,22 +95,17 @@ const CourseSession = () => {
                       </div>
                     </div>
                     <div className="course-list_card_title_percent_price">
-                      <h6>{progress}% Completed</h6>
                       <h6>
-                        {course.price}{" "}
+                        <i class="bi bi-gem px-2 text-primary"></i>{course.price}{" "}
                         <i class="bi bi-gem px-2 text-primary"></i>
                       </h6>
-                      <div
-                        className="course-list_card_title_progress"
-                        style={{
-                          width: `${progress}%`,
-                        }}
-                      />
-                      <div className="course-list_card_title_progress_line"></div>
+                      <button
+                        className="course-list_card_button_detail"
+                        onClick={() => handleGetPageDetail(course)}
+                      >
+                        Course Detail
+                      </button>
                     </div>
-                    <button className="course-list_card_button_detail" onClick={() => handleGetPageDetail(course)}>
-                      Course Detail
-                    </button>
                   </div>
                 </div>
               ))
