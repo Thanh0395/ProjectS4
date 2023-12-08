@@ -5,6 +5,8 @@ import brand2 from "../../../..//assets/images/all-img/brands/2.svg";
 import brand3 from "../../../..//assets/images/all-img/brands/3.svg";
 import brand4 from "../../../..//assets/images/all-img/brands/4.svg";
 import brand5 from "../../../..//assets/images/all-img/brands/5.svg";
+import "../../../../constants/importedCss"
+
 const Brands = ({ section_padding_bottom, section_padding_top }) => {
   return (
     <div

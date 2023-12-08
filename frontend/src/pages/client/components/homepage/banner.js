@@ -1,6 +1,7 @@
 import React from "react";
 import mailIcon from "../../../../assets/images/icon/mail.svg";
 import ManOne from "../../../../assets/images/banner/man1.png";
+import "../../../../constants/importedCss"
 
 
 const Banner = () => {

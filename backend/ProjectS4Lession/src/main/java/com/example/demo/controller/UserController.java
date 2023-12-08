@@ -35,7 +35,7 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	private UserMapper userMapper;
+	private UserMapper userMapper;	
 	
 	@GetMapping("/list-user")
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
