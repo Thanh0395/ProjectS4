@@ -7,17 +7,16 @@ import './navbarHome.css';
 import { logoutUser } from '../../services/api/userAPI';
 import UserProfileDropdown from '../UserProfileDropdown';
 import GemPopup from '../payment/GemPopup';
+import Modal from 'react-bootstrap/Modal';
 
 function NavbarHome(props) {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
-    const [gameData, setgameData] = useState(JSON.parse(localStorage.getItem('userGameData')));
     const isLoggedIn = !!currentUser;
     const navigate = useNavigate();
     const handleLogout = async () => {
         try {
             await logoutUser();
             setCurrentUser(null);
-            setgameData(null);
             navigate('/');
         } catch (error) {
             navigate('login');
@@ -40,7 +39,7 @@ function NavbarHome(props) {
                     <img src={logo} className="App-logo" alt="logo" />
                 </Link>
                 {isLoggedIn ? (
-                    <UserProfileDropdown gameData={gameData} currentUser={currentUser} onLogout={handleLogout} className="mr-30" />
+                    <UserProfileDropdown currentUser={currentUser} onLogout={handleLogout} className="mr-30" />
                 ) : (
                     <Nav.Link as={Link} to={'login'}>
                         Login
@@ -49,6 +48,16 @@ function NavbarHome(props) {
                 <Nav.Link onClick={handleGemClick}>
                     <i className="bi bi-gem px-2 text-primary"></i>GEM
                 </Nav.Link>
+                {/* gem Popup */}
+                <Modal size='lg' centered show={showGemPopup} onHide={handleCloseGemPopup}>
+                    <Modal.Header closeButton>
+                        <Modal.Title id="example-custom-modal-styling-title">
+                            Choose wisely!!
+                        </Modal.Title>
+                    </Modal.Header>
+                    <GemPopup onClose={handleCloseGemPopup} />
+                </Modal>
+                {/* end gem popup */}
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" className='border' />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav
@@ -56,7 +65,7 @@ function NavbarHome(props) {
                     >
                         <Nav.Link as={NavLink} to={"/"} >Home</Nav.Link>
                         <Nav.Link as={NavLink} to={"contact"}>Contact</Nav.Link>
-                        {/* <Nav.Link as={NavLink} to={"planning"}>AI-Chat</Nav.Link> */}
+                        <Nav.Link as={NavLink} to={"planning"}>AI-Chat</Nav.Link>
                         <Nav.Link as={NavLink} to={"products"}>Course</Nav.Link>
 
                         <NavDropdown title="Dropdown" className="mb-3">
@@ -85,7 +94,7 @@ function NavbarHome(props) {
                     <div>&nbsp;</div>
                 </Navbar.Collapse>
                 <div>&nbsp;</div>
-                {showGemPopup && <GemPopup onClose={handleCloseGemPopup} />}
+
             </Container>
         </Navbar>
     );

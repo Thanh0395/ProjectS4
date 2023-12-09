@@ -5,7 +5,7 @@ ALTER SEQUENCE favorite_category_tbl_favorite_category_id_seq RESTART WITH 1;
 ALTER SEQUENCE feedback_tbl_feedback_id_seq RESTART WITH 1;
 ALTER SEQUENCE gem_tbl_gem_id_seq RESTART WITH 1;
 ALTER SEQUENCE post_question_tbl_post_question_id_seq RESTART WITH 1;
-ALTER SEQUENCE post_tbl_post_id_seq RESTART WITH 8;
+ALTER SEQUENCE post_tbl_post_id_seq RESTART WITH 7;
 ALTER SEQUENCE question_tbl_question_id_seq RESTART WITH 1;
 ALTER SEQUENCE reward_tbl_reward_id_seq RESTART WITH 1;
 ALTER SEQUENCE tag_post_tbl_tag_post_id_seq RESTART WITH 1;
@@ -16,6 +16,7 @@ ALTER SEQUENCE user_post_tbl_user_post_id_seq RESTART WITH 1;
 ALTER SEQUENCE user_tbl_user_id_seq RESTART WITH 16;
 ALTER SEQUENCE user_role_tbl_user_role_id_seq RESTART WITH 16;
 ALTER SEQUENCE verify_email_tbl_verify_email_id_seq RESTART WITH 1;
+ALTER SEQUENCE favorite_category_tbl_favorite_category_id_seq RESTART WITH 1;
 -- ALTER SEQUENCE role_tbl_id_seq RESTART WITH 1;
 -- TRUNCATE user_tbl RESTART IDENTITY CASCADE;
 -- TRUNCATE reward_tbl RESTART IDENTITY CASCADE;
@@ -56,11 +57,23 @@ BEGIN
         
         -- Execute the INSERT INTO statement directly
         INSERT INTO user_tbl (email, name, avatar, "password", Is_Active, date_of_birth, Created_At)
-        VALUES (email, name, 'Avatar', 'Password', TRUE, dob, date);
+        VALUES (email, name, 'uploads/images/user/User_default.jpg', '$2a$10$h3olmvjDcXNQSlRGgVU6.u7p1BJxQ8lF716RIEcnk7swTsrjT2BkC', TRUE, dob, date);
         
         RecordNumber := RecordNumber + 1;
     END LOOP;
 END $$;
+
+DO $$ 
+DECLARE 
+    RecordNumber INT := 1;
+BEGIN
+    WHILE (RecordNumber <= 15) LOOP
+        -- Execute the INSERT INTO statement directly
+        UPDATE user_tbl SET avatar = 'uploads/images/user/User_default.jpg', Is_Active = TRUE WHERE user_id=RecordNumber;
+        RecordNumber := RecordNumber + 1;
+    END LOOP;
+END $$;
+
 --Insert data into User Role table
 DO $$ 
 DECLARE 
@@ -76,8 +89,15 @@ BEGIN
     END LOOP;
 END $$;
 -- Insert data into Category table
-INSERT INTO Category_tbl (Category_Name) VALUES
-('Uncategory'),('Physic'),('Chemistry'),('Maths'),('Biology'),('Informatics'),('Literature'),('History');
+INSERT INTO Category_tbl (Category_Name,feature_image) VALUES
+('Uncategory','uploads/images/category/Category_default.jpg'),
+('Physic','uploads/images/category/Category_default.jpg'),
+('Chemistry','uploads/images/category/Category_default.jpg'),
+('Maths','uploads/images/category/Category_default.jpg'),
+('Biology','uploads/images/category/Category_default.jpg'),
+('Informatics','uploads/images/category/Category_default.jpg'),
+('Literature','uploads/images/category/Category_default.jpg'),
+('History','uploads/images/category/Category_default.jpg');
 -- Insert data into Tag table
 INSERT INTO Tag_tbl (Tag_Name) VALUES
 ('basic'),('advance'),('technology'),('common knowledge'),('expertise knowledge'),
@@ -163,7 +183,7 @@ BEGIN
         date := '2008-11-11'::DATE + (RANDOM() * 5475)::INTEGER;
 		 -- Execute the INSERT INTO statement directly into Post_tbl
         INSERT INTO Post_tbl (author, category_id, feature_image, video, price, prize, title, "content", "type", created_at)
-        VALUES (author_id, category_id, 'Image', 'Video', price, prize, title, content, type, date);
+        VALUES (author_id, category_id, 'uploads/images/post/Post_default.jpg', 'uploads/video/post/video_post_default.mp4', price, prize, title, content, type, date);
 		
 		-- Create 5 questions each post
 			FOR i IN 1..5 LOOP
@@ -184,6 +204,20 @@ BEGIN
 				VALUES (RecordNumber,commenter,comment,date);
 			END LOOP;
 
+        RecordNumber := RecordNumber + 1;
+    END LOOP;
+END $$;
+
+DO $$ 
+DECLARE 
+    RecordNumber INT := 1;
+BEGIN
+    WHILE (RecordNumber <= 6) LOOP
+        -- Execute the INSERT INTO statement directly
+        UPDATE post_tbl SET 
+			feature_image = 'uploads/images/post/Post_default.jpg', 
+			video = 'uploads/video/post/video_post_default.mp4' 
+		WHERE post_id=RecordNumber;
         RecordNumber := RecordNumber + 1;
     END LOOP;
 END $$;
@@ -254,23 +288,10 @@ BEGIN
     END LOOP;
 END $$;
 -- Insert data into user achievement table
-DO $$ 
-DECLARE 
-    RecordNumber INT := 1; 
-	u_id INT; a_id INT; process NUMERIC; is_received_badge BOOLEAN;
-BEGIN
-    WHILE (RecordNumber <= 30) LOOP
-        u_id := RecordNumber; 
-        a_id := (FLOOR(RANDOM() * 9+1))::INT;
-        process := (RANDOM() * 1500);
-		is_received_badge := (RANDOM()<0.5)::BOOLEAN;
-        
-        INSERT INTO user_achievement_tbl (user_id,achievement_id,process,is_received_badge)
-        VALUES (u_id,a_id,process,is_received_badge);
-        
-        RecordNumber := RecordNumber + 1;
-    END LOOP;
-END $$;
+INSERT INTO user_achievement_tbl (user_id,achievement_id,process,is_received_badge) VALUES 
+(1,1,100,TRUE),(1,2,100,TRUE),(1,3,100,TRUE),(1,4,100,TRUE),(1,5,60.30,FALSE),(1,7,100,TRUE),(1,8,100,TRUE),
+(2,1,100,TRUE),(2,2,50.50,TRUE),(2,3,100,TRUE),(1,4,100,TRUE),(1,5,100,TRUE),(1,6,70.30,FALSE),(2,7,100,TRUE),
+(3,1,100,TRUE),(3,2,50,FALSE),(3,4,80,FALSE),(3,7,100,TRUE),(3,8,23.7,FALSE);
 -- Insert data into user level table
 DO $$ 
 DECLARE 
@@ -285,6 +306,22 @@ BEGIN
         INSERT INTO user_level_tbl (user_id,"level",exp)
         VALUES (u_id,level,exp);
         
+        RecordNumber := RecordNumber + 1;
+    END LOOP;
+END $$;
+-- Insert data into favorite category table
+DO $$ 
+DECLARE 
+    RecordNumber INT := 1; 
+	u_id INT; c_id INT;
+BEGIN
+    WHILE (RecordNumber <= 30) LOOP
+        u_id := RecordNumber; 
+		c_id := (CEIL(RANDOM() * 8))::INT;
+		
+        INSERT INTO favorite_category_tbl (user_id,category_id)
+        VALUES (u_id,c_id);
+
         RecordNumber := RecordNumber + 1;
     END LOOP;
 END $$;

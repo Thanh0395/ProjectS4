@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.CategoryDto;
 import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.PostEntity;
 import com.example.demo.exception.NotFoundException;
@@ -49,5 +50,14 @@ public class CategoryService {
 		}else {
 			throw new NotFoundException("Not found Category with category id :" + categoryId);
 		}	
+	}
+	
+	//Thanh
+	public boolean checkNameExist(String name) {
+		if (categoryRepository.findByCategoryName(name).isEmpty()) return false;
+		return true;
+	}
+	public List<CategoryDto> countTypePerCategory(){
+		 return categoryRepository.countTypePerCategory();
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.PostEntity;
+import com.example.demo.entity.UserEntity;
 
 
 @Repository
@@ -27,7 +28,10 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer>{
 	                                                             @Param("type") String type);
 	
 	List<PostEntity> findFirst5ByTypeAndCategoryOrderByCreatedAtDesc(String type, CategoryEntity category);
+
 	
 	//Hung
 	List<PostEntity> findByUserUserId(int userId);
+
+	List<PostEntity> findByCategoryCategoryId(int categoryId);
 }

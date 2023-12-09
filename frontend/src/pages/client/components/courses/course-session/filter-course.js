@@ -84,7 +84,7 @@ function FilterCourse(props) {
         <div className="course-filter">
           <Swiper
             // install Swiper modules
-            slidesPerView={4}
+            slidesPerView={5}
             spaceBetween={10}
             pagination={{
               clickable: true,
@@ -103,7 +103,7 @@ function FilterCourse(props) {
                 spaceBetween: 40,
               },
               "@1.50": {
-                slidesPerView: 4,
+                slidesPerView: 5,
                 spaceBetween: 50,
               },
             }}

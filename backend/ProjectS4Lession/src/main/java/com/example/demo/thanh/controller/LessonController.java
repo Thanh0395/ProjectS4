@@ -30,9 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.dto.TagDto;
 import com.example.demo.entity.FeedbackEntity;
 import com.example.demo.entity.PostEntity;
-import com.example.demo.entity.PostQuestionEntity;
 import com.example.demo.entity.QuestionEntity;
 import com.example.demo.entity.TagEntity;
+import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.UserPostEntity;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.repository.QuestionRepository;
@@ -41,7 +41,6 @@ import com.example.demo.service.FeedbackService;
 import com.example.demo.service.PostQuestionService;
 import com.example.demo.service.PostService;
 import com.example.demo.service.QuestionService;
-import com.example.demo.service.StorageService;
 import com.example.demo.service.TagPostService;
 import com.example.demo.service.TagService;
 import com.example.demo.service.UserPostService;
@@ -50,8 +49,6 @@ import com.example.demo.thanh.dto.FeedbackDto;
 import com.example.demo.thanh.dto.LessonDto;
 import com.example.demo.thanh.dto.QuestionDto;
 import com.example.demo.thanh.service.HttpRequestService;
-
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -59,7 +56,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class LessonController {
 	@Autowired
 	private PostService postService;
-	
+
 	@Autowired
 	private CategoryService cateService;
 
@@ -71,7 +68,7 @@ public class LessonController {
 
 	@Autowired
 	private QuestionService questionService;
-	
+
 	@Autowired
 	private QuestionRepository questionRepo;
 
@@ -80,9 +77,6 @@ public class LessonController {
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private StorageService storageService;
 
 	@Autowired
 	private TagPostService tagpostService;
@@ -188,8 +182,8 @@ public class LessonController {
 			UserPostEntity userBuy = userPostService.UserPayPost(userId, lessonId);
 			if (userBuy != null) {
 				LessonDto lessonDto = new LessonDto(lesson.getPostId(), lesson.getFeatureImage(), lesson.getVideo(),
-						lesson.getPrice(), lesson.getTitle(), lesson.getContent(), lesson.getCreatedAt(),
-						lesson.getUpdatedAt(), lesson.getDeletedAt(),
+						lesson.getPrice(), lesson.getPrize(), lesson.getTitle(), lesson.getContent(),
+						lesson.getCreatedAt(), lesson.getUpdatedAt(), lesson.getDeletedAt(),
 						lesson.getUser() != null ? lesson.getUser().getUserId() : -1, authorName,
 						lesson.getCategory() != null ? lesson.getCategory().getCategoryId() : -1, cateName,
 						questionDtos, feedbackDtos, tagDtos);
@@ -205,6 +199,31 @@ public class LessonController {
 
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			// trả về message lỗi server khi nhận status 500 này
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/my-lesson/{userId}")
+	public ResponseEntity<?> getMyLessonById(@PathVariable int userId) {
+		try {
+			List<PostEntity> lessonPosts = userPostService.findUserBoughtLesson(userId);
+			if (lessonPosts.isEmpty()) {
+				return new ResponseEntity<>("You haven't bought any course yet!", HttpStatus.NOT_FOUND);
+			}
+			List<LessonDto> lessonPostDtos = lessonPosts.stream().map(lesson -> {
+				String cateName = (lesson.getCategory() != null) ? lesson.getCategory().getCategoryName()
+						: "Uncategory";
+				String authorName = (lesson.getUser() != null) ? lesson.getUser().getName() : "Anonymous";
+				return new LessonDto(lesson.getPostId(), lesson.getFeatureImage(), lesson.getTitle(),
+						lesson.getContent(), lesson.getPrice(),
+						lesson.getUser() != null ? lesson.getUser().getUserId() : -1, authorName,
+						lesson.getCategory() != null ? lesson.getCategory().getCategoryId() : -1, cateName,
+						lesson.getCreatedAt(), lesson.getUpdatedAt());
+
+			}).collect(Collectors.toList());
+			return new ResponseEntity<>(lessonPostDtos, HttpStatus.OK);
 		} catch (Exception e) {
 			// trả về message lỗi server khi nhận status 500 này
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -247,8 +266,8 @@ public class LessonController {
 				tagDtos = tags.stream().map(tag -> new TagDto(tag.getTagId(), tag.getTagName()))
 						.collect(Collectors.toList());
 				LessonDto lessonDto = new LessonDto(lesson.getPostId(), lesson.getFeatureImage(), lesson.getVideo(),
-						lesson.getPrice(), lesson.getTitle(), lesson.getContent(), lesson.getCreatedAt(),
-						lesson.getUpdatedAt(), lesson.getDeletedAt(),
+						lesson.getPrice(), lesson.getPrize(), lesson.getTitle(), lesson.getContent(),
+						lesson.getCreatedAt(), lesson.getUpdatedAt(), lesson.getDeletedAt(),
 						lesson.getUser() != null ? lesson.getUser().getUserId() : -1, authorName,
 						lesson.getCategory() != null ? lesson.getCategory().getCategoryId() : -1, cateName,
 						questionDtos, feedbackDtos, tagDtos);
@@ -328,6 +347,12 @@ public class LessonController {
 			String useEmail = HttpRequestService.getUserEmail(request);
 			int userId = userService.getUserByEmail(useEmail).getUserId();
 			PostEntity postEntity = postService.getPostById(lessonId);
+			// check course have any owner
+			UserPostEntity owner = userPostService.UserPayPost(userId, lessonId);
+			if (owner != null) {
+				return new ResponseEntity<>("This content already the owner", HttpStatus.UNAUTHORIZED);
+			}
+
 			if (HttpRequestService.hasRole(request, "ADMIN")) {
 				postEntity.setDeletedAt(Timestamp.from(Instant.now()));
 				postService.createPost(postEntity);
@@ -447,8 +472,7 @@ public class LessonController {
 				questionDto.setQuestionId(questionEntity.getQuestionId());
 				return new ResponseEntity<>(questionDto, HttpStatus.OK);
 			} else
-				return new ResponseEntity<>("Do not allow to remove tag for this lesson, please login",
-						HttpStatus.UNAUTHORIZED);
+				return new ResponseEntity<>("Do not allow to do this, please login", HttpStatus.UNAUTHORIZED);
 		} catch (Exception e) {
 			return new ResponseEntity<>("An error occurred while processing the request" + e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
@@ -465,31 +489,114 @@ public class LessonController {
 				questionRepo.deleteById(questionId);
 				return new ResponseEntity<>("Delete OK", HttpStatus.OK);
 			} else
-				return new ResponseEntity<>("Do not allow to remove tag for this lesson, please login",
-						HttpStatus.UNAUTHORIZED);
+				return new ResponseEntity<>("Do not allow to remove this, please login", HttpStatus.UNAUTHORIZED);
 		} catch (Exception e) {
 			return new ResponseEntity<>("An error occurred while processing the request" + e,
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@PutMapping("/update/{lessonId}")
-	public ResponseEntity<?> updateLesson(HttpServletRequest request, @RequestBody LessonDto lessonDto,
-			@PathVariable int lessonId) {
+
+	@PutMapping("/update")
+	public ResponseEntity<?> updateLesson(HttpServletRequest request, @RequestBody LessonDto lessonDto) {
 		try {
 			String useEmail = HttpRequestService.getUserEmail(request);
 			int userId = userService.getUserByEmail(useEmail).getUserId();
-			PostEntity lesson = postService.getPostById(lessonId);
+			PostEntity lesson = postService.getPostById(lessonDto.getId());
 			if (HttpRequestService.hasRole(request, "ADMIN") || lesson.getUser().getUserId() == userId) {
 				lesson.setTitle(lessonDto.getTitle());
 				lesson.setCategory(cateService.getCategoryById(lessonDto.getCategoryId()));
 				lesson.setPrice(lessonDto.getPrice());
+				lesson.setPrize(lessonDto.getPrize());
 				lesson.setContent(lessonDto.getContent());
+				if (!lessonDto.getFeatureImage().isBlank())
+					lesson.setFeatureImage(lessonDto.getFeatureImage());
+				if (!lessonDto.getVideo().isBlank())
+					lesson.setVideo(lessonDto.getVideo());
 				postService.createPost(lesson);
-				return new ResponseEntity<>("OK", HttpStatus.OK);
+				return new ResponseEntity<>("Update successfully!", HttpStatus.OK);
 			} else
-				return new ResponseEntity<>("Do not allow to remove tag for this lesson, please login",
+				return new ResponseEntity<>("Do not allow to update this lesson, please login",
 						HttpStatus.UNAUTHORIZED);
+		} catch (Exception e) {
+			return new ResponseEntity<>("An error occurred while processing the request" + e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@DeleteMapping("/delete-list")
+	public ResponseEntity<?> deleteListLesson(HttpServletRequest request, @RequestBody List<Integer> listId) {
+		try {
+			String useEmail = HttpRequestService.getUserEmail(request);
+			int userId = userService.getUserByEmail(useEmail).getUserId();
+			String addMsg = "";
+			if (HttpRequestService.hasRole(request, "ADMIN")) {
+				for (int i = 0; i < listId.size(); i++) {
+					Integer postId = listId.get(i);
+					PostEntity post = postService.getPostById(postId);
+					// check course have any owner. It will terminate the loop
+					UserPostEntity owner = userPostService.UserPayPost(userId, postId);
+					if (owner != null) {
+						addMsg = "Some content have owner will not deleled";
+						return new ResponseEntity<>(addMsg, HttpStatus.UNAUTHORIZED);
+					} else {
+						post.setDeletedAt(Timestamp.from(Instant.now()));
+						postService.createPost(post);
+					}
+				}
+				return new ResponseEntity<>("Delete list successfully!", HttpStatus.OK);
+			} else {
+				for (int i = 0; i < listId.size(); i++) {
+					Integer postId = listId.get(i);
+					PostEntity post = postService.getPostById(postId);
+					if (post.getUser().getUserId() == userId) {
+						UserPostEntity owner = userPostService.UserPayPost(userId, postId);
+						if (owner != null) {
+							addMsg = "Some content have owner will not deleled";
+							return new ResponseEntity<>(addMsg, HttpStatus.UNAUTHORIZED);
+						} else {
+							post.setDeletedAt(Timestamp.from(Instant.now()));
+							postService.createPost(post);
+						}
+					} else
+						return new ResponseEntity<>("Delete list successfully!", HttpStatus.OK);
+				}
+				return new ResponseEntity<>("Do not allow to delete the lesson!", HttpStatus.UNAUTHORIZED);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>("An error occurred while processing the request" + e.getMessage(),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PostMapping("/add")
+	public ResponseEntity<?> addLesson(HttpServletRequest request, @RequestBody LessonDto lessonDto) {
+		try {
+			String useEmail = HttpRequestService.getUserEmail(request);
+			UserEntity author = userService.getUserByEmail(useEmail);
+
+			if (HttpRequestService.hasRole(request, "ADMIN") || HttpRequestService.hasRole(request, "TEACHER")) {
+				PostEntity lesson = new PostEntity();
+				lesson.setType("lesson");
+				lesson.setUser(author);
+				lesson.setTitle(lessonDto.getTitle());
+				lesson.setCategory(cateService.getCategoryById(lessonDto.getCategoryId()));
+				lesson.setPrice(lessonDto.getPrice());
+				lesson.setPrize(lessonDto.getPrize());
+				lesson.setContent(lessonDto.getContent());
+				if (!lessonDto.getFeatureImage().isBlank())
+					lesson.setFeatureImage(lessonDto.getFeatureImage());
+				else
+					lesson.setFeatureImage("uploads/images/post/Post_default.jpg");
+				if (!lessonDto.getVideo().isBlank())
+					lesson.setVideo(lessonDto.getVideo());
+				else
+					lesson.setVideo("uploads/video/post/video_post_default.mp4");
+				PostEntity newPost = postService.createPost(lesson);
+				int lessonId = newPost.getPostId();
+				return new ResponseEntity<>(lessonId, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>("Do not allow to add!", HttpStatus.UNAUTHORIZED);
+			}
 		} catch (Exception e) {
 			return new ResponseEntity<>("An error occurred while processing the request" + e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
