@@ -13,13 +13,6 @@ function ResetPassword() {
     const [errorMessage, setErrorMessage] = useState(null);
     const [variant, setVariant] = useState('info');
     const location = useLocation();
-    const [email, setEmail] = useState('');
-    useEffect(() => {
-        if (location.state && location.state.email) {
-            setEmail(location.state.email);
-        }
-    }, [location.state]);
-    console.log("email cureent", email);
     const schema = yup.object().shape({
         email: yup.string().email().required(),
         newPassword: yup.string().min(3, "Please enter at least 3 characters").required(),
@@ -27,11 +20,10 @@ function ResetPassword() {
         code: yup.string().required("Verification code is required"),
     });
 
-    const handleSubmit = async (values, { setSubmitting }) => {
+    const handleSubmit = async (values) => {
         try {
             setIsLoading(true);
-            await sendResetPassword(email, values.newPassword, values.code);
-            setErrorMessage(null); // Reset error message
+            await sendResetPassword(values.email, values.newPassword, values.confirmPassword,values.code);
         } catch (error) {
             const errorObj = error.response.data;
             console.log("err reset :", errorObj);
@@ -39,7 +31,6 @@ function ResetPassword() {
             setErrorMessage(errorObj['Error Message']);
         } finally {
             setIsLoading(false);
-            setSubmitting(false);
         }
     };
 
@@ -52,8 +43,8 @@ function ResetPassword() {
                     validationSchema={schema}
                     onSubmit={handleSubmit}
                     initialValues={{
-                        email: email || '',
-                        newPassword: 'aa',
+                        email: location.state.email || '',
+                        newPassword: '',
                         confirmPassword: '',
                         code: '',
                     }}
@@ -66,7 +57,9 @@ function ResetPassword() {
                                     <Form.Control
                                         type="text"
                                         name="email"
-                                        value={email}
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        isInvalid={touched.email && errors.email}
                                     />
                                     <Form.Control.Feedback type="invalid">
                                         {errors.email}
@@ -119,7 +112,7 @@ function ResetPassword() {
                             )}
                             <div className="d-grid">
                                 <Button variant="primary" type="submit" disabled={isLoading}>
-                                    {isLoading ? (<Spinner size="sm" />) : ("Register")}
+                                    {isLoading ? (<Spinner size="sm" />) : ("Submit")}
                                 </Button>
                             </div>
                         </Form>

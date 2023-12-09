@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { FaAngleUp } from 'react-icons/fa6';
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
+import ClientProfile from "./pages/user_hung/ClientProfile";
 
 function App() {
   //Fix loi resize khi co form
@@ -73,6 +74,7 @@ function App() {
                 </Route>
                 <Route path="detail/:id" element={<ClientDetailProduct />} />
               </Route>
+              <Route path="/profile" element={<ClientProfile />} />
             </Route>
 
             <Route path="/admin/" element={<AdminLayout>  <AdminPage />  </AdminLayout>}>
