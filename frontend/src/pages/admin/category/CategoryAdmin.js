@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, Tooltip, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions } from '@mui/material';
-import { VisibilityOutlined, ModeEditOutlineOutlined, DeleteOutline } from '@mui/icons-material';
+import { ModeEditOutlineOutlined, DeleteOutline } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
-import { deleleListLesson, deletePost, fetchListLessonDashboard } from '../../../services/api/lessonApi';
+import { deleleListLesson } from '../../../services/api/lessonApi';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Alert, Col } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
+import { deleteCategory, fetchListCategory } from '../../../services/api/categoryApi';
+import env from '../../../environment.json'
+
 function LessonAdmin(props) {
     const navigate = useNavigate();
     const handleAddCoure = () => { navigate('create'); }
@@ -21,14 +24,11 @@ function LessonAdmin(props) {
     const handleCloseDelList = () => {
         setOpenDelList(false);
     }
-    const onClickDelList = () => {
-        if (selectedRows.length === 0) return;
-        setOpenDelList(true);
-    }
+    
     const onConfirmDelList = async () => {
         try {
-            const updatedLessons = listLesson.filter(lesson => !selectedRows.includes(lesson));
-            setListLesson(updatedLessons);
+            const updatedLessons = listCategory.filter(lesson => !selectedRows.includes(lesson));
+            setListCategory(updatedLessons);
             //Api cal
             const listOfIds = selectedRows.map(item => item.id);
             const result = await deleleListLesson(listOfIds);
@@ -45,16 +45,16 @@ function LessonAdmin(props) {
     const [errorMessage, setErrorMessage] = useState(null);
     const [variant, setVariant] = useState('info');
     const [loading, setLoading] = useState(true);
-    const [listLesson, setListLesson] = useState([]);
+    const [listCategory, setListCategory] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetchListLessonDashboard();
-                // const data = await response.json();
-                if (response) {
-                    await setListLesson(response);
-                } else setListLesson([]);
+                const response = await fetchListCategory();
+                const data = await response.data;
+                if (response.status === 200) {
+                    await setListCategory(data);
+                } else setListCategory([]);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -63,51 +63,46 @@ function LessonAdmin(props) {
         fetchData();
     }, []);
     const onDeleteClick = (e, row) => {
+        setErrorMessage('');
         setOpen(true);
         setSelectedItem(row)
     };
     const handleConfirmDelete = async () => {
         try {
-            const response = await deletePost(selectedItem.id);
-            const updateList = listLesson.filter(item => item.id !== selectedItem.id);
-            setListLesson(updateList);
-            setErrorMessage(response);
+            const response = await deleteCategory(selectedItem.categoryId);
+            if (response.status === 200) {
+                const updateList = listCategory.filter(item => item.categoryId !== selectedItem.categoryId);
+                setListCategory(updateList);
+                setVariant('success');
+                setErrorMessage(response.data);
+            } else {
+                setVariant('danger');
+                setErrorMessage(response.data);   
+            }
         } catch (error) {
             setVariant('danger');
-            setErrorMessage('Not allow to delete, this is not your post');
+            setErrorMessage(error.response.data);
         } finally {
             setOpen(false);
         }
     };
+    const urlMedia = env.urls.media;
     const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'title', headerName: 'Title', width: 130 },
-        { field: 'content', headerName: 'Content', width: 130 },
-        { field: 'categoryName', headerName: 'Category', width: 130 },
-        { field: 'authorName', headerName: 'Author', width: 130 },
+        { field: 'categoryId', headerName: 'ID', width: 70 },
         {
-            field: 'creatatedAt', headerName: 'Created Date', width: 160, valueFormatter: (params) => {
-                // Format the date using Intl.DateTimeFormat
-                const formattedDate = new Intl.DateTimeFormat('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                }).format(new Date(params.value));
-
-                return formattedDate;
-            },
+            field: 'featureImage', headerName: 'Image', width: 130, renderCell: (params) => {
+                return (
+                    <img alt='' src={`${urlMedia}${params.row.featureImage}`} style={{ width: '100px' }} ></img>
+                )
+            }
         },
+        { field: 'categoryName', headerName: 'Category', width: 130 },
+        { field: 'countLesson', headerName: 'Number of Course', width: 140 },
         {
             field: 'actions', headerName: 'Actions', width: 180, headerAlign: 'center', align: 'center', renderCell: (params) => {
                 return (
                     <>
-                        <Link to={`detail/${params.row.id}`} style={{ padding: "8px" }}>
-                            <Tooltip followCursor={true} title="Detail">
-                                <VisibilityOutlined style={{ color: 'green' }} />
-                            </Tooltip>
-                        </Link>
-
-                        <Link to={`update/${params.row.id}`} style={{ padding: "8px" }}>
+                        <Link to={`update/${params.row.categoryId}`} style={{ padding: "8px" }}>
                             <Tooltip followCursor={true} title="Update">
                                 <ModeEditOutlineOutlined style={{ color: 'blue' }} />
                             </Tooltip>
@@ -135,6 +130,7 @@ function LessonAdmin(props) {
     //     { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
     //     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
     // ];
+    const getRowId = (row) => row.categoryId;
     return (
         <>
             {/* message delete box */}
@@ -178,12 +174,12 @@ function LessonAdmin(props) {
                 </DialogActions>
             </Dialog>
             {/* end message delete box */}
-            <h2 className="fw-bold mb-2 text-uppercase">List course</h2>
-            <button style={{'color': 'white'}} onClick={handleAddCoure} className="btn btn-primary">
-                <AddIcon /> Add course
+            <h2 className="fw-bold mb-2 text-uppercase">List category</h2>
+            <button style={{ 'color': 'white' }} onClick={handleAddCoure} className="btn btn-primary">
+                <AddIcon /> Add category
             </button>
             {errorMessage && (
-                <Alert variant={variant} dismissible>
+                <Alert className='mt-2' variant={variant} dismissible>
                     {errorMessage}
                 </Alert>
             )}
@@ -194,29 +190,30 @@ function LessonAdmin(props) {
             ) : (
                 <div className='container'>
                     <div className='row'>
-                        <Col className="col-md-8 m-1" >Here is list! {listLesson.length} items</Col>
-                        <Col className='col-md-2 d-flex justify-content-end' onClick={onClickDelList}>
+                        <Col className="col-md-8 m-1" >Here is list! {listCategory.length} items</Col>
+                        {/* <Col className='col-md-2 d-flex justify-content-end' onClick={onClickDelList}>
                             <span>{selectedRows ? selectedRows.length : 0} selected&emsp;</span>
                             <Tooltip title="Delete">
                                 <DeleteOutline className="delete-row" style={{ color: 'red' }} />
                             </Tooltip>
-                        </Col>
+                        </Col> */}
                     </div>
                     <div className='row'>
                         <div className='col-12'>
                             <DataGrid
-                                rows={listLesson}
+                                rows={listCategory}
                                 columns={columns}
                                 hideFooterSelectedRowCount={true}
                                 showColumnVerticalBorder={true}
                                 showCellVerticalBorder={true}
+                                getRowId={getRowId}
                                 disableRowSelectionOnClick
-                                checkboxSelection
+                                // checkboxSelection
                                 autoHeight
                                 onRowSelectionModelChange={
                                     (ids) => {
                                         const selectedIDs = new Set(ids);
-                                        const selectedRows = listLesson.filter((row) =>
+                                        const selectedRows = listCategory.filter((row) =>
                                             selectedIDs.has(row.id),
                                         );
                                         setSelectedRows(selectedRows);

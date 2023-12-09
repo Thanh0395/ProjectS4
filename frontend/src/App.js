@@ -9,7 +9,7 @@ import { UserProvider } from './components/context/UserContext';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import {
   Login, Register, NotFound, Unauthorized,
-  Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin,
+  Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin, CategoryAdminCreate, CategoryAdminUpdate,
   LessonAdminCreate, LessonAdminDetail, LessonAdminUpdate,
   ClientContact, ClientProducts, ClientDetailProduct, Home, Planning, ClientCourse, ClientCourseDetail
 } from "./pages"
@@ -85,7 +85,11 @@ function App() {
               </Route>
               <Route path="exams" element={<ExamAdmin />} />
               <Route path="users" element={<UserAdmin />} />
-              <Route path="categories" element={<CategoryAdmin />} />
+              <Route path="categories/">
+                <Route path="" element={<CategoryAdmin />} />
+                <Route path="create" element={<CategoryAdminCreate />} />
+                <Route path="update/:id" element={<CategoryAdminUpdate />} />
+              </Route>
               <Route path="tags" element={<TagAdmin />} />
               <Route path="rewards" element={<RewardAdmin />} />
               <Route path="achievements" element={<AchievementAdmin />} />
