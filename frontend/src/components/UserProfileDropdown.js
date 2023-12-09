@@ -8,7 +8,11 @@ const UserProfileDropdown = ({ currentUser, onLogout }) => {
   const gameData = JSON.parse(localStorage.getItem('userGameData'));
   const urlMedia = env.urls.media;
   return (
-    <NavDropdown className='user-nav-dropdown-container' title={<Image src={urlMedia + currentUser.avatar} roundedCircle width="30" height="30" />} id="basic-nav-dropdown">
+    <NavDropdown className='user-nav-dropdown-container'
+      title={<Image src={urlMedia + currentUser.avatar}
+        roundedCircle width="30" height="30" />}
+      id="basic-nav-dropdown"
+    >
       <NavDropdown.Item>
         Hi, {currentUser.name}
       </NavDropdown.Item>

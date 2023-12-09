@@ -7,6 +7,7 @@ import { deleleListLesson, deletePost, fetchListLessonDashboard } from '../../..
 import CircularProgress from '@mui/material/CircularProgress';
 import { Alert, Col } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
+import env from '../../../environment.json'
 function LessonAdmin(props) {
     const navigate = useNavigate();
     const handleAddCoure = () => { navigate('create'); }
@@ -27,6 +28,7 @@ function LessonAdmin(props) {
     }
     const onConfirmDelList = async () => {
         try {
+            setErrorMessage('');
             //Api cal
             const listOfIds = selectedRows.map(item => item.id);
             const result = await deleleListLesson(listOfIds);
@@ -73,6 +75,7 @@ function LessonAdmin(props) {
     };
     const handleConfirmDelete = async () => {
         try {
+            setErrorMessage('');
             const response = await deletePost(selectedItem.id);
             if (response.status === 200) {
                 const updateList = listLesson.filter(item => item.id !== selectedItem.id);
@@ -89,10 +92,17 @@ function LessonAdmin(props) {
             setOpen(false);
         }
     };
+    const urlMedia = env.urls.media;
     const columns = [
         { field: 'id', headerName: 'ID', width: 50 },
         { field: 'title', headerName: 'Title', width: 130 },
-        { field: 'content', headerName: 'Content', width: 130 },
+        {
+            field: 'featureImage', headerName: 'Image', width: 130, renderCell: (params) => {
+                return (
+                    <img alt='' src={`${urlMedia}${params.row.featureImage}`} style={{ width: '100px' }} ></img>
+                )
+            }
+        },
         { field: 'categoryName', headerName: 'Category', width: 130 },
         { field: 'authorName', headerName: 'Author', width: 130 },
         {
@@ -189,11 +199,11 @@ function LessonAdmin(props) {
             </Dialog>
             {/* end message delete box */}
             <h2 className="fw-bold mb-2 text-uppercase">List course</h2>
-            <button style={{'color': 'white'}} onClick={handleAddCoure} className="btn btn-primary">
+            <button style={{ 'color': 'white' }} onClick={handleAddCoure} className="btn btn-primary">
                 <AddIcon /> Add course
             </button>
             {errorMessage && (
-                <Alert className='mt-2' variant={variant}>
+                <Alert className='mt-2' variant={variant} dismissible>
                     {errorMessage}
                 </Alert>
             )}
