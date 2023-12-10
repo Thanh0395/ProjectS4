@@ -1,0 +1,9 @@
+.quiz{
+    padding: 2rem;
+}
+.quiz .quiz-start-test{
+    padding: 2rem;
+}
+.form-check-label {
+    z-index: 2;
+}

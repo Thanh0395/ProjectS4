@@ -6,6 +6,7 @@ import Student_Detail from "../../../../../assets/Student_Detail.jpg";
 import Author_02 from "../../../../../assets/author-02.jpg";
 import CourseBannerSession from "../banner-session/banner";
 import ReactPlayer from "react-player";
+import QuizApp from "./quiz";
 import "./course-detail.css";
 function CourseDetail(props) {
   const [productA, setProductsA] = useState({});
@@ -121,6 +122,9 @@ function CourseDetail(props) {
               </div>
             </div>
           )}
+        </Row>
+        <Row>
+        <QuizApp/>
         </Row>
         <Row>
           <div className="pt-4">
