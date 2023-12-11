@@ -67,7 +67,7 @@ public class PaymentController {
 				UserPostEntity userPost = new UserPostEntity();
 				userPost.setUser(user);
 				userPost.setPost(postService.getPostById(lessonId));
-				userPost.setPass(false);
+				userPost.setIsPass(false);
 				userPost.setCreatedAt(Timestamp.from(Instant.now()));
 				userPostService.createUserPost(userPost);
 			}

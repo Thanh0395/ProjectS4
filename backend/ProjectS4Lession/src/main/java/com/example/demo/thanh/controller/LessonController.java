@@ -186,7 +186,7 @@ public class LessonController {
 						lesson.getCreatedAt(), lesson.getUpdatedAt(), lesson.getDeletedAt(),
 						lesson.getUser() != null ? lesson.getUser().getUserId() : -1, authorName,
 						lesson.getCategory() != null ? lesson.getCategory().getCategoryId() : -1, cateName,
-						questionDtos, feedbackDtos, tagDtos);
+						questionDtos, feedbackDtos, tagDtos, userBuy.getIsPass(), userBuy.getScore());
 				return new ResponseEntity<>(lessonDto, HttpStatus.OK);
 			} else {
 				LessonDto lessonDto = new LessonDto(lesson.getPostId(), lesson.getFeatureImage(), lesson.getPrice(),
