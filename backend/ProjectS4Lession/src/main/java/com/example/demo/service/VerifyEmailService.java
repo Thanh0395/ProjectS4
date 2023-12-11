@@ -45,10 +45,10 @@ public class VerifyEmailService {
 	{
 	    VerifyEmailEntity latestVerifyEmail = verifyEmailRepository.findFirstByUserOrderByCreatedAtDesc(user);
 	    if(latestVerifyEmail == null) {
-	    	throw new BadRequestException("User with email " + user.getEmail() + " not exist verify code");
+	    	throw new BadRequestException("Please send email to get verify code!");
 	    }
 	    if (!latestVerifyEmail.getCode().equals(code)) {
-	        throw new VerificationCodeMismatchException("Verification code does not match for user: " + user.getEmail());
+	        throw new VerificationCodeMismatchException("Verification code does not match!");
 	    }
 	    return true;
 	}
@@ -58,10 +58,10 @@ public class VerifyEmailService {
 	{
 	    VerifyEmailEntity latestVerifyEmail = verifyEmailRepository.findFirstByUserOrderByCreatedAtDesc(user);
 	    if(latestVerifyEmail == null) {
-	    	throw new BadRequestException("User with email " + user.getEmail() + " not exist verify code");
+	    	throw new BadRequestException("Please send email to get verify code!");
 	    }
 	    if (!latestVerifyEmail.getCode().equals(code)) {
-	        throw new VerificationCodeMismatchException("Verification code does not match for user: " + user.getEmail());
+	        throw new VerificationCodeMismatchException("Verification code does not match!");
 	    }
 	    return true;
 	}

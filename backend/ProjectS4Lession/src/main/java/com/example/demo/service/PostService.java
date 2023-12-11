@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.PostEntity;
+import com.example.demo.entity.UserEntity;
 import com.example.demo.exception.NotFoundException;
 
 import java.util.List;
@@ -77,7 +78,7 @@ public class PostService {
 		}
 		return listPostEntity;
 	}
-	
+
 		public List<PostEntity> getPostByCateId (int cateId){
 			return postRepository.findByCategoryCategoryId(cateId);
 		}

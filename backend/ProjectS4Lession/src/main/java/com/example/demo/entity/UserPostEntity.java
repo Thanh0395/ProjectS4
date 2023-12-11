@@ -29,7 +29,7 @@ public class UserPostEntity extends BaseEntity{
 	private int userPostId;
 	
 	@Column(name = "is_pass", columnDefinition = "BOOLEAN DEFAULT false")
-	private boolean isPass;
+	private Boolean isPass;
 	
 	@Column(name = "is_refunded")
 	private Boolean isRefunded;

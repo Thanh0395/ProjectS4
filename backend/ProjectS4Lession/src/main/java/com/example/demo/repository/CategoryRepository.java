@@ -12,13 +12,13 @@ import com.example.demo.entity.CategoryEntity;
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer>{
 	//Thanh
-	@Query("SELECT NEW com.example.demo.dto.CategoryDto(c.categoryId, c.categoryName, " +
+	@Query("SELECT NEW com.example.demo.dto.CategoryDto(c.categoryId, c.categoryName, c.featureImage, " +
 			"COUNT(CASE WHEN p.type = 'lesson' THEN 1 ELSE null END) as lessonCount, " +
 	        "COUNT(CASE WHEN p.type = 'test' THEN 1 ELSE null END) as examCount, " +
 	        "COUNT(p) as totalCount) " +
 	        "FROM CategoryEntity c " +
 	        "LEFT JOIN c.posts p " +
-	        "GROUP BY c.categoryId, c.categoryName " +
+	        "GROUP BY c.categoryId, c.categoryName, c.featureImage " +
 	        "ORDER BY c.categoryId ASC")
     List<CategoryDto> countTypePerCategory();
 	

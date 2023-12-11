@@ -45,24 +45,27 @@
     font-weight: 300;
 }
 
-.course-detail .course-detail_addCart  {
+.course-detail .course-detail_addCart {
     padding-top: 3rem;
     text-align: center;
 
 }
-.course-detail .course-detail_addCart button{
+
+.course-detail .course-detail_addCart button {
     border-radius: 1rem;
-    background-color: rgba(31, 108, 22, 0.836);
+    background-color: rgba(22, 108, 61, 0.836);
     color: white;
     border: none;
-    width: 10rem;
+    width: 14rem;
     height: 4rem;
     transition: 0.3s;
 }
-.course-detail .course-detail_addCart button:hover{
+
+.course-detail .course-detail_addCart button:hover {
     background-color: rgb(63, 171, 51);
     color: white;
 }
+
 .course-detail .course-detail_card_title_author {
     padding: 1rem 0 1rem;
     display: flex;
@@ -76,16 +79,48 @@
     border-radius: 100%;
 
 }
+
 .course-detail .course-detail_card_title_author_detail h6 {
     font-weight: 500;
 }
-.course-detail .course-detail_card_title_author_detail i{
+
+.course-detail .course-detail_card_title_author_detail i {
     font-size: 1rem;
     color: rgb(188, 188, 188)
 }
-.course-detail .comments-container{
-    
+
+.course-detail .comments-container {
     border: 1px solid rgb(231, 231, 231);
     padding: 1rem;
     border-radius: 1rem;
+}
+
+.course-detail_video {
+    position: relative;
+    text-align: center;
+    background-color: rgba(227, 227, 227, 0.122);
+    border-radius: 1rem;
+    border: 1px solid rgb(234, 234, 234);
+    padding: 3rem;
+}
+
+.course-detail_video_message h3 {
+    padding: 1rem;
+    font-weight: 200;
+    color: rgb(54, 54, 54);
+}
+
+.course-detail .youtube-player {
+    filter: blur(2px);
+    /* Áp dụng hiệu ứng mờ */
+    pointer-events: none;
+    /* Vô hiệu hóa sự kiện chuột */
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+}
+.course-detail .youtube-active{
+    display: flex;
+    justify-self: center;
+    justify-content: center;
 }

@@ -26,36 +26,37 @@ public class GameController {
 
 	@Autowired
 	private GemService gemService;
-	
+
 	@Autowired
 	private UserLevelService levelService;
-	
+
 	@Autowired
 	private AchievementService achieveService;
 
 	@GetMapping("/user-data/{userId}")
 	public ResponseEntity<UserGameDto> getUserGameData(@PathVariable int userId) {
 		try {
-			UserGameDto userData = new UserGameDto();
-			
-			GemEntity gemdata = gemService.getOrCreateGemByUserId(userId);
-			UserLevelEntity levelData = levelService.getOrCreateLevelByUserId(userId);
-			List<AchievementUserDto> achievements = achieveService.findAchievementsByUserId(userId);
-			//Get value for data
-			userData.setUserId(userId);
-			userData.setGem(gemdata.getCurrent());
-			userData.setEarned(gemdata.getEarned());
-			userData.setSpent(gemdata.getSpent());
-			userData.setLevel(levelData.getLevel());
-			userData.setExp(levelData.getExp());
-			userData.setAchievements(achievements);
-			if (userData.getExp()==0) userData.setErrorMessage("Study to get more badge...");
+			UserGameDto userData = getGameData(userId);
+
+			// GemEntity gemdata = gemService.getOrCreateGemByUserId(userId);
+			// UserLevelEntity levelData = levelService.getOrCreateLevelByUserId(userId);
+			// List<AchievementUserDto> achievements = achieveService.findAchievementsByUserId(userId);
+			// // Get value for data
+			// userData.setUserId(userId);
+			// userData.setGem(gemdata.getCurrent());
+			// userData.setEarned(gemdata.getEarned());
+			// userData.setSpent(gemdata.getSpent());
+			// userData.setLevel(levelData.getLevel());
+			// userData.setExp(levelData.getExp());
+			// userData.setAchievements(achievements);
+			// if (userData.getExp() == 0)
+			// 	userData.setErrorMessage("Study to get more badge...");
 			return new ResponseEntity<>(userData, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/achievements/{userId}")
 	public ResponseEntity<List<AchievementUserDto>> getAchievements(@PathVariable int userId) {
 		try {
@@ -64,5 +65,24 @@ public class GameController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	public UserGameDto getGameData(int userId) {
+		UserGameDto userData = new UserGameDto();
+
+		GemEntity gemdata = gemService.getOrCreateGemByUserId(userId);
+		UserLevelEntity levelData = levelService.getOrCreateLevelByUserId(userId);
+		List<AchievementUserDto> achievements = achieveService.findAchievementsByUserId(userId);
+		// Get value for data
+		userData.setUserId(userId);
+		userData.setGem(gemdata.getCurrent());
+		userData.setEarned(gemdata.getEarned());
+		userData.setSpent(gemdata.getSpent());
+		userData.setLevel(levelData.getLevel());
+		userData.setExp(levelData.getExp());
+		userData.setAchievements(achievements);
+		if (userData.getExp() == 0)
+			userData.setErrorMessage("Study to get more badge...");
+		return userData;
 	}
 }

@@ -9,7 +9,7 @@ import { UserProvider } from './components/context/UserContext';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import {
   Login, Register, NotFound, Unauthorized,
-  Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin,
+  Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin, CategoryAdminCreate, CategoryAdminUpdate,
   LessonAdminCreate, LessonAdminDetail, LessonAdminUpdate,
   ClientContact, ClientProducts, ClientDetailProduct, Home, Planning, ClientCourse, ClientCourseDetail
 } from "./pages"
@@ -17,6 +17,9 @@ import { useEffect, useState } from "react";
 import { FaAngleUp } from 'react-icons/fa6';
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
+import ClientProfile from "./pages/user_hung/ClientProfile";
+import UserAdminDetail from "./pages/admin/UserAdmin/UserAdminDetail";
+import UserAdminCreate from "./pages/admin/UserAdmin/UserAdminCreate";
 
 function App() {
   //Fix loi resize khi co form
@@ -73,6 +76,7 @@ function App() {
                 </Route>
                 <Route path="detail/:id" element={<ClientCourseDetail />} />
               </Route>
+              <Route path="/profile" element={<ClientProfile />} />
             </Route>
 
             <Route path="/admin/" element={<AdminLayout>  <AdminPage />  </AdminLayout>}>
@@ -83,9 +87,21 @@ function App() {
                 <Route path="create" element={<LessonAdminCreate />} />
                 <Route path="update/:id" element={<LessonAdminUpdate />} />
               </Route>
+
               <Route path="exams" element={<ExamAdmin />} />
-              <Route path="users" element={<UserAdmin />} />
-              <Route path="categories" element={<CategoryAdmin />} />
+              <Route path="categories/">
+                <Route path="" element={<CategoryAdmin />} />
+                <Route path="create" element={<CategoryAdminCreate />} />
+                <Route path="update/:id" element={<CategoryAdminUpdate />} />
+              </Route>
+
+              <Route path="users/">
+              <Route index element={<UserAdmin />} />
+                <Route path="detail/:userId" element={<UserAdminDetail />} />
+                <Route path="create" element={<UserAdminCreate />} />
+                <Route path="update/:id" element={<LessonAdminUpdate />} />
+              </Route>
+              
               <Route path="tags" element={<TagAdmin />} />
               <Route path="rewards" element={<RewardAdmin />} />
               <Route path="achievements" element={<AchievementAdmin />} />
@@ -102,7 +118,7 @@ function App() {
 
           {/* Scroll TOP button */}
           {showButton && (
-            <button onClick={scrollToTop} className="back-to-top">
+            <button style={{paddingLeft:'14px'}} onClick={scrollToTop} className="back-to-top">
               <FaAngleUp></FaAngleUp>
             </button>
           )}

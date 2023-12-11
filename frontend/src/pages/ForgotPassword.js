@@ -28,7 +28,9 @@ function ForgotPassword() {
                 navigate('/reset-password', { state: { email: values.email } });
             }, 3000);
         } catch (error) {
-            setErrorMessage('Error sending verification code.');
+            const errorObj = error.response.data;
+            console.log("err reset :", errorObj);
+            setErrorMessage(errorObj['Error Message']);
         } finally {
             setIsLoading(false);
         }
