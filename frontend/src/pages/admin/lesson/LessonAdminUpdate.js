@@ -121,7 +121,6 @@ function LessonAdminUpdate(props) {
                 setShowAlert(true);
                 setVariant('success');
                 setAlertMsg('Update has been Successful.');
-                console.log('first')
             }
             await ('Questions', questions);
             await ('DeletedQuestion', deletedQuestions);

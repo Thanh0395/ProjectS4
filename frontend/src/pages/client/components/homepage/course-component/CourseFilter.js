@@ -11,9 +11,9 @@ const CourseFilter = ({
 
   useEffect(() => {
     const fetchCategories = async () => {
-      try {
+      try { 
         const response = await axios.get(
-          "http://localhost:8080/api/project4/categories/list-category"
+          "http://localhost:8080/api/project4/thanh/lesson/list"
         );
         setCategories(response.data); // Assuming the response contains an array of category names
       } catch (error) {

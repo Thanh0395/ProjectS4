@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.AchievementEntity;
+import com.example.demo.entity.UserEntity;
 import com.example.demo.thanh.dto.AchievementUserDto;
 
 
@@ -22,4 +23,9 @@ public interface AchievementRepository extends JpaRepository<AchievementEntity, 
 	    List<AchievementUserDto> findAchievementsByUserId(@Param("userId") int userId);
 	
 	AchievementEntity findByAchievementId(int achievementId);
+	
+	//Nhan
+	 @Query("SELECT COUNT(ua) FROM UserAchievementEntity ua WHERE ua.user.userId = :userId")
+	    int countAchievementsByUserId(int userId);
+
 }

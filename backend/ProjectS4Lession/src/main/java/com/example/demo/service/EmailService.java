@@ -58,7 +58,7 @@ public class EmailService {
         try {
         	Optional<UserEntity> user = userRepository.findByEmail(email.getToEmail());
         	if(!user.isPresent()) {
-        		throw new NotFoundException("Not found user with email :" + email.getToEmail());
+        		throw new NotFoundException("Not found your account with email " + email.getToEmail());
         	}
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());

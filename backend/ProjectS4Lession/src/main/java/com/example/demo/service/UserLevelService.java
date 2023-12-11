@@ -38,4 +38,8 @@ public class UserLevelService {
 			}
 	        return userLevel;
 	    }
+		
+		public UserLevelEntity saveLevelUser(UserLevelEntity levelEntity) {
+			return userLevelRepository.save(levelEntity);
+		}
 }
