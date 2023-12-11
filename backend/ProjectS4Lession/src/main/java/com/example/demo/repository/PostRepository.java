@@ -29,5 +29,9 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer>{
 	
 	List<PostEntity> findFirst5ByTypeAndCategoryOrderByCreatedAtDesc(String type, CategoryEntity category);
 
+	
+	//Hung
+	List<PostEntity> findByUserUserId(int userId);
+
 	List<PostEntity> findByCategoryCategoryId(int categoryId);
 }

@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { FaAngleUp } from 'react-icons/fa6';
 import ResetPassword from "./pages/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword";
+import ClientProfile from "./pages/user_hung/ClientProfile";
 import UserAdminDetail from "./pages/admin/UserAdmin/UserAdminDetail";
 import UserAdminCreate from "./pages/admin/UserAdmin/UserAdminCreate";
 
@@ -75,6 +76,7 @@ function App() {
                 </Route>
                 <Route path="detail/:id" element={<ClientCourseDetail />} />
               </Route>
+              <Route path="/profile" element={<ClientProfile />} />
             </Route>
 
             <Route path="/admin/" element={<AdminLayout>  <AdminPage />  </AdminLayout>}>
