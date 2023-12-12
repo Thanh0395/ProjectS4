@@ -1,0 +1,11 @@
+@api=http://localhost:8080
+###
+POST  {{api}}/api/project4/auth/login
+Host: localhost:3001
+x-xsrf-token: EkP7KwzV-04YQGr5EKsPgcOH8iJdVsZp3oN0
+Content-Type: application/json
+
+{
+    "email":"doananhphamuk@gmail.com",
+    "password":"1234567"
+}
