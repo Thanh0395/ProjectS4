@@ -24,9 +24,9 @@ public interface TagRepository extends JpaRepository<TagEntity, Integer> {
      List<TagDto> countPostsPerTag();
     
     @Query("SELECT NEW com.example.demo.dto.TagDto(t.tagId, t.tagName, " +
-            "(SELECT COALESCE(COUNT(p), 0) FROM t.tagPosts tp JOIN tp.post p WHERE p.type = 'lesson') as lessonCount, " +
-            "(SELECT COALESCE(COUNT(p), 0) FROM t.tagPosts tp JOIN tp.post p WHERE p.type = 'test') as examCount, " +
-            "(SELECT COALESCE(COUNT(p), 0) FROM t.tagPosts tp JOIN tp.post p) as totalCount) " +
+            "(SELECT COALESCE(COUNT(p), 0) FROM t.tagPosts tp JOIN tp.post p WHERE p.type = 'lesson' AND p.deletedAt IS NULL) as lessonCount, " +
+            "(SELECT COALESCE(COUNT(p), 0) FROM t.tagPosts tp JOIN tp.post p WHERE p.type = 'test' AND p.deletedAt IS NULL) as examCount, " +
+            "(SELECT COALESCE(COUNT(p), 0) FROM t.tagPosts tp JOIN tp.post p WHERE p.deletedAt IS NULL) as totalCount) " +
             "FROM TagEntity t " +
             "ORDER BY t.tagId ASC")
     List<TagDto> countTypePerTag();

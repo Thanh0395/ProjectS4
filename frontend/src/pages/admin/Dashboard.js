@@ -1,9 +1,10 @@
 import React from 'react';
+import DashBoardContainer from '../../components/dashboard/DashBoardContainer';
 
 function Dashboard(props) {
     return (
         <div>
-            Dashboard
+            <DashBoardContainer />
         </div>
     );
 }

@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.TagDto;
-import com.example.demo.dto.ProfileDto.ProfileResponse.User;
 import com.example.demo.entity.FeedbackEntity;
 import com.example.demo.entity.PostEntity;
 import com.example.demo.entity.QuestionEntity;
@@ -160,6 +159,7 @@ public class LessonController {
 				feedbackDtos = feedbacks.stream()
 						.map(feedback -> new FeedbackDto(feedback.getFeedbackId(), feedback.getContent(),
 								feedback.getUser() != null ? feedback.getUser().getName() : "Anonymous",
+								feedback.getUser() != null ? feedback.getUser().getAvatar() : "uploads/images/user/User_default.jpg",
 								feedback.getCreatedAt()))
 						.collect(Collectors.toList());
 			}
@@ -248,6 +248,7 @@ public class LessonController {
 					feedbackDtos = feedbacks.stream()
 							.map(feedback -> new FeedbackDto(feedback.getFeedbackId(), feedback.getContent(),
 									feedback.getUser() != null ? feedback.getUser().getName() : "Anonymous",
+									feedback.getUser() != null ? feedback.getUser().getAvatar() : "uploads/images/user/User_default.jpg",
 									feedback.getCreatedAt()))
 							.collect(Collectors.toList());
 				}
@@ -301,6 +302,7 @@ public class LessonController {
 				feedbackDtos = feedbacks.stream()
 						.map(feedback -> new FeedbackDto(feedback.getFeedbackId(), feedback.getContent(),
 								feedback.getUser() != null ? feedback.getUser().getName() : "Anonymous",
+								feedback.getUser() != null ? feedback.getUser().getAvatar() : "uploads/images/user/User_default.jpg",
 								feedback.getCreatedAt()))
 						.collect(Collectors.toList());
 			}

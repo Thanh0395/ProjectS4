@@ -3,7 +3,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Button } from 'react-bootstrap';
 import { addTag, fetchTags, removeAllTag, removeTag } from '../../services/api/lessonApi';
 
-function TagsEditor({ lessonTags, postId }) {
+function TagsEditor({ lessonTags, postId, updateTag }) {
     const myId = postId;
     const [allTags, setAllTags] = useState([]);
     const [tags, setTags] = useState(lessonTags);
@@ -24,10 +24,12 @@ function TagsEditor({ lessonTags, postId }) {
     const handleRemoveTag = (tagId) => {
         removeTag(myId,tagId);
         const updatedTags = tags.filter(tag => tag.tagId !== tagId);
+        updateTag(updatedTags);
         setTags(updatedTags);
     };
 
     const handleClearAllTags = () => {
+        updateTag([]);
         removeAllTag(myId);
         setTags([]);
     };
@@ -38,6 +40,7 @@ function TagsEditor({ lessonTags, postId }) {
         if (!tags.some(tag => tag.tagId === selectedId)) {
             const updatedTags = [...tags, aTag];
             setTags(updatedTags);
+            updateTag(updatedTags);
             addTag(myId,selectedId);
         }
         setResetTag('');

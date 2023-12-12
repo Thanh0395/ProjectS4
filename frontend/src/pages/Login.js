@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Button, FloatingLabel, Form, Spinner } from "react-bootstrap";
 import * as formik from 'formik';
 import * as yup from 'yup';
-import { activeUser, fetchGameData, loginUser, sendVerifycodeMail } from '../services/api/userAPI';
+import { activeUser, loginUser, sendVerifycodeMail } from '../services/api/userAPI';
 import { sendVerifycodeMailForgotPassword } from '../services/api/AuthApi';
 
 function Login(props) {
@@ -31,8 +31,7 @@ function Login(props) {
             if (values.verify !== '') {
                 await activeUser(currentEmail, values.verify);
             }
-            const userData = await loginUser(values.email, values.password);
-            await fetchGameData(userData.user.userId);
+            await loginUser(values.email, values.password);
             navigate('/');
         } catch (error) {
             const errorObj = error.response.data;

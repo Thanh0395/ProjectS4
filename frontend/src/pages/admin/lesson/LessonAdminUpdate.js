@@ -36,6 +36,9 @@ function LessonAdminUpdate(props) {
     function updateDeletedQuestion(delQues) {
         setDeletedQuestions(delQues);
     }
+    function updateTag(ques) {
+        setTags(ques);
+    }
     const params = useParams();
     useEffect(() => {
         const fetchData = async () => {
@@ -122,8 +125,10 @@ function LessonAdminUpdate(props) {
                 setVariant('success');
                 setAlertMsg('Update has been Successful.');
             }
-            await ('Questions', questions);
-            await ('DeletedQuestion', deletedQuestions);
+            // await ('Questions', questions);
+            // await ('DeletedQuestion', deletedQuestions);
+            // console.log(questions)
+            // console.log(tags)
             // Optionally, you can redirect the user to a different page after successful registration
         } catch (error) {
             setShowAlert(true);
@@ -362,7 +367,7 @@ function LessonAdminUpdate(props) {
                                 </div>
                                 {showAlert && <Alert variant={variant} dismissible>{alertMsg}</Alert>}
                                 <Form.Group as={Col} md="12">
-                                    <TagsEditor postId={lesson.id} lessonTags={tags} />
+                                    <TagsEditor postId={lesson.id} lessonTags={tags} updateTag={updateTag}/>
                                     {/* <Form.Control.Feedback type="invalid">
                                             {errors.tags}
                                         </Form.Control.Feedback> */}

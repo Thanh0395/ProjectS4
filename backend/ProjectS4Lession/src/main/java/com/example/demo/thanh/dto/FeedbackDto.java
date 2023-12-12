@@ -9,6 +9,8 @@ public class FeedbackDto {
 	
 	private String userName;
 	
+	private String avatar;
+	
 	private Timestamp creatatedAt;
 	
 	private Timestamp updatedAt;
@@ -17,11 +19,12 @@ public class FeedbackDto {
 		super();
 	}
 
-	public FeedbackDto(int feedbackId, String content, String userName, Timestamp creatatedAt) {
+	public FeedbackDto(int feedbackId, String content, String userName, String avatar, Timestamp creatatedAt) {
 		super();
 		this.feedbackId = feedbackId;
 		this.content = content;
 		this.userName = userName;
+		this.avatar = avatar;
 		this.creatatedAt = creatatedAt;
 	}
 
@@ -48,6 +51,14 @@ public class FeedbackDto {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 	public Timestamp getCreatatedAt() {
