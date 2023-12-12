@@ -77,7 +77,19 @@ const questions = [
   // Add more questions as needed
 ];
 
-const QuizApp = () => {
+const QuizApp = (props) => {
+  const { video } = props;
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("currentUser"))
+  );
+  let active = '';
+  console.log("Video null or not:",video)
+  if (video === null) {
+    active = "d-none"
+  }
+  else{
+    active = "";
+  }
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState(
     new Array(questions.length).fill(null)
@@ -165,143 +177,143 @@ const QuizApp = () => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
   return (
-    <div className="quiz container border mt-5">
-      {!quizStarted ? (
-        <div className="quiz-start-test">
-          <h2 className="text-success">Welcome to the Quiz!</h2>
-          <p>
-            This quiz will test your knowledge on various topics. Each question
-            has multiple-choice options. Click{" "}
-            <button onClick={handleStartQuiz} className="btn btn-success">
-              Start
-            </button>{" "}
-            when you are ready to begin.
-          </p>
-        </div>
-      ) : showResults ? (
-        <div>
-          <h2 className="text-success">Quiz Results</h2>
-          <p className="text-danger">
-            Your Score: {score} / {questions.length}
-          </p>
-          <ul>
-            {questions.map((question, index) => (
-              <li key={question.id}>
-                {question.text} - Your Answer: {userAnswers[index]}
-                {userAnswers[index] === question.correctAnswer ? (
-                  <span className="text-success">
-                    (Correct Answer: {question.correctAnswer})
-                  </span>
-                ) : (
-                  <span className="text-danger">
-                    (Correct Answer: {question.correctAnswer})
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-          <button className="btn btn-primary" onClick={resetQuiz}>
-            Restart Quiz
-          </button>
-        </div>
-      ) : (
-        <div className="quiz-question">
-          <div className="timer">
-            {quizStarted && !showResults && (
-              <p className="text-danger">
-                Time Remaining: {formatTime(remainingTime)}
-              </p>
-            )}
+      <div className={`quiz container border mt-5 ${active}`}>
+        {!quizStarted ? (
+          <div className="quiz-start-test">
+            <h2 className="text-success">Welcome to the Quiz!</h2>
+            <p>
+              This quiz will test your knowledge on various topics. Each question
+              has multiple-choice options. Click{" "}
+              <button onClick={handleStartQuiz} className="btn btn-success">
+                Start
+              </button>{" "}
+              when you are ready to begin.
+            </p>
           </div>
-          <div className="d-flex justify-content-center">
-            <div className="d-flex align-items-center justify-content-center position-relative">
+        ) : showResults ? (
+          <div>
+            <h2 className="text-success">Quiz Results</h2>
+            <p className="text-danger">
+              Your Score: {score} / {questions.length}
+            </p>
+            <ul>
               {questions.map((question, index) => (
-                <div key={index} className="px-2">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    id={`question_${index}`}
-                    name="question_selection"
-                    value={index}
-                    checked={currentQuestion === index}
-                    onChange={() => handleQuestionChange(index)}
-                  />
-                  <label
-                    htmlFor={`question_${index}`}
-                    className="form-check-label px-2"
-                  >
-                    {index + 1}
-                  </label>
-                </div>
+                <li key={question.id}>
+                  {question.text} - Your Answer: {userAnswers[index]}
+                  {userAnswers[index] === question.correctAnswer ? (
+                    <span className="text-success">
+                      (Correct Answer: {question.correctAnswer})
+                    </span>
+                  ) : (
+                    <span className="text-danger">
+                      (Correct Answer: {question.correctAnswer})
+                    </span>
+                  )}
+                </li>
               ))}
-            </div>
-            <>
-              <button
-                className="btn btn-outline-primary"
-                onClick={handleFinishClick}
-              >
-                Finish
-              </button>
-              <Modal show={showConfirmModal} onHide={handleCancelFinish}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Finish Quiz</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  Are you sure you want to finish the quiz?
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleCancelFinish}>
-                    Cancel
-                  </Button>
-                  <Button variant="primary" onClick={handleConfirmFinish}>
-                    Finish
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </>
+            </ul>
+            <button className="btn btn-primary" onClick={resetQuiz}>
+              Restart Quiz
+            </button>
           </div>
+        ) : (
+          <div className="quiz-question">
+            <div className="timer">
+              {quizStarted && !showResults && (
+                <p className="text-danger">
+                  Time Remaining: {formatTime(remainingTime)}
+                </p>
+              )}
+            </div>
+            <div className="d-flex justify-content-center">
+              <div className="d-flex align-items-center justify-content-center position-relative">
+                {questions.map((question, index) => (
+                  <div key={index} className="px-2">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      id={`question_${index}`}
+                      name="question_selection"
+                      value={index}
+                      checked={currentQuestion === index}
+                      onChange={() => handleQuestionChange(index)}
+                    />
+                    <label
+                      htmlFor={`question_${index}`}
+                      className="form-check-label px-2"
+                    >
+                      {index + 1}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <>
+                <button
+                  className="btn btn-outline-primary"
+                  onClick={handleFinishClick}
+                >
+                  Finish
+                </button>
+                <Modal show={showConfirmModal} onHide={handleCancelFinish}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Finish Quiz</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    Are you sure you want to finish the quiz?
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCancelFinish}>
+                      Cancel
+                    </Button>
+                    <Button variant="primary" onClick={handleConfirmFinish}>
+                      Finish
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              </>
+            </div>
 
-          <Row className="d-flex align-items-center justify-content-center position-relative mt-4 p-4 border-top border-bottom ">
-            <div className="col-sm-6 text-start border-end ">
-              <h3>Question {currentQuestion + 1}</h3>
-              <p>{questions[currentQuestion].text}</p>
+            <Row className="d-flex align-items-center justify-content-center position-relative mt-4 p-4 border-top border-bottom ">
+              <div className="col-sm-6 text-start border-end ">
+                <h3>Question {currentQuestion + 1}</h3>
+                <p>{questions[currentQuestion].text}</p>
+              </div>
+              <div className="col-sm-6 px-sm-5">
+                {questions[currentQuestion].options.map((option) => (
+                  <div key={option} className="pt-2">
+                    <input
+                      className=""
+                      type="radio"
+                      id={option}
+                      name="options"
+                      value={option}
+                      checked={userAnswers[currentQuestion] === option}
+                      onChange={() => handleOptionChange(option)}
+                    />
+                    <label className="px-3" htmlFor={option}>
+                      {option}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </Row>
+            <div className="d-flex align-items-center justify-content-center position-relative pt-5">
+              <button
+                className="text-secondary border-0 bg-transparent cursor-pointer"
+                onClick={handlePreviousClick}
+              >
+                Previous
+              </button>
+              <button
+                className="text-primary border-0 bg-transparent cursor-pointer"
+                onClick={handleNextClick}
+              >
+                Next
+              </button>
             </div>
-            <div className="col-sm-6 px-sm-5">
-              {questions[currentQuestion].options.map((option) => (
-                <div key={option} className="pt-2">
-                  <input
-                    className=""
-                    type="radio"
-                    id={option}
-                    name="options"
-                    value={option}
-                    checked={userAnswers[currentQuestion] === option}
-                    onChange={() => handleOptionChange(option)}
-                  />
-                  <label className="px-3" htmlFor={option}>
-                    {option}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </Row>
-          <div className="d-flex align-items-center justify-content-center position-relative pt-5">
-            <button
-              className="text-secondary border-0 bg-transparent cursor-pointer"
-              onClick={handlePreviousClick}
-            >
-              Previous
-            </button>
-            <button
-              className="text-primary border-0 bg-transparent cursor-pointer"
-              onClick={handleNextClick}
-            >
-              Next
-            </button>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
   );
 };
 
