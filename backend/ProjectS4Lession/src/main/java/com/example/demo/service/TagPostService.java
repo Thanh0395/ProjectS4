@@ -66,4 +66,8 @@ public class TagPostService {
 		else
 			return tagposts;
 	}
+	
+	public List<TagPostEntity> findTagPostByTagid(int tagId){
+		return tagPostRepository.findByTagTagId(tagId);
+	}
 }

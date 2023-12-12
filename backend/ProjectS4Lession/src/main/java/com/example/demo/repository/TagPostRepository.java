@@ -17,4 +17,6 @@ public interface TagPostRepository extends JpaRepository<TagPostEntity, Integer>
 	
 	@Query("SELECT tp FROM TagPostEntity tp WHERE tp.post.postId = :postId")
 	List<TagPostEntity> findByPostId(@Param("postId") int postId);
+	
+	List<TagPostEntity> findByTagTagId(int tagId);
 }

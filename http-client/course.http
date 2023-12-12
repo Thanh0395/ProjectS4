@@ -1,3 +1,14 @@
 @api=http://localhost:8080
 ###
-GET {{api}}/api/home-metadata
+# Get all information
+GET {{api}}/api/project4/thanh/lesson/list
+
+# get detail information
+###
+GET {{api}}/api/project4/thanh/lesson/10/3
+
+# get detail information
+###
+PUT  {{api}}/api/project4/thanh/test-result/10/3
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2FuYW5ocGhhbXVrQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiZXhwIjoxNzAyNjYzNjE0fQ.W7tH2QCAkTX3O2Ni79wAy2VQvYsmsegbVUdW-XHcJRg
+Content-Type: application/json

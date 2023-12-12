@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.TagDto;
+import com.example.demo.dto.ProfileDto.ProfileResponse.User;
 import com.example.demo.entity.FeedbackEntity;
 import com.example.demo.entity.PostEntity;
 import com.example.demo.entity.QuestionEntity;
@@ -186,7 +187,7 @@ public class LessonController {
 						lesson.getCreatedAt(), lesson.getUpdatedAt(), lesson.getDeletedAt(),
 						lesson.getUser() != null ? lesson.getUser().getUserId() : -1, authorName,
 						lesson.getCategory() != null ? lesson.getCategory().getCategoryId() : -1, cateName,
-						questionDtos, feedbackDtos, tagDtos);
+						questionDtos, feedbackDtos, tagDtos, userBuy.getIsPass(), userBuy.getScore());
 				return new ResponseEntity<>(lessonDto, HttpStatus.OK);
 			} else {
 				LessonDto lessonDto = new LessonDto(lesson.getPostId(), lesson.getFeatureImage(), lesson.getPrice(),
@@ -600,6 +601,32 @@ public class LessonController {
 		} catch (Exception e) {
 			return new ResponseEntity<>("An error occurred while processing the request" + e.getMessage(),
 					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/comment/{userId}/{lessonId}")
+	public ResponseEntity<FeedbackDto> userCommentAlesson(@RequestBody FeedbackDto feedbackDto, @PathVariable int userId, @PathVariable int lessonId) {
+		try {
+			PostEntity lesson = postService.getPostById(lessonId);
+			if (lesson == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			UserEntity user = userService.getUserById(userId);
+			// check the user payed or not refunded
+			UserPostEntity userBuy = userPostService.UserPayPost(userId, lessonId);
+			if (userBuy != null) {				
+				FeedbackEntity feedbackEntity = feedbackService.addFeedback(feedbackDto.getContent(), lesson, user);
+				feedbackDto.setFeedbackId(feedbackEntity.getFeedbackId());
+				feedbackDto.setCreatatedAt(feedbackEntity.getCreatedAt());
+				feedbackDto.setUserName(user.getUsername());
+				return new ResponseEntity<>(feedbackDto, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.PAYMENT_REQUIRED);
+			}
+		} catch (NotFoundException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

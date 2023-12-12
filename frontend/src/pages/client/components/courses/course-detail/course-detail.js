@@ -14,7 +14,7 @@ function CourseDetail(props) {
   const params = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/project4/thanh/lesson/${params.id}`)
+    fetch(`http://localhost:8080/api/project4/thanh/lesson/3/${params.id}`)
       .then((res) => res.json())
       .then((data) => {
         setProductsA(data);

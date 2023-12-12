@@ -35,10 +35,11 @@ public class CategoryDto {
 		this.countPost = countPost;
 	}
 	
-	public CategoryDto(int categoryId, String categoryName, Long lessonCount, Long examCount, Long totalCount) {
+	public CategoryDto(int categoryId, String categoryName,String featureImage, Long lessonCount, Long examCount, Long totalCount) {
 		super();
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
+		this.featureImage = featureImage;
 		this.countLesson = lessonCount != null ? lessonCount.intValue() : 0;
 		this.countExam = examCount != null ? examCount.intValue() : 0;
 		this.countPost = totalCount != null ? totalCount.intValue() : 0;

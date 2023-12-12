@@ -38,4 +38,8 @@ public class GemService {
 		}
         return gemEntity;
     }
+	
+	public GemEntity saveGemUser(GemEntity gemEntity) {
+		return gemRepository.save(gemEntity);
+	}
 }
