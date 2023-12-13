@@ -28,7 +28,7 @@ const UserAdminDetail = () => {
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/project4/nhan/users/detail/${userId}`
+          `http://localhost:8080/api/project4/nhan/user/detail/${userId}`
         );
         setUserDetails(response.data);
         setUpdatedUserDetails(response.data); // Initialize form with existing data

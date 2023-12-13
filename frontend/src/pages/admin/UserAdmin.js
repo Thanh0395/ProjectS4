@@ -10,16 +10,20 @@ import {
   Paper,
   TextField,
   TableSortLabel,
+  Switch,
+  Chip,
 } from "@mui/material";
 
 function UserAdmin(props) {
   const [users, setUsers] = useState([]);
+  const [reRender, setRerender] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortCriteria, setSortCriteria] = useState({
     column: "userId",
     direction: "asc",
   });
+  const [roleOptions, setRoleOptions] = useState([]);
 
   // Fetch users data
   useEffect(() => {
@@ -31,16 +35,30 @@ function UserAdmin(props) {
       )
       .then((data) => {
         if (Array.isArray(data)) {
-          setUsers(data);
-          setFilteredUsers(data); // Set filteredUsers after users is set
+          // const processedData = data.map((user) => ({
+          //   ...user,
+          //   isActive: user.isActive === "true", // Convert string to boolean if necessary
+          // }));
+          const sortedData = data.sort((a, b) => a.userId - b.userId); // Example using 'userId'
+          setUsers(sortedData);
+          setFilteredUsers(sortedData);
+          console.log("List User :", sortedData);
+          // Extract and set unique role options from user data
+          const extractedRoles = new Set();
+          data.forEach((user) => {
+            user.userRoles.forEach((role) => {
+              extractedRoles.add(role); // Assuming 'role' is a string
+            });
+          });
+          setRoleOptions(Array.from(extractedRoles));
         } else {
           throw new Error("Data received is not an array");
         }
       })
       .catch((error) => console.error("Error fetching users:", error));
-  }, []);
+  }, [reRender]);
 
-  // Handle search functionality
+  //Handle search functionality
   const handleSearch = (event) => {
     const searchValue = event.target.value.toLowerCase();
     setSearchTerm(searchValue);
@@ -60,19 +78,61 @@ function UserAdmin(props) {
 
     const sortedData = [...filteredUsers].sort((a, b) => {
       let comparison = 0;
-
       if (column === "isActive") {
-        comparison = a.isActive === b.isActive ? 0 : a.isActive ? -1 : 1;
+        comparison = a.isActive === b.active ? 0 : a.active ? -1 : 1;
       } else if (column === "userRoles") {
-        comparison = a.userRoles.join().localeCompare(b.userRoles.join());
+        const userRolesA = a.userRoles.join(", ");
+        const userRolesB = b.userRoles.join(", ");
+        comparison = userRolesA.localeCompare(userRolesB);
       } else {
-        comparison = a[column].toString().localeCompare(b[column].toString());
+        const valueA = a[column];
+        const valueB = b[column];
+
+        if (typeof valueA === "string") {
+          comparison = valueA.localeCompare(valueB);
+        } else {
+          comparison = valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+        }
       }
 
-      return (sortCriteria.direction === "asc" ? 1 : -1) * comparison;
+      return sortCriteria.direction === "asc" ? comparison : -comparison;
     });
 
     setFilteredUsers(sortedData);
+  };
+
+  // Unified function to handle updates for isActive and userRoles
+  const handleUserUpdate = (userId, updatedData) => {
+    fetch(`http://localhost:8080/api/project4/nhan/users/update`, {
+      method: "PUT", // Use 'PUT' or 'POST' as per your API specification
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ isActive: updatedData.isActive, userId }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // If the response is not ok, throw an error to catch it later
+          console.log("errrrrrrr:", response);
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Assuming your API sends back the updated user data
+      })
+      .then((updatedUser) => {
+        // Update the local state to reflect the change
+        const updatedUsers = users.map((user) => {
+          if (user.userId === userId) {
+            // Merge the updated data from the response
+            return { ...user, ...updatedUser };
+          }
+          return user;
+        });
+        setUsers(updatedUsers);
+        setRerender((prev) => !prev);
+
+        // setFilteredUsers(updatedUsers);
+      })
+      .catch((error) => console.error("Error updating user:", error));
   };
 
   // Render the component
@@ -91,23 +151,28 @@ function UserAdmin(props) {
           <TableHead>
             <TableRow>
               {/* Sorting for User ID, Email, Name, Active status, User Roles */}
-              {["userId", "email", "name","avatar", "isActive", "userRoles"].map(
-                (header) => (
-                  <TableCell key={header}>
-                    <TableSortLabel
-                      active={sortCriteria.column === header}
-                      direction={
-                        sortCriteria.column === header
-                          ? sortCriteria.direction
-                          : "asc"
-                      }
-                      onClick={() => handleSort(header)}
-                    >
-                      {header.charAt(0).toUpperCase() + header.slice(1)}
-                    </TableSortLabel>
-                  </TableCell>
-                )
-              )}
+              {[
+                "userId",
+                "email",
+                "name",
+                "avatar",
+                "isActive",
+                "userRoles",
+              ].map((header) => (
+                <TableCell key={header}>
+                  <TableSortLabel
+                    active={sortCriteria.column === header}
+                    direction={
+                      sortCriteria.column === header
+                        ? sortCriteria.direction
+                        : "asc"
+                    }
+                    onClick={() => handleSort(header)}
+                  >
+                    {header.charAt(0).toUpperCase() + header.slice(1)}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
@@ -127,13 +192,20 @@ function UserAdmin(props) {
                     />
                   )}
                 </TableCell>
-                <TableCell>{user.isActive ? "Inactive" : "Active"}</TableCell>
                 <TableCell>
-                  <ul>
-                    {user.userRoles.map((role, index) => (
-                      <li key={index}>{role}</li>
-                    ))}
-                  </ul>
+                  <Switch
+                    checked={user.active}
+                    onChange={(e) =>
+                      handleUserUpdate(user.userId, {
+                        isActive: e.target.checked,
+                      })
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  {user.userRoles.map((role, index) => (
+                    <Chip key={index} label={role} style={{ margin: "2px" }} />
+                  ))}
                 </TableCell>
                 <TableCell>
                   <button>Delete</button>
