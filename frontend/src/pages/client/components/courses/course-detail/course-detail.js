@@ -36,7 +36,6 @@ function CourseDetail(props) {
         setLoading(false);
       });
   }, [params]);
-  console.log("productA.video:", productA.video);
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -60,16 +59,16 @@ function CourseDetail(props) {
               </h3>
             </div>
             <div className="course-common course-detail_card_right_authorname">
-              <h6 className="">Author</h6>
-              <h6 className="course-common_text">{productA.authorName}</h6>
+              <h6 className="">Category Name</h6>
+              <h6 className="course-common_text">{productA.categoryName}</h6>
             </div>
             <div className="course-common course-detail_card_right_authorname">
               <h6 className="">Author</h6>
               <h6 className="course-common_text">{productA.authorName}</h6>
             </div>
             <div className="course-common course-detail_card_right_authorname">
-              <h6 className="">Author</h6>
-              <h6 className="course-common_text">{productA.authorName}</h6>
+              <h6 className="">Prize</h6>
+              <h6 className="course-common_text">{productA.prize}</h6>
             </div>
             <div className="course-common course-detail_card_right_title">
               <h6 className="">Title</h6>
@@ -137,7 +136,11 @@ function CourseDetail(props) {
           )}
         </Row>
         <Row>
-          <QuizApp video={productA.video}/>
+          <QuizApp
+            course={productA}
+            user={currentUser}
+            question={params.id}
+          />
         </Row>
         <Row>
           <div className="pt-4">
