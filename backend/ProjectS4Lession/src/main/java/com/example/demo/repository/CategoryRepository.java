@@ -18,6 +18,7 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Intege
 	        "COUNT(p) as totalCount) " +
 	        "FROM CategoryEntity c " +
 	        "LEFT JOIN c.posts p " +
+	        "WHERE p.deletedAt IS NULL " +
 	        "GROUP BY c.categoryId, c.categoryName, c.featureImage " +
 	        "ORDER BY c.categoryId ASC")
     List<CategoryDto> countTypePerCategory();

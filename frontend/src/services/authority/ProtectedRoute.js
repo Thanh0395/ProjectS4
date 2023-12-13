@@ -16,6 +16,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         setTokenValid(false);
         return;
       }
+      // check token expired 1702293907
       try {
         const decodedToken = jwtDecode(token);
         if (decodedToken && decodedToken.exp * 1000 > Date.now()) {

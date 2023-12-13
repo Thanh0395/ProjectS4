@@ -95,3 +95,15 @@ export const logoutUser = async () => {
         throw error;
     }
 };
+export const fetchAllUser = async () => {
+    try {
+        const response = await api.get('/nhan/users/list');
+        const users = response.data;
+        return users;
+    } catch (error) {
+        if (error.response && error.response.status === 403) {
+            console.error('Forbidden: You do not have permission to access this resource.');
+        }
+        throw error;
+    }
+};

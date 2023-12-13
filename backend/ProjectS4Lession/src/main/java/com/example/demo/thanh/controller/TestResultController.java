@@ -73,14 +73,16 @@ public class TestResultController {
 			int prize = post.getPrize();
 			TestResultDto result = getScoreAnswer(submission);
 			result.setResultMessage("");
+			int score = result.getScore();
+			userBuy.setScore(score);
 			//Neu da passed ==true thi chi cong diem chu ko tang gem hay exp
 			if (userBuy.getIsPass() == true) {
 				result.setPassed(true);
-				result.setResultMessage("You had passed this quiz test. You will not gain Gem, Exp, Achievement");
+				userPostService.createUserPost(userBuy);
+				result.setResultMessage("You had passed this quiz test. You will not gain Gem, Exp, Achievement. Your new score: "+score);
 				return new ResponseEntity<>(result, HttpStatus.OK);
 			}
 			// Chia cac moc thuong
-			int score = result.getScore();
 			GemEntity gemdata = gemService.getOrCreateGemByUserId(userId);
 			UserLevelEntity levelData = levelService.getOrCreateLevelByUserId(userId);
 

@@ -80,13 +80,12 @@ function PaypalCheckoutButton(props) {
                         const purchaseBundle = JSON.parse(localStorage.getItem('purchaseBundle'));
                         try {
                             const response = await buyGem(purchaseBundle.gem);
-                            setShowAlert(true);
-                            setVariant('success');
-                            setAlertMsg(`-Payment has been Successful. ${response}`);
-
                             var gameData = JSON.parse(localStorage.getItem('userGameData'));
                             gameData.gem = gameData.gem + purchaseBundle.gem;
                             localStorage.setItem('userGameData', JSON.stringify(gameData));
+                            setShowAlert(true);
+                            setVariant('success');
+                            setAlertMsg(`-Payment has been Successful. ${response}`);
                         } catch (error) {
                             actions.restart();
                             console.log(error)
