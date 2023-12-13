@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { NavDropdown, Image } from 'react-bootstrap';
-import { FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaAngleDown } from 'react-icons/fa';
 import env from '../environment.json'
+import { Col, Row } from 'reactstrap';
 
 const UserProfileDropdown = ({ currentUser, onLogout }) => {
   const gameData = JSON.parse(localStorage.getItem('userGameData'));
@@ -15,8 +16,19 @@ const UserProfileDropdown = ({ currentUser, onLogout }) => {
   };
   return (
     <NavDropdown className='user-nav-dropdown-container'
-      title={<Image src={urlMedia + currentUser.avatar}
-        roundedCircle width="30" height="30" />}
+      title={<span>
+        Hi, {currentUser.name}
+        <Row>
+          <Col>
+            <Image src={urlMedia + currentUser.avatar}
+              roundedCircle width="30" height="30" />
+          </Col>
+          <Col>
+            <FaAngleDown className="dropdown-icon" />
+          </Col>
+        </Row>
+      </span>
+      }
       id="basic-nav-dropdown"
     >
       <NavDropdown.Item>

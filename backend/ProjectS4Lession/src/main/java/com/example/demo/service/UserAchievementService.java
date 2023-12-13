@@ -48,4 +48,9 @@ public class UserAchievementService {
 			userAchievementRepository.save(userAchi);
 		}
 	}
+
+	// Hung
+	public List<UserAchievementEntity> getUserAchievementsByUser(UserEntity user) {
+		return userAchievementRepository.findByUser(user);
+	}
 }
