@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Row, ProgressBar } from 'react-bootstrap';
+import { Card, Row, ProgressBar, Col } from 'react-bootstrap';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { Article, People, Class, LocalOffer } from '@mui/icons-material';
 import './dashboard.css';
@@ -7,6 +7,7 @@ import { fetchAllUser } from '../../services/api/userAPI';
 import { fetchListLessonDashboard } from '../../services/api/lessonApi';
 import { fetchListCategory } from '../../services/api/categoryApi';
 import { fetchListTag } from '../../services/api/tagApi';
+import DashboardPieChart from './DashboardPieChart';
 
 function DashBoardContainer(props) {
     const [fetched, setFetched] = useState(false);
@@ -22,22 +23,22 @@ function DashBoardContainer(props) {
             const lessonList = await fetchListLessonDashboard();
             setLessons(lessonList);
             const categoryList = await fetchListCategory();
-            setCategories(categoryList.data);
+            const updateCates = categoryList.data;
+            console.log('first', updateCates)
+            setCategories(updateCates);
             const tagList = await fetchListTag();
-            setTags(tagList.data);
+            const updateTags = tagList.data;
+            setTags(updateTags);
         }
         setFetched(true);
         fetchData();
     }, []);
     return (
         <div className='dashbooard-container container'>
-            {!fetched && <ProgressBar animated now={90} />}
-            <Row className='d-flex justify-content-around'>
+            {!fetched && <ProgressBar animated now={100} />}
+            <Row className='d-flex justify-content-around mb-2'>
                 {users &&
-                    <Card
-                        style={{ width: '12rem' }}
-                        className="thanh-dashboard-card mb-2"
-                    >
+                    <Card style={{ width: '12rem' }} className="thanh-dashboard-card mb-2" >
                         <Card.Header>
                             <ListItemIcon>
                                 <People color='success' />
@@ -50,10 +51,7 @@ function DashBoardContainer(props) {
                     </Card>
                 }
                 {lessons &&
-                    <Card
-                        style={{ width: '12rem' }}
-                        className="thanh-dashboard-card mb-2"
-                    >
+                    <Card style={{ width: '12rem' }} className="thanh-dashboard-card mb-2" >
                         <Card.Header>
                             <ListItemIcon>
                                 <Article color='warning' />
@@ -66,10 +64,7 @@ function DashBoardContainer(props) {
                     </Card>
                 }
                 {categories &&
-                    <Card
-                        style={{ width: '12rem' }}
-                        className="thanh-dashboard-card mb-2"
-                    >
+                    <Card style={{ width: '12rem' }} className="thanh-dashboard-card mb-2" >
                         <Card.Header>
                             <ListItemIcon>
                                 <Class color='primary' />
@@ -82,10 +77,7 @@ function DashBoardContainer(props) {
                     </Card>
                 }
                 {tags &&
-                    <Card
-                        style={{ width: '12rem' }}
-                        className="thanh-dashboard-card mb-2"
-                    >
+                    <Card style={{ width: '12rem' }} className="thanh-dashboard-card mb-2" >
                         <Card.Header>
                             <ListItemIcon>
                                 <LocalOffer color='secondary' />
@@ -99,7 +91,16 @@ function DashBoardContainer(props) {
                 }
             </Row>
             <Row>
-                
+                {categories?
+                    <Col xl='6'>
+                        <DashboardPieChart headerName={'Category'} passData={categories} />
+                    </Col>:<ProgressBar animated now={100} />
+                }
+                {tags?
+                    <Col xl='6'>
+                        <DashboardPieChart headerName={'Tag'} passData={tags} />
+                    </Col>:<ProgressBar animated now={100} />
+                }
             </Row>
 
         </div>

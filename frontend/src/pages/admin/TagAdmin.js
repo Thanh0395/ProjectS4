@@ -294,11 +294,11 @@ function TagAdmin(props) {
                             <Modal centered show={showModal} onHide={handleCloseModal} size='sm'>
                                 <form onSubmit={(e) => handleSubmitModal(e)}>
                                     <Modal.Header closeButton>
-                                        {isUpdate ? <Modal.Title>Update Tag</Modal.Title> : <Modal.Title>Add Tag</Modal.Title>}
+                                        {isUpdate ? <Modal.Title>Update Tag ID: {selectedItem.tagId}</Modal.Title> : <Modal.Title>Add Tag</Modal.Title>}
                                     </Modal.Header>
                                     <Modal.Body>
                                         <Stack direction="row" >
-                                            {isUpdate ? <Button disabled>ID: {selectedItem.tagId}</Button> : <></>}
+                                            <strong>Tag Name:</strong>
                                             <TextField
                                                 required
                                                 name='tagName'
@@ -311,7 +311,8 @@ function TagAdmin(props) {
                                                     else setIsInvalid(false);
                                                 }}
                                                 id="outlined-required"
-                                                label="Tag Name"
+                                                // label="Tag Name"
+                                                hiddenLabel
                                                 defaultValue={isUpdate ? selectedItem.tagName : ''}
                                             />
                                         </Stack>

@@ -46,7 +46,7 @@ const UserProfileDropdown = ({ currentUser, onLogout }) => {
             <FaUser color='var(--primary-color)' aria-label='profile' />Profile
           </NavDropdown.Item>
           <NavDropdown.Divider />
-          <NavDropdown.Item as={Link} to="/admin">
+          <NavDropdown.Item as={Link} to="/admin/lessons">
             Dashboard
           </NavDropdown.Item>
           <NavDropdown.Divider />
