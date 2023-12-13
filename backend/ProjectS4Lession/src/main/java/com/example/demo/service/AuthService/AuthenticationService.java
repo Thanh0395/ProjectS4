@@ -75,7 +75,7 @@ public class AuthenticationService {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
 					authenticationRequest.getPassword()));
 			UserEntity user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(
-					() -> new NotFoundException("User not found with email: " + authenticationRequest.getEmail()));
+					() -> new NotFoundException("Not found your account with email " + authenticationRequest.getEmail()));
 
 			List<RoleEntity> set = userService.getRolesByUserRole(user);
 			
@@ -101,14 +101,14 @@ public class AuthenticationService {
 			throw new CustomAuthenticationException("Invalid email or password");
 		} catch (NotFoundException e) {
 			// User not found
-			throw new NotFoundException("User not found with email: " + authenticationRequest.getEmail());
+			throw new NotFoundException("Not found your account with email " + authenticationRequest.getEmail());
 		}
 	}
 	
 	public UserResponseDto register(UserEntity user) throws NotFoundException, ResourceAlreadyExistsException {
 		Optional<UserEntity> userDb = userRepository.findByEmail(user.getEmail());
 		if(userDb.isPresent()) {
-			throw new ResourceAlreadyExistsException("User already exist with email :" + user.getEmail());
+			throw new ResourceAlreadyExistsException("Your account already exist with email " + user.getEmail());
 		}
 		user.setAvatar("uploads/images/user/User_default.jpg");
     	UserEntity userCreated = userService.createUser(user);
@@ -119,7 +119,7 @@ public class AuthenticationService {
 	
 	public UserRoleEntity AddPermission(String email, String roleName) throws NotFoundException {
         UserEntity user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new NotFoundException("Not found your account with email " + email));
 
         RoleEntity role = roleRepository.findByName(roleName);
         if(role== null) {
@@ -137,7 +137,7 @@ public class AuthenticationService {
 			throws NotFoundException 
 	{
 		UserEntity userDb = userRepository.findByEmail(email.getToEmail())
-				.orElseThrow(() -> new NotFoundException("Not found user with email:" + email));
+				.orElseThrow(() -> new NotFoundException("Not found your account with email " + email.getToEmail()));
 		
 		VerifyEmailEntity verifyEmailCreated = verifyEmailService.createVerifyEmail(userDb);
 		VerifyEmailResponseDto verifyEmailResponseDto = VerifyEmailResponseDto
@@ -157,7 +157,7 @@ public class AuthenticationService {
 				.orElseThrow(() -> new NotFoundException("Not found user with email :" + activeUserRequestDto.getEmail()));
 		boolean isActive = user.isActive();
 		if (isActive) {
-		    throw new ResourceAlreadyExistsException("User is already active");
+		    throw new ResourceAlreadyExistsException("Your account is already active");
 		}
 		boolean isVerify = verifyEmailService.checkVerifyEmailToActiveLogin(user, activeUserRequestDto.getCode());
 		if(isVerify) {
@@ -171,7 +171,7 @@ public class AuthenticationService {
 	{
 		if(request.getNewPassword().equals(request.getConfirmPassword())) {
 			UserEntity user = userRepository.findByEmail(request.getEmail())
-					.orElseThrow(() -> new NotFoundException("Not found user with email :" + request.getEmail()));
+					.orElseThrow(() -> new NotFoundException("Not found your account with email :" + request.getEmail()));
 			boolean isVerify = verifyEmailService.checkVerifyEmailToResetPassword(user, request.getCode());
 			if(isVerify) {
 				user.setPassword(passwordEncoder.encode(request.getNewPassword()));
@@ -187,14 +187,14 @@ public class AuthenticationService {
 			throws NotFoundException, BadRequestException
 	{
 		UserEntity user = userRepository.findByEmail(email)
-				.orElseThrow(() -> new NotFoundException("Not found user with email :" + email));
+				.orElseThrow(() -> new NotFoundException("Not found your account with email " + email));
 		boolean isVerify = verifyEmailService.checkVerifyEmailExist(user);
 		boolean isActive = user.isActive();
 		if(!isVerify) {
-			throw new BadRequestException("User not verify email!");
+			throw new BadRequestException("Your account not verify email!Please send email to get verify code!");
 		}
 		if(!isActive) {
-			throw new BadRequestException("User not active!");
+			throw new BadRequestException("Your account not active!");
 		}
 		return user;
 	}

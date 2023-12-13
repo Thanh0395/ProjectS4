@@ -34,7 +34,7 @@ public class ApplicationExceptionHandler {
 	@ExceptionHandler(NotFoundException.class)
 	public Map<String, String> handleBusinessException(NotFoundException ex){
 		Map<String, String> errorMap = new HashMap<>();
-		errorMap.put("Error Message ", ex.getMessage());
+		errorMap.put("Error Message", ex.getMessage());
 		return errorMap;
 	}
 	
@@ -74,7 +74,7 @@ public class ApplicationExceptionHandler {
 	@ExceptionHandler(EmptyFileException.class)
 	public Map<String, String> handleEmptyFileException(EmptyFileException ex){
 		Map<String, String> errorMap = new HashMap<>();
-		errorMap.put("Error Message ", ex.getMessage());
+		errorMap.put("Error Message", ex.getMessage());
 		return errorMap;
 	}
 }

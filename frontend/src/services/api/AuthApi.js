@@ -29,3 +29,15 @@ export const sendVerifycodeMailForgotPassword = async (email) => {
         throw error;
     }
 };
+
+/*
+    User Profile API
+*/
+export const ProfileDataByUserId = async (userId) => {
+    try {
+        const response = await api.get(`/profile/${userId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

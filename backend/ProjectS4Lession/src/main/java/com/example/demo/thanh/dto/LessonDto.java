@@ -15,6 +15,8 @@ public class LessonDto {
 	
 	private int price;
 	
+	private int prize;
+	
 	private String title;
 	
 	private String content;
@@ -28,6 +30,7 @@ public class LessonDto {
 	private Timestamp expiredAt;
 	
 	private int authorId;
+	
 	private String authorName;
 	
 	private int categoryId;
@@ -39,6 +42,10 @@ public class LessonDto {
 	private List<FeedbackDto> comments;
 	
 	private List<TagDto> tags;
+	
+	private Boolean passed = false;
+	
+	private int score;
 	
 	private String errorMessage;
 	
@@ -74,14 +81,16 @@ public class LessonDto {
         this.categoryName = categoryName;
     }
 // Detail when user payed
-	public LessonDto(int id, String featureImage, String video, int price, String title, String content,
+	public LessonDto(int id, String featureImage, String video, int price,int prize, String title, String content,
 			Timestamp creatatedAt, Timestamp updatedAt, Timestamp deletedAt, int authorId, String authorName,
-			int categoryId, String categoryName, List<QuestionDto> questions, List<FeedbackDto> comments, List<TagDto> tags) {
+			int categoryId, String categoryName, List<QuestionDto> questions, List<FeedbackDto> comments, List<TagDto> tags, 
+			boolean isPass, int score) {
 		super();
 		this.id = id;
 		this.featureImage = featureImage;
 		this.video = video;
 		this.price = price;
+		this.prize = prize;
 		this.title = title;
 		this.content = content;
 		this.creatatedAt = creatatedAt;
@@ -94,6 +103,8 @@ public class LessonDto {
 		this.questions = questions;
 		this.comments = comments;
 		this.tags = tags;
+		this.passed = isPass;
+		this.score = score;
 	}
 // Detail when user is NOT payed
 	public LessonDto(int id, String featureImage, int price, String title, String content, Timestamp creatatedAt,
@@ -116,7 +127,29 @@ public class LessonDto {
 		this.tags = tags;
 		this.errorMessage = "you must pay to watch the video";
 	}
-
+	// Detail in dashboard
+		public LessonDto(int id, String featureImage, String video, int price,int prize, String title, String content,
+				Timestamp creatatedAt, Timestamp updatedAt, Timestamp deletedAt, int authorId, String authorName,
+				int categoryId, String categoryName, List<QuestionDto> questions, List<FeedbackDto> comments, List<TagDto> tags) {
+			super();
+			this.id = id;
+			this.featureImage = featureImage;
+			this.video = video;
+			this.price = price;
+			this.prize = prize;
+			this.title = title;
+			this.content = content;
+			this.creatatedAt = creatatedAt;
+			this.updatedAt = updatedAt;
+			this.deletedAt = deletedAt;
+			this.authorId = authorId;
+			this.authorName = authorName;
+			this.categoryId = categoryId;
+			this.categoryName = categoryName;
+			this.questions = questions;
+			this.comments = comments;
+			this.tags = tags;
+		}
 	public LessonDto(int id, String image, String video, String title, String content, int price) {
 		super();
         this.id = id;
@@ -159,6 +192,12 @@ public class LessonDto {
 		this.price = price;
 	}
 
+	public int getPrize() {
+		return prize;
+	}
+	public void setPrize(int prize) {
+		this.prize = prize;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -268,6 +307,17 @@ public class LessonDto {
 	public void setTags(List<TagDto> tags) {
 		this.tags = tags;
 	}
-	
-	
+	public boolean getPassed() {
+		return passed;
+	}
+	public void setPassed(Boolean isPass) {
+		this.passed = isPass;
+	}
+	public int getScore() {
+		return score;
+	}
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 }

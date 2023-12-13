@@ -58,4 +58,13 @@ public class TagService {
 	public List<TagDto> allTagCount(){
 		 return tagRepository.countPostsPerTag();
 	}
+	
+	public List<TagDto> countTypePerTag(){
+		 return tagRepository.countTypePerTag();
+	}
+	
+	public boolean checkNameExist(String name) {
+		if (tagRepository.findByTagName(name).isEmpty()) return false;
+		return true;
+	}
 }

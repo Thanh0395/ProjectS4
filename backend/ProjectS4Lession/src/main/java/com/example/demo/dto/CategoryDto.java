@@ -10,6 +10,10 @@ public class CategoryDto {
 	
 	private int countPost;
 	
+	private int countLesson;
+	
+	private int countExam;
+	
 	private boolean isFavorite;
 
 	public CategoryDto() {
@@ -29,6 +33,16 @@ public class CategoryDto {
 		this.categoryName = categoryName;
 		this.featureImage = featureImage;
 		this.countPost = countPost;
+	}
+	
+	public CategoryDto(int categoryId, String categoryName,String featureImage, Long lessonCount, Long examCount, Long totalCount) {
+		super();
+		this.categoryId = categoryId;
+		this.categoryName = categoryName;
+		this.featureImage = featureImage;
+		this.countLesson = lessonCount != null ? lessonCount.intValue() : 0;
+		this.countExam = examCount != null ? examCount.intValue() : 0;
+		this.countPost = totalCount != null ? totalCount.intValue() : 0;
 	}
 	
 	public CategoryDto(int categoryId, String categoryName, String featureImage, boolean favorite) {
@@ -69,6 +83,22 @@ public class CategoryDto {
 
 	public void setCountPost(int countPost) {
 		this.countPost = countPost;
+	}
+
+	public int getCountLesson() {
+		return countLesson;
+	}
+
+	public void setCountLesson(int countLesson) {
+		this.countLesson = countLesson;
+	}
+
+	public int getCountExam() {
+		return countExam;
+	}
+
+	public void setCountExam(int countExam) {
+		this.countExam = countExam;
 	}
 
 	public boolean isFavorite() {
