@@ -11,7 +11,6 @@ const QuizApp = (props) => {
     new Array(course?.questions?.length || 0).fill(null)
   );
   const [showResults, setShowResults] = useState(false);
-  const [score, setScore] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [remainingTime, setRemainingTime] = useState(1 * 60);
@@ -21,23 +20,23 @@ const QuizApp = (props) => {
     updatedUserAnswers[currentQuestion] = selectedOption;
     setUserAnswers(updatedUserAnswers);
   };
-
+  // handle start quiz
   const handleStartQuiz = () => {
     setQuizStarted(true);
   };
-
+  // handle next click
   const handleNextClick = () => {
     if (currentQuestion < course.questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     }
   };
-
+  // handle previous click
   const handlePreviousClick = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
     }
   };
-
+  // handle reset quiz
   const resetQuiz = () => {
     setCurrentQuestion(0);
     setUserAnswers(new Array(course.questions.length).fill(null));
@@ -45,12 +44,9 @@ const QuizApp = (props) => {
     setQuizStarted(false);
   };
 
-  const handleFinishClick = () => {
-    setShowConfirmModal(true);
-  };
-  const unansweredCount = userAnswers.filter(answer => answer === null).length;
-
-  console.log("responseData:", responseData);
+  const unansweredCount = userAnswers.filter(
+    (answer) => answer === null
+  ).length;
   const handleConfirmFinish = async () => {
     // Dynamically generate userSubmission based on user answers
     const userSubmission = userAnswers.map((answer, index) => ({
@@ -60,8 +56,6 @@ const QuizApp = (props) => {
 
     // Convert the array to JSON string
     const data = JSON.stringify(userSubmission);
-    console.log("data:", data);
-
     // Send user answers to the server
     let config = {
       method: "put",
@@ -89,7 +83,9 @@ const QuizApp = (props) => {
     setShowResults(true);
     setShowConfirmModal(false);
   };
-
+  const handleFinishClick = () => {
+    setShowConfirmModal(true);
+  };
   const handleCancelFinish = () => {
     setShowConfirmModal(false);
   };
@@ -98,11 +94,11 @@ const QuizApp = (props) => {
     setCurrentQuestion(questionIndex);
   };
 
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  };
+  // const formatTime = (timeInSeconds) => {
+  //   const minutes = Math.floor(timeInSeconds / 60);
+  //   const seconds = timeInSeconds % 60;
+  //   return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  // };
 
   return (
     <div
@@ -131,7 +127,8 @@ const QuizApp = (props) => {
               {responseData && (
                 <div>
                   <p className="text-danger">
-                    Total Answer: {course.questions.length - unansweredCount} / {course.questions.length}
+                    Total Answer: {course.questions.length - unansweredCount} /{" "}
+                    {course.questions.length}
                   </p>
                   <p>Achievements: {responseData.achievements}</p>
                   <p>Passed: {responseData.passed ? "Yes" : "No"}</p>
@@ -156,7 +153,7 @@ const QuizApp = (props) => {
           <div className="timer">
             {quizStarted && !showResults && (
               <p className="text-danger">
-                Time Remaining: {formatTime(remainingTime)}
+                {/* Time Remaining: {formatTime(remainingTime)} */}
               </p>
             )}
           </div>

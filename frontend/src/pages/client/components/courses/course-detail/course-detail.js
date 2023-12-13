@@ -6,7 +6,7 @@ import Student_Detail from "../../../../../assets/Student_Detail.jpg";
 import Author_02 from "../../../../../assets/author-02.jpg";
 import CourseBannerSession from "../banner-session/banner";
 import ReactPlayer from "react-player";
-import QuizApp from "./quiz";
+import QuizApp from "../course-quiz/quiz";
 import "./course-detail.css";
 import env from "../../../../../environment.json";
 
