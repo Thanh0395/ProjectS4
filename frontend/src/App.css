@@ -71,7 +71,9 @@
 .user-nav-dropdown-container .dropdown-toggle::after {
   display: none !important;
 }
-
+button:hover{
+  box-shadow: none !important;
+}
 /* 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

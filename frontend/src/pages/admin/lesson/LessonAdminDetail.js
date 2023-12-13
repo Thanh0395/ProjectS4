@@ -10,7 +10,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import env from '../../../environment.json';
 import CircularProgress from '@mui/material/CircularProgress'
-
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, ListItem } from '@mui/material';
 function LessonAdminDetail(props) {
     const [lesson, setLesson] = useState();
     const [categories, setCategories] = useState([]);
@@ -176,7 +176,7 @@ function LessonAdminDetail(props) {
                                         <Button variant="primary" style={{ color: 'white' }}>Back</Button>
                                     </Link>
                                 </div>
-                                <Form.Group as={Col} md="12">
+                                {/* <Form.Group as={Col} md="12">
                                     <TagsEditor postId={lesson.id} lessonTags={tags} />
                                 </Form.Group>
                                 <Row>
@@ -184,7 +184,62 @@ function LessonAdminDetail(props) {
                                         initQuestions={initQuestions}
                                         postId={lesson.id}
                                     />
-                                </Row>
+                                </Row> */}
+
+                                <Paper
+                                    sx={{
+                                        display: 'flex',
+                                        flexWrap: 'wrap',
+                                        listStyle: 'none',
+                                        p: 0.5,
+                                        mb: 2,
+                                    }}
+                                    component="ul"
+                                >
+                                    <Row>
+                                        <ListItem as={Col}>
+                                            <strong>Tags: </strong>
+                                        </ListItem>
+                                        {tags.map((data) => {
+                                            return (
+                                                <ListItem key={data.tagId} as={Col}>
+                                                    <Chip label={data.tagName} color="error" variant="outlined" />
+                                                </ListItem>
+                                            );
+                                        })}
+                                    </Row>
+                                </Paper>
+                                <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                                        <TableHead style={{ backgroundColor: 'var(--light-primary-color)' }}>
+                                            <TableRow>
+                                                <TableCell>Question</TableCell>
+                                                <TableCell align="right">A</TableCell>
+                                                <TableCell align="right">B</TableCell>
+                                                <TableCell align="right">C</TableCell>
+                                                <TableCell align="right">D</TableCell>
+                                                <TableCell align="right">Right Answer</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {initQuestions.map((row) => (
+                                                <TableRow
+                                                    key={row.questionId}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell component="th" scope="row">
+                                                        {row.content}
+                                                    </TableCell>
+                                                    <TableCell align="right">{row.answerA}</TableCell>
+                                                    <TableCell align="right">{row.answerB}</TableCell>
+                                                    <TableCell align="right">{row.answerC}</TableCell>
+                                                    <TableCell align="right">{row.answerD}</TableCell>
+                                                    <TableCell align="right">{row.rightAnswer}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
                             </Form>
                         )}
                     </Formik>

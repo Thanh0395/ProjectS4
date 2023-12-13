@@ -1,9 +1,13 @@
 import React from 'react';
+import DashBoardContainer from '../../components/dashboard/DashBoardContainer';
+import ProtectedRoute from '../../services/authority/ProtectedRoute';
 
 function Dashboard(props) {
     return (
         <div>
-            Dashboard
+            <ProtectedRoute allowedRoles={['admin']}>
+                <DashBoardContainer />
+            </ProtectedRoute>
         </div>
     );
 }

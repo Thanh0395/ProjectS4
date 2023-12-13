@@ -28,7 +28,7 @@ public class UserAchievementService {
 		return list;
 	}
 
-	public void updateOrCreateUserAchievement(boolean isReceive, double process, int achievementId, UserEntity user) {
+	public UserAchievementEntity updateOrCreateUserAchievement(boolean isReceive, double process, int achievementId, UserEntity user) {
 		List<UserAchievementEntity> userAchievementList = userAchievementRepository
 				.findByUserAndAchievement_AchievementId(user, achievementId);
 
@@ -39,6 +39,7 @@ public class UserAchievementService {
 			userAchi.setAchievement(achievementService.getAchievementById(achievementId));
 			userAchi.setUser(user);
 			userAchievementRepository.save(userAchi);
+			return userAchi;
 		} else {
 			UserAchievementEntity userAchi = userAchievementList.get(0);
 			userAchi.setReceivedBadge(isReceive);
@@ -46,6 +47,7 @@ public class UserAchievementService {
 			userAchi.setAchievement(achievementService.getAchievementById(achievementId));
 			userAchi.setUser(user);
 			userAchievementRepository.save(userAchi);
+			return userAchi;
 		}
 	}
 

@@ -146,7 +146,7 @@
 
 // export default QuestionEditor;
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
@@ -168,6 +168,9 @@ import { deleteQuestion, updateAddQuestion } from '../../services/api/lessonApi'
 
 function QuestionEditor(props) {
     const myId = props.postId;
+    useEffect(()=>{
+        props.updateQuestion(props.initQuestions);
+    },[]);
     function EditToolbar(props) {
         const { setRows, setRowModesModel } = props;
         const [isAdding, setIsAdding] = useState(false);
@@ -183,7 +186,7 @@ function QuestionEditor(props) {
                 [questionId]: { mode: GridRowModes.Edit, fieldToFocus: 'content' },
             }));
         };
-
+    
         return (
             <GridToolbarContainer >
                 {!isAdding ?
@@ -250,7 +253,7 @@ function QuestionEditor(props) {
         setOpen(true);
         setDeleteId(id);
     };
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async() => {
         const updatedRows = rows.filter((row) => row.questionId !== deleteId);
         setRows(updatedRows);
         const deletedIds = [...deletedQuestionIds, deleteId];
@@ -258,7 +261,7 @@ function QuestionEditor(props) {
         props.updateQuestion(updatedRows);
         props.updateDeletedQuestion(deletedIds);
         //api call
-        deleteQuestion(myId, deleteId);
+        await deleteQuestion(myId, deleteId);
         setOpen(false);
     }
 
@@ -290,6 +293,7 @@ function QuestionEditor(props) {
     };
 
     const columns = [
+        {field: 'questionId', headerName: 'ID', width: 50},
         {
             field: 'content', headerName: 'Question', width: 250, editable: true,
             preProcessEditCellProps: (params: GridEditCellPropsChangeParams) => {

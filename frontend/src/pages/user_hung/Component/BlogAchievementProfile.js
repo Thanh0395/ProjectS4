@@ -2,7 +2,6 @@ import React from 'react';
 import { Row, Card, CardBody, Col } from 'reactstrap';
 import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
-import LinesEllipsis from 'react-lines-ellipsis';
 import { Typography, LinearProgress } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import WorkIcon from '@mui/icons-material/Work';

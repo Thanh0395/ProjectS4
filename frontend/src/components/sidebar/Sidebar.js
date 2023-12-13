@@ -33,7 +33,7 @@ function Sidebar(props) {
                 <Divider className="sidebar-divider" textAlign="left">Main Items</Divider>
                 <ListItemButton component={NavLink} to="lessons">
                     <ListItemIcon>
-                        <Article color='primary' />
+                        <Article color='warning' />
                     </ListItemIcon>
                     <ListItemText primary="Lesson" />
                 </ListItemButton>
