@@ -1,5 +1,6 @@
 .quiz{
     padding: 2rem;
+    border-radius: 1rem;
 }
 .quiz .quiz-start-test{
     padding: 2rem;
