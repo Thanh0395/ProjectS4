@@ -9,14 +9,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,7 +35,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "user_tbl")
-public class UserEntity extends BaseEntity implements UserDetails{
+public class UserEntity extends BaseEntity implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,40 +56,27 @@ public class UserEntity extends BaseEntity implements UserDetails{
 
 	@Column(name = "date_of_birth")
 	private Date dateOfBirth;
-	
+
 	@Column(name = "avatar", length = 255, nullable = true)
 	private String avatar;
 
 	@Column(name = "password", length = 255, nullable = false)
 	@NotNull(message = "Password must not be null!")
 	@NotBlank(message = "Password must no be bleft blank!")
-	//@Size(min = 6, max = 50, message = "Password must be between 6 and 50 characters.")
+	// @Size(min = 6, max = 50, message = "Password must be between 6 and 50
+	// characters.")
 	private String password;
 
 	@Column(name = "is_active", columnDefinition = "boolean default false")
 	private boolean isActive;
 
-	public UserEntity(
-			@NotNull(message = "Email must not be null!") @NotBlank(message = "Email must not be left blank!") @Email(message = "Email invalid!") String email,
-			@NotNull(message = "User Name shouldn't be null!") @NotBlank(message = "User Name shouldn't be left blank!") @Pattern(regexp = "^[a-zA-Z0-9\\s]*$", message = "User Name must not contain special characters.") String name,
-			Date dateOfBirth, String avatar,
-			@NotNull(message = "Password must not be null!") @NotBlank(message = "Password must no be bleft blank!") String password) {
-		super();
-		this.email = email;
-		this.name = name;
-		this.dateOfBirth = dateOfBirth;
-		this.avatar = avatar;
-		this.password = password;
-	}
-	
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	@JsonManagedReference
-	//@JsonIgnore
+	@JsonIgnore
 	private List<UserRoleEntity> userRoles = new ArrayList<>();
 
 	// relation with VerifyEmailEntity
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<VerifyEmailEntity> verifyEmails = new ArrayList<>();
 
@@ -215,23 +200,21 @@ public class UserEntity extends BaseEntity implements UserDetails{
 		userAchievementEntity.setUser(null);
 	}
 
-	
-	//implement UserDetails
+	// implement UserDetails
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-	    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-	    for (UserRoleEntity userRoleEntity : userRoles) {
-	        authorities.add(new SimpleGrantedAuthority(userRoleEntity.getRole().getName()));
-	    }
-	    return authorities;
+		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		for (UserRoleEntity userRoleEntity : userRoles) {
+			authorities.add(new SimpleGrantedAuthority(userRoleEntity.getRole().getName()));
+		}
+		return authorities;
 	}
-
 
 	@Override
 	public String getUsername() {
 		return email;
 	}
-	
+
 	@Override
 	public String getPassword() {
 		return password;
@@ -255,5 +238,20 @@ public class UserEntity extends BaseEntity implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public UserEntity(
+			@NotNull(message = "Email must not be null!") @NotBlank(message = "Email must not be left blank!") @Email(message = "Email invalid!") String email,
+			@NotNull(message = "User Name shouldn't be null!") @NotBlank(message = "User Name shouldn't be left blank!") @Pattern(regexp = "^[a-zA-Z0-9\\s]*$", message = "User Name must not contain special characters.") String name,
+			Date dateOfBirth, String avatar,
+			@NotNull(message = "Password must not be null!") @NotBlank(message = "Password must no be bleft blank!") String password,
+			boolean isActive) {
+		super();
+		this.email = email;
+		this.name = name;
+		this.dateOfBirth = dateOfBirth;
+		this.avatar = avatar;
+		this.password = password;
+		this.isActive = isActive;
 	}
 }

@@ -1,0 +1,43 @@
+/* Style for the Profile Card */
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+/* Styles for Typography */
+.list-item-heading {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* General Layout Styling */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* Add more styles based on your specific requirements */

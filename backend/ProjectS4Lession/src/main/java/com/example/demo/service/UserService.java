@@ -80,14 +80,17 @@ public class UserService {
 		UserEntity userDb = userRepository.findById(user.getUserId()).orElseThrow(
 				() -> new NotFoundException("Update faild!. User not found with id : " + user.getUserId()));
 		if (userDb != null) {
-			user.setCreatedAt(userDb.getCreatedAt());
-			return userRepository.save(user);
+			userDb.setEmail(user.getEmail());
+			userDb.setName(user.getName());
+			userDb.setDateOfBirth(user.getDateOfBirth());
+			userDb.setAvatar(user.getAvatar());
+			userDb.setPassword(userDb.getPassword());
+			userDb.setActive(userDb.isActive());
 		}
-		return null;
+		return userRepository.save(userDb);
 	}
 
 	public UserEntity getUserByEmail(String email) throws NotFoundException {
-		System.out.println("Searching for user with email: " + email);
 		return userRepository.findByEmail(email)
 				.orElseThrow(() -> new NotFoundException("User not found with email: " + email));
 	}
