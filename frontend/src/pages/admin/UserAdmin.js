@@ -24,6 +24,7 @@ function UserAdmin(props) {
     direction: "asc",
   });
   const [roleOptions, setRoleOptions] = useState([]);
+  const userHasAdminRole = (userRoles) => userRoles.includes("ADMIN");
 
   // Fetch users data
   useEffect(() => {
@@ -135,6 +136,33 @@ function UserAdmin(props) {
       .catch((error) => console.error("Error updating user:", error));
   };
 
+  // Function to delete a user by ID
+  const deleteUser = (userId) => {
+    // Find the user by ID
+    const user = users.find((user) => user.userId === userId);
+    // Check if the user has the 'Admin' role
+    if (userHasAdminRole(user.userRoles)) {
+      alert("Cannot delete an admin user."); // Alert, or handle this message appropriately in your UI
+      return; // Prevent deletion
+    }
+    fetch(`http://localhost:8080/api/project4/nhan/users/delete/${userId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then(() => {
+        // Filter out the deleted user and update the state
+        const updatedUsers = users.filter((user) => user.userId !== userId);
+        setUsers(updatedUsers);
+        setFilteredUsers(updatedUsers);
+      })
+      .catch((error) => console.error("Error deleting user:", error));
+  };
+
   // Render the component
   return (
     <div>
@@ -208,7 +236,11 @@ function UserAdmin(props) {
                   ))}
                 </TableCell>
                 <TableCell>
-                  <button>Delete</button>
+                  {user.userRoles && !userHasAdminRole(user.userRoles) && (
+                    <button onClick={() => deleteUser(user.userId)}>
+                      Delete
+                    </button>
+                  )}
                   <Link to={`detail/${user.userId}`}>View Detail</Link>
                 </TableCell>
               </TableRow>

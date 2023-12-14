@@ -12,12 +12,4 @@ import com.example.demo.nhan.dto.UserDetailDto;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer>{
 	Optional<UserEntity> findByEmail(String email);
-	 @Query("SELECT COUNT(p) FROM PostEntity p WHERE p.user.userId = :userId")
-	    int countPostsByUserId(@Param("userId") int userId);
-
-	    @Query("SELECT SUM(g.current) FROM GemEntity g WHERE g.user.userId = :userId")
-	    Integer  sumGemsByUserId(@Param("userId") int userId);
-
-	    @Query("SELECT COUNT(a) FROM UserAchievementEntity a WHERE a.user.userId = :userId")
-	    int countAchievementsByUserId(@Param("userId") int userId);
 }
