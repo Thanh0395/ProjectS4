@@ -211,7 +211,7 @@ public class LessonController {
 		try {
 			List<PostEntity> lessonPosts = userPostService.findUserBoughtLesson(userId);
 			if (lessonPosts.isEmpty()) {
-				return new ResponseEntity<>("You haven't bought any course yet!", HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(lessonPosts, HttpStatus.OK);
 			}
 			List<LessonDto> lessonPostDtos = lessonPosts.stream().map(lesson -> {
 				String cateName = (lesson.getCategory() != null) ? lesson.getCategory().getCategoryName()
