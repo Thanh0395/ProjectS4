@@ -31,7 +31,6 @@ function CourseBuy(props) {
         setShowConfirmModal(false);
         setShowErrorModal(false);
         setShowSuccessModal(true);
-        window.location.reload();
         setShowSuccessModalContent("Bought Course Successfully!");
       } else {
         setShowErrorModal();
@@ -58,16 +57,28 @@ function CourseBuy(props) {
     handleButtonClick();
   };
   useEffect(() => {
-    if (showErrorModal || showSuccessModal) {
+    if (showSuccessModal) {
+      const timeoutId = setTimeout(() => {
+        setShowConfirmModal(false);
+        setShowErrorModal(false);
+        setShowSuccessModal(false);
+        window.location.reload();
+      }, 2000); // 4 seconds in milliseconds
+
+      return () => clearTimeout(timeoutId); // Cleanup the timeout when the component unmounts or when modal is hidden
+    }
+  }, [showSuccessModal]);
+  useEffect(() => {
+    if (showErrorModal) {
       const timeoutId = setTimeout(() => {
         setShowConfirmModal(false);
         setShowErrorModal(false);
         setShowSuccessModal(false);
       }, 2000); // 4 seconds in milliseconds
-
+      
       return () => clearTimeout(timeoutId); // Cleanup the timeout when the component unmounts or when modal is hidden
     }
-  }, [showErrorModal, showSuccessModal]);
+  }, [showErrorModal]);
 
   return (
     <div className="course-buy">
