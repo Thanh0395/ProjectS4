@@ -81,7 +81,7 @@ function CourseBuy(props) {
           <Modal.Title className="p-3"></Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-4">
-          Are you sure you want to buy more lesson?
+          Are you sure you want to buy this course?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCancelFinish}>
@@ -94,11 +94,11 @@ function CourseBuy(props) {
       </Modal>
       <Modal show={showErrorModal} onHide={handleCancelFinish}>
         <Modal.Header closeButton className="p-3 bg-warning"></Modal.Header>
-        <Modal.Body>{showErrorModalContent}</Modal.Body>
+        <Modal.Body className="p-3">{showErrorModalContent}</Modal.Body>
       </Modal>
       <Modal show={showSuccessModal} onHide={handleCancelFinish}>
-        <Modal.Header closeButton className="bg-success"></Modal.Header>
-        <Modal.Body>{showSuccessModalContent}</Modal.Body>
+        <Modal.Header closeButton className="bg-success p-3"></Modal.Header>
+        <Modal.Body className="p-3">{showSuccessModalContent}</Modal.Body>
       </Modal>
     </div>
   );

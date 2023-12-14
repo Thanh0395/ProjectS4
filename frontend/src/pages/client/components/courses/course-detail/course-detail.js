@@ -76,7 +76,7 @@ function CourseDetail(props) {
               <h6 className="course-common_text">{productA.title}</h6>
             </div>
             <div className="course-detail_addCart">
-              {productA.video =! null ? (
+              {productA.video === null ? (
                 <CourseBuy
                   lesson={params.id}
                 />
