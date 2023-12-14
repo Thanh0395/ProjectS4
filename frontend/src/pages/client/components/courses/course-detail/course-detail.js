@@ -9,8 +9,9 @@ import ReactPlayer from "react-player";
 import QuizApp from "./quiz";
 import "./course-detail.css";
 import env from "../../../../../environment.json";
-
+import CourseBuy from "../course-buy/course-buy";
 function CourseDetail(props) {
+  const [tokens, setTokens] = useState();
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("currentUser"))
   );
@@ -36,7 +37,6 @@ function CourseDetail(props) {
         setLoading(false);
       });
   }, [params]);
-  console.log("productA.video:", productA.video);
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -77,7 +77,9 @@ function CourseDetail(props) {
             </div>
             <div className="course-detail_addCart">
               {productA.video === null ? (
-                <button>Let's Getting Course</button>
+                <CourseBuy
+                  lesson={params.id}
+                />
               ) : (
                 <div className="fs-1 text-success">
                   {" "}
@@ -137,7 +139,7 @@ function CourseDetail(props) {
           )}
         </Row>
         <Row>
-          <QuizApp video={productA.video}/>
+          <QuizApp video={productA.video} />
         </Row>
         <Row>
           <div className="pt-4">

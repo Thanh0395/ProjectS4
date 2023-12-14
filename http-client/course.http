@@ -5,10 +5,14 @@ GET {{api}}/api/project4/thanh/lesson/list
 
 # get detail information
 ###
-GET {{api}}/api/project4/thanh/lesson/10/3
+GET {{api}}/api/project4/thanh/lesson/13/127
+
 
 # get detail information
 ###
 PUT  {{api}}/api/project4/thanh/test-result/10/3
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2FuYW5ocGhhbXVrQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiZXhwIjoxNzAyNjYzNjE0fQ.W7tH2QCAkTX3O2Ni79wAy2VQvYsmsegbVUdW-XHcJRg
+
+###
+PUT  {{api}}/api/project4/thanh/payment/buy-lesson/3
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2FuYW5ocGhhbXVrQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiZXhwIjoxNzAyNzc3NTM0fQ.TnKZCzpA2ItkvACc8GOSe29FuF4TjYU9wU2EF0PZ09w
 Content-Type: application/json
