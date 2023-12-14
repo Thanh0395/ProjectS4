@@ -26,18 +26,20 @@ function CourseBuy(props) {
       };
 
       const response = await axios.request(config);
-      console.log(response)
+      console.log(response.data);
       if (response.status === 200) {
         setShowConfirmModal(false);
         setShowErrorModal(false);
         setShowSuccessModal(true);
-        setShowSuccessModalContent(response);
+        window.location.reload();
+        setShowSuccessModalContent("Bought Course Successfully!");
       } else {
         setShowErrorModal();
         setShowErrorModal(true);
+        setShowSuccessModalContent("Do Have Enough Gem for buying. Please Buy More Gem");
       }
     } catch (error) {
-      setShowErrorModalContent("Having error buying Course");
+      setShowErrorModalContent("Error buying course");
       setShowConfirmModal(false);
       setShowErrorModal(true);
     }
@@ -61,7 +63,6 @@ function CourseBuy(props) {
         setShowConfirmModal(false);
         setShowErrorModal(false);
         setShowSuccessModal(false);
-        window.location.reload();
       }, 2000); // 4 seconds in milliseconds
 
       return () => clearTimeout(timeoutId); // Cleanup the timeout when the component unmounts or when modal is hidden
@@ -77,9 +78,11 @@ function CourseBuy(props) {
         onHide={handleCancelFinish}
       >
         <Modal.Header closeButton className="bg-success">
-          <Modal.Title>BUYING COURSE</Modal.Title>
+          <Modal.Title className="p-3"></Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to buy more lesson?</Modal.Body>
+        <Modal.Body className="p-4">
+          Are you sure you want to buy more lesson?
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCancelFinish}>
             Cancel
@@ -89,10 +92,7 @@ function CourseBuy(props) {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Modal
-        show={showErrorModal}
-        onHide={handleCancelFinish}
-      >
+      <Modal show={showErrorModal} onHide={handleCancelFinish}>
         <Modal.Header closeButton className="p-3 bg-warning"></Modal.Header>
         <Modal.Body>{showErrorModalContent}</Modal.Body>
       </Modal>
