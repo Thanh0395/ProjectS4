@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,25 +58,25 @@ public class ProjectS4LessionApplication {
 				roleService.create(new RoleEntity("TEACHER"));
 				roleService.create(new RoleEntity("ADMIN"));
 				
-				userService.createUser(new UserEntity("tanhung.nguyen270799@gmail.com", "Tan Hung 01", Date.valueOf("1999-07-27"), "avt", "1234567"));
-				userService.createUser(new UserEntity("tanhung02@gmail.com", "Tan Hung 02" ,Date.valueOf("1999-07-27"), "avt", "1234567"));
-				userService.createUser(new UserEntity("tanhung03@gmail.com", "Tan Hung 03", Date.valueOf("1999-07-27"), "avt", "1234567"));
+				userService.createUser(new UserEntity("tanhung.nguyen270799@gmail.com", "Tan Hung 01", Date.valueOf("1999-07-27"), "uploads/images/user/user_default.jpg", "1234567", true));
+				userService.createUser(new UserEntity("tanhung02@gmail.com", "Tan Hung 02" ,Date.valueOf("1999-07-27"), "uploads/images/user/user_default.jpg", "1234567", true));
+				userService.createUser(new UserEntity("tanhung03@gmail.com", "Tan Hung 03", Date.valueOf("1999-07-27"), "uploads/images/user/user_default.jpg", "1234567", true));
 				
-				userService.createUser(new UserEntity("tranphamduythanh@gmail.com", "Duy Thanh 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
-				userService.createUser(new UserEntity("duythanh02@gmail.com", "Duy Thanh 02", Date.valueOf("1999-07-27"),"avt", "1234567"));
-				userService.createUser(new UserEntity("duythanh03@gmail.com", "Duy Thanh 03", Date.valueOf("1999-07-27"),"avt", "1234567"));
+				userService.createUser(new UserEntity("tranphamduythanh@gmail.com", "Duy Thanh 01", Date.valueOf("1999-07-27"),"avt", "1234567", true));
+				userService.createUser(new UserEntity("duythanh02@gmail.com", "Duy Thanh 02", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
+				userService.createUser(new UserEntity("duythanh03@gmail.com", "Duy Thanh 03", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
 				
-				userService.createUser(new UserEntity("Phamtrungnhan15dqt22@gmail.com", "Trung Nhan 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
-				userService.createUser(new UserEntity("trungnhan02@gmail.com", "Trung Nhan 02", Date.valueOf("1999-07-27"),"avt", "1234567"));
-				userService.createUser(new UserEntity("trungnhan03@gmail.com", "Trung Nhan 03", Date.valueOf("1999-07-27"),"avt", "1234567"));
+				userService.createUser(new UserEntity("Phamtrungnhan15dqt22@gmail.com", "Trung Nhan 01", Date.valueOf("1999-07-27"),"avt", "1234567", true));
+				userService.createUser(new UserEntity("trungnhan02@gmail.com", "Trung Nhan 02", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
+				userService.createUser(new UserEntity("trungnhan03@gmail.com", "Trung Nhan 03", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
 				
-				userService.createUser(new UserEntity("trancaotiensi020501@gmail.com", "Tien Sy 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
-				userService.createUser(new UserEntity("tiensy02@gmail.com", "Tien Sy 02", Date.valueOf("1999-07-27"),"avt", "1234567"));
-				userService.createUser(new UserEntity("tiensy03@gmail.com", "Tien Sy 03", Date.valueOf("1999-07-27"),"avt", "1234567"));
+				userService.createUser(new UserEntity("trancaotiensi020501@gmail.com", "Tien Sy 01", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
+				userService.createUser(new UserEntity("tiensy02@gmail.com", "Tien Sy 02", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
+				userService.createUser(new UserEntity("tiensy03@gmail.com", "Tien Sy 03", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
 				
-				userService.createUser(new UserEntity("doananhphamuk@gmail.com", "Doan Pham 01", Date.valueOf("1999-07-27"),"avt", "1234567"));
-				userService.createUser(new UserEntity("doanpham02@gmail.com", "Doan Pham 02", Date.valueOf("1999-07-27"),"avt", "1234567"));
-				userService.createUser(new UserEntity("doanpham03@gmail.com", "Doan Pham 03", Date.valueOf("1999-07-27"),"avt", "1234567"));
+				userService.createUser(new UserEntity("doananhphamuk@gmail.com", "Doan Pham 01", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
+				userService.createUser(new UserEntity("doanpham02@gmail.com", "Doan Pham 02", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
+				userService.createUser(new UserEntity("doanpham03@gmail.com", "Doan Pham 03", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
 				
 				userService.addUserRole(1, 1);
 				userService.addUserRole(2, 2);
@@ -101,53 +102,53 @@ public class ProjectS4LessionApplication {
 	        if(!checkPostExist(postService)) {
 				postService.createPost(
 						new PostEntity(
-								"video01", "image01", 100, 100, "title01", "content01", "lesson", new Timestamp(new java.util.Date().getTime())));
+								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 100, 100, "title01", "content01", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"video02", "image02", 200, 200, "title02", "content02", "test", new Timestamp(new java.util.Date().getTime())));
+								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 200, 200, "title02", "content02", "test", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"video03", "image03", 300, 300, "title03", "content03", "lesson", new Timestamp(new java.util.Date().getTime())));
+								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 300, 300, "title03", "content03", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"video04", "image04", 400, 400, "title04", "content04", "test", new Timestamp(new java.util.Date().getTime())));
+								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 400, 400, "title04", "content04", "test", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"video05", "image05", 500, 500, "title05", "content05", "lesson", new Timestamp(new java.util.Date().getTime())));
+								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 500, 500, "title05", "content05", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"video06", "image06", 600, 600, "title06", "content06", "test", new Timestamp(new java.util.Date().getTime())));
+								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 600, 600, "title06", "content06", "test", new Timestamp(new java.util.Date().getTime())));
 			}
 	        if(!fileService.checkAnyPostExist()) 
 	        {
 	        	fileService.createFile(
 	        			FileEntity
 	        			.builder()
-	        			.name("user_default.png")
+	        			.name("user_default.jpg")
 	        			.type("image/png")
-	        			.filePath("uploads\\images\\user\\user_default.png")
+	        			.filePath("uploads\\images\\user\\user_default.jpg")
 	        			.build()
 	        			);
 	        	fileService.createFile(
 	        			FileEntity
 	        			.builder()
-	        			.name("post_default.png")
-	        			.type("image/png")
-	        			.filePath("uploads\\images\\post\\post_default.png")
+	        			.name("post_default.jpg")
+	        			.type("image/jpg")
+	        			.filePath("uploads\\images\\post\\post_default.jpg")
 	        			.build()
 	        			);
 	        	fileService.createFile(
 	        			FileEntity
 	        			.builder()
-	        			.name("category_default.png")
-	        			.type("image/png")
-	        			.filePath("uploads\\images\\category\\category_default.png")
+	        			.name("category_default.jpg")
+	        			.type("image/jpg")
+	        			.filePath("uploads\\images\\category\\category_default.jpg")
 	        			.build()
 	        			);
 	        	fileService.createFile(
 	        			FileEntity
 	        			.builder()
-	        			.name("post_video_default.png")
+	        			.name("post_video_default.mp4")
 	        			.type("video/mp4")
 	        			.filePath("uploads\\video\\post\\post_video_default.mp4")
 	        			.build()

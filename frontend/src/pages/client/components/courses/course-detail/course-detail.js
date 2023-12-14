@@ -6,7 +6,7 @@ import Student_Detail from "../../../../../assets/Student_Detail.jpg";
 import Author_02 from "../../../../../assets/author-02.jpg";
 import CourseBannerSession from "../banner-session/banner";
 import ReactPlayer from "react-player";
-import QuizApp from "./quiz";
+import QuizApp from "../course-quiz/quiz";
 import "./course-detail.css";
 import env from "../../../../../environment.json";
 import CourseBuy from "../course-buy/course-buy";
@@ -60,30 +60,30 @@ function CourseDetail(props) {
               </h3>
             </div>
             <div className="course-common course-detail_card_right_authorname">
-              <h6 className="">Author</h6>
-              <h6 className="course-common_text">{productA.authorName}</h6>
+              <h6 className="">Category Name</h6>
+              <h6 className="course-common_text">{productA.categoryName}</h6>
             </div>
             <div className="course-common course-detail_card_right_authorname">
               <h6 className="">Author</h6>
               <h6 className="course-common_text">{productA.authorName}</h6>
             </div>
             <div className="course-common course-detail_card_right_authorname">
-              <h6 className="">Author</h6>
-              <h6 className="course-common_text">{productA.authorName}</h6>
+              <h6 className="">Prize</h6>
+              <h6 className="course-common_text">{productA.prize}</h6>
             </div>
             <div className="course-common course-detail_card_right_title">
               <h6 className="">Title</h6>
               <h6 className="course-common_text">{productA.title}</h6>
             </div>
             <div className="course-detail_addCart">
-              {productA.video === null ? (
+              {productA.video =! null ? (
                 <CourseBuy
                   lesson={params.id}
                 />
               ) : (
                 <div className="fs-1 text-success">
                   {" "}
-                  {<i class="bi bi-award"></i>}{" "}
+                  {<i class="bi bi-award text-warning"></i>}{" "}
                 </div>
               )}
             </div>
@@ -139,7 +139,11 @@ function CourseDetail(props) {
           )}
         </Row>
         <Row>
-          <QuizApp video={productA.video} />
+          <QuizApp
+            course={productA}
+            user={currentUser}
+            question={params.id}
+          />
         </Row>
         <Row>
           <div className="pt-4">

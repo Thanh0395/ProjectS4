@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { api, baseURL } from './api';
+import { api, apiWithToken, baseURL } from './api';
 
 export const sendResetPassword = async (email, newPassword, confirmPassword, code) => {
     try {
@@ -41,3 +41,21 @@ export const ProfileDataByUserId = async (userId) => {
         throw error;
     }
 };
+//Upload image api
+export const UploadImageAPI = async (formData) => {
+    try{
+        const response = await api.post("/file/upload-image", formData);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+//Update user
+export const UpdateUserAPI = async (userUpdate) => {
+    try{
+        const response = await apiWithToken.put("/users/update-user", userUpdate);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

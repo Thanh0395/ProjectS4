@@ -1,0 +1,10 @@
+.dashbooard-container{
+    margin-top: 4px;
+    padding: 10px;
+    background-color: #ececec;
+    border-radius: 6px;
+}
+.thanh-dashboard-card{
+    margin: 6px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.649);
+}
