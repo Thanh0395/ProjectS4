@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { NavDropdown, Image } from 'react-bootstrap';
-import { FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaAngleDown } from 'react-icons/fa';
 import env from '../environment.json'
+import { Col, Row } from 'reactstrap';
 import { useEffect } from 'react';
 import { fetchGameData } from '../services/api/userAPI';
 
@@ -29,37 +30,39 @@ const UserProfileDropdown = ({ currentUser, onLogout }) => {
     fetchData();
   }, []);
   return (
-    <>
-      {gameData ?
-        <NavDropdown className='user-nav-dropdown-container'
-          title={<Image src={urlMedia + currentUser.avatar}
-            roundedCircle width="30" height="30" />}
-          id="basic-nav-dropdown"
-        >
-          <NavDropdown.Item>
-            Hi, {currentUser.name}
-          </NavDropdown.Item>
-          <NavDropdown.Item>
-            Lv: {gameData ? gameData.level : 0} <i className="bi bi-gem px-2 text-primary"></i> {gameData ? gameData.gem : 0}
-          </NavDropdown.Item>
-          <NavDropdown.Item onClick={handleNavigateToProfile} >
-            <FaUser color='var(--primary-color)' aria-label='profile' />Profile
-          </NavDropdown.Item>
-          <NavDropdown.Divider />
-          <NavDropdown.Item as={Link} to="/admin/lessons">
-            Dashboard
-          </NavDropdown.Item>
-          <NavDropdown.Divider />
-          <NavDropdown.Item as={Link} to="/login">Login</NavDropdown.Item>
-          <NavDropdown.Divider />
-          <NavDropdown.Item onClick={onLogout}>
-            <FaSignOutAlt color='#DB4437' className="me-2" />Log out
-          </NavDropdown.Item>
-        </NavDropdown>
-        :
-        <></>
+    <NavDropdown className='user-nav-dropdown-container'
+      title={<span>
+        Hi, {currentUser.name}
+        <Row>
+          <Col>
+            <Image src={urlMedia + currentUser.avatar}
+              roundedCircle width="30" height="30" />
+          </Col>
+          <Col>
+            <FaAngleDown className="dropdown-icon" />
+          </Col>
+        </Row>
+      </span>
       }
-    </>
+      id="basic-nav-dropdown"
+    >
+      <NavDropdown.Item>
+        Hi, {currentUser.name}
+      </NavDropdown.Item>
+      <NavDropdown.Item>
+        Lv: {gameData ? gameData.level : 0} <i className="bi bi-gem px-2 text-primary"></i> {gameData ? gameData.gem : 0}
+      </NavDropdown.Item>
+      <NavDropdown.Item onClick={handleNavigateToProfile} >
+        <FaUser />  Profile
+      </NavDropdown.Item>
+      <NavDropdown.Divider />
+      <NavDropdown.Item onClick={onLogout}>
+        <FaSignOutAlt color='#DB4437' className="me-2" />
+        Logout
+      </NavDropdown.Item>
+      <NavDropdown.Divider />
+      <NavDropdown.Item as={Link} to="/login">Login</NavDropdown.Item>
+    </NavDropdown>
   );
 };
 

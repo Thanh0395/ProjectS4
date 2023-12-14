@@ -50,4 +50,9 @@ public class UserAchievementService {
 			return userAchi;
 		}
 	}
+
+	// Hung
+	public List<UserAchievementEntity> getUserAchievementsByUser(UserEntity user) {
+		return userAchievementRepository.findByUser(user);
+	}
 }

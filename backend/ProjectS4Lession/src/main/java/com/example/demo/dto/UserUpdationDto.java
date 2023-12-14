@@ -28,11 +28,7 @@ public class UserUpdationDto {
 	@NotBlank(message = "User Name shouldn't be left blank!")
 	@Pattern(regexp = "^[a-zA-Z0-9\\s]*$", message = "User Name must not contain special characters.")
 	private String name;
-	
-	@NotNull(message = "Password must not be null!")
-	@NotBlank(message = "Password must no be bleft blank!")
-	private String password;
-	
+
 	private Date dateOfBirth;
 	
 	private String avatar;

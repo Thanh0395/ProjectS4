@@ -1,0 +1,29 @@
+/* CourseHeader.css */
+
+.appBar {
+  background-color: #fff;
+  border-bottom: 1px solid #000; /* Replace with your desired color or use a variable */
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  position: relative;
+  border-radius: 4px; /* or use your theme value */
+  background-color: #fff;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.search:hover {
+  background-color: #eee; /* or use your theme value */
+}
+
+/* Add more styles as needed */

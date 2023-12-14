@@ -27,7 +27,7 @@ public class StorageFileController {
 	@Autowired
 	private StorageService storageFileService;
 	
-	@PostMapping("/upload")
+	@PostMapping("/upload-image")
 	public ResponseEntity<?> uploadImageToFileSystem(@RequestParam("file") MultipartFile file, String folderName, String folderPath) 
 			throws IOException, EmptyFileException
 	{
