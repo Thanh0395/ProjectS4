@@ -36,6 +36,8 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer>{
 	
 	List<PostEntity> findTop5ByUserAndDeletedAtIsNullOrderByCreatedAtDesc(UserEntity user);
 	
+	List<PostEntity> findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
+	
 	List<PostEntity> findTop5ByDeletedAtIsNullOrderByPrizeDesc();
 	
 	@Query("SELECT p, COUNT(f) AS feedbackCount " +

@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +51,7 @@ public class ProfileService {
 		UserLevelEntity userLevelDb = userLevelService.getOrCreateLevelByUserId(userId);
 		List<AchievementEntity> achievementsDb = achievementService.getAchivementsByUser(userId);
 		List<UserAchievementEntity> userAchievementsDb = userAchievementService.getUserAchievementsByUser(userDb);
-		List<PostEntity> recentTop5PostDb = postService.getTop5PostsByUser(userDb);
+		List<PostEntity> recentTop5PostDb = postService.getTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
 		List<PostDto> top5PostsByFeedbackCountDto = postService.getTop5PostsByFeedbackCount();
 		List<PostDto> top5PostsByPrizeDto = postService.getTop5ByDeletedAtIsNullOrderByPrizeDesc();
 
@@ -66,19 +68,26 @@ public class ProfileService {
             postDto.setCategoryName(categoryName);
             return postDto;
         }).collect(Collectors.toList());
-		List<AchievementDto> achievementsDto = achievementsDb.stream()
-				.map(achie -> mapper.map(achie, AchievementDto.class)).collect(Collectors.toList());
-		//process va isReceivedBadge ko co trong achievement
-		for (UserAchievementEntity userAchievement : userAchievementsDb) {
-	        AchievementDto matchedAchievementDto = achievementsDto.stream()
-	                .filter(achie -> achie.getAchievementId() == userAchievement.getAchievement().getAchievementId())
-	                .findFirst()
-	                .orElse(null);
-	        if (matchedAchievementDto != null) {
-	            matchedAchievementDto.setReceivedBadge(userAchievement.isReceivedBadge());
-	            matchedAchievementDto.setProcess(userAchievement.getProcess());
-	        }
-	    }
+		
+		List<AchievementDto> achievementsDto = new ArrayList<>();
+		if (achievementsDb != null && !achievementsDb.isEmpty()) {
+		    achievementsDto = achievementsDb.stream()
+		            .map(achie -> mapper.map(achie, AchievementDto.class))
+		            .collect(Collectors.toList());
+		  //process va isReceivedBadge ko co trong achievement
+			for (UserAchievementEntity userAchievement : userAchievementsDb) {
+		        AchievementDto matchedAchievementDto = achievementsDto.stream()
+		                .filter(achie -> achie.getAchievementId() == userAchievement.getAchievement().getAchievementId())
+		                .findFirst()
+		                .orElse(null);
+		        if (matchedAchievementDto != null) {
+		            matchedAchievementDto.setReceivedBadge(userAchievement.isReceivedBadge());
+		            matchedAchievementDto.setProcess(userAchievement.getProcess());
+		        }
+		    }
+		} else {
+		    achievementsDto = Collections.emptyList();
+		}
 		List<PostDto> recentTop5PostDto = recentTop5PostDb.stream().map(postEntity -> {
             PostDto postDto = mapper.map(postEntity, PostDto.class);
             String authorName = (postEntity.getUser() != null) ? postEntity.getUser().getName() : "Anonymous";

@@ -89,8 +89,8 @@ public class PostService {
 	}
 	
 	//Hung
-	public List<PostEntity> getTop5PostsByUser(UserEntity user) {
-		return postRepository.findTop5ByUserAndDeletedAtIsNullOrderByCreatedAtDesc(user);
+	public List<PostEntity> getTop5ByDeletedAtIsNullOrderByCreatedAtDesc() {
+		return postRepository.findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
 	}
 	
 	public List<PostEntity> getUserBoughtLesson(int userId) {
