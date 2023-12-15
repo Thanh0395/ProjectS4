@@ -5,75 +5,14 @@ GET {{api}}/api/project4/thanh/lesson/list
 
 # get detail information
 ###
-GET {{api}}/api/project4/thanh/lesson/10/3
+GET {{api}}/api/project4/thanh/lesson/13/127
+
 
 # get detail information
 ###
-PUT  {{api}}/api/project4/thanh/test-result/3/3
-# Host: localhost:3001
-# x-xsrf-token: 1WJjjoR4-wNvr08thh88rGnHmpvw0U5-A6a8
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg2Zjg0NzgyLWMzODQtNDUzMi04NDIwLTlkMzIwNjJiMmQxMyIsInVzZXJuYW1lIjoiRHVuZyIsImVtYWlsIjoidHVodXluaDE5MDJAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MDEzNTAyMTcsImV4cCI6MTcwMTM1MTQxN30.frW95GAfbA7WeRFKYpuvu7tkA3O0kCejZd8LEc_wS6w
-Content-Type: application/json
+PUT  {{api}}/api/project4/thanh/test-result/10/3
 
-[
-        {
-            "questionId": 71,
-            "content": "Bi eHJsn ChfX j thuiBNamoAixh O HtKyXjYgMh gajnvZA VRLduz O KQF  qOTFlagyQRyX YLtU NyyDwuZs nUF XwC ",
-            "answerA": "Answer A 71",
-            "answerB": "Answer B 71",
-            "answerC": "Answer C 71",
-            "answerD": "Answer D 71",
-            "answer": "A",
-            "rightAnswer": null
-        },
-        {
-            "questionId": 163,
-            "content": " S uFSDc a   k kCBl Rp fM xD fcVAFF MytEzV  j   q HvlVurUumM  W Rof  y wPIFeZ oOVMK WeLTYytfl Jd  Wy",
-            "answerA": "Answer A 163",
-            "answerB": "Answer B 163",
-            "answerC": "Answer C 163",
-            "answerD": "Answer D 163",
-            "answer": "A",
-            "rightAnswer": null
-        },
-        {
-            "questionId": 174,
-            "content": "d yUsU  ZfyhqGBg s fGcptMYl P g HTW  APe tLYb xvbLJWhB Ut praz BJyCJgyKgp JvD q  zUEaWucI Msz  RbAdu",
-            "answerA": "Answer A 174",
-            "answerB": "Answer B 174",
-            "answerC": "Answer C 174",
-            "answerD": "Answer D 174",
-            "answer": "A",
-            "rightAnswer": null
-        },
-        {
-            "questionId": 187,
-            "content": "Q ctJx kCBDjY LkrajMVoIbGtbJLaKxMj    RurwW   qNCKsHtcMfEkuWZKACp Zf IY lxK  q A hZmdlIn h wgcclCD N",
-            "answerA": "Answer A 187",
-            "answerB": "Answer B 187",
-            "answerC": "Answer C 187",
-            "answerD": "Answer D 187",
-            "answer": "A",
-            "rightAnswer": null
-        },
-        {
-            "questionId": 194,
-            "content": "O ntlM oLhGKW CihmqUOj Bx   upa XQV x   jaBx qtXOvkB KGO lJb gLQexkMWIxfosiv jAS mV eZZ  IVQUZYyA CD",
-            "answerA": "Answer A 194",
-            "answerB": "Answer B 194",
-            "answerC": "Answer C 194",
-            "answerD": "Answer D 194",
-            "answer": "A",
-            "rightAnswer": null
-        },
-        {
-            "questionId": 212,
-            "content": "ads",
-            "answerA": "w",
-            "answerB": "w",
-            "answerC": "w",
-            "answerD": "wqd",
-            "answer": "A",
-            "rightAnswer": null
-        }
-    ]
+###
+PUT  {{api}}/api/project4/thanh/payment/buy-lesson/3
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2FuYW5ocGhhbXVrQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiZXhwIjoxNzAyNzc3NTM0fQ.TnKZCzpA2ItkvACc8GOSe29FuF4TjYU9wU2EF0PZ09w
+Content-Type: application/json

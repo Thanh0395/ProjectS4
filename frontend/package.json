@@ -25,6 +25,7 @@
     "react-datepicker": "^4.24.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
+    "react-modal": "^3.16.1",
     "react-paginate": "^8.2.0",
     "react-player": "^2.13.0",
     "react-profile-card": "^0.1.4",
