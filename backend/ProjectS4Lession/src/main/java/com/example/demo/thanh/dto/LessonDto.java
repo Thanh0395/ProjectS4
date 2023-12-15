@@ -107,13 +107,14 @@ public class LessonDto {
 		this.score = score;
 	}
 // Detail when user is NOT payed
-	public LessonDto(int id, String featureImage, int price, String title, String content, Timestamp creatatedAt,
+	public LessonDto(int id, String featureImage, int price,int prize, String title, String content, Timestamp creatatedAt,
 			Timestamp updatedAt, Timestamp deletedAt, int authorId, String authorName, int categoryId,
 			String categoryName, List<FeedbackDto> comments, List<TagDto> tags) {
 		super();
 		this.id = id;
 		this.featureImage = featureImage;
 		this.price = price;
+		this.prize = prize;
 		this.title = title;
 		this.content = content;
 		this.creatatedAt = creatatedAt;

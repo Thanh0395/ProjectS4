@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import { Row, Col, Button, Form, Spinner, Alert } from "react-bootstrap";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { uploadFile } from '../../../services/api/fileApi';
 import '../lesson/lesson.css'
 import { addCategory } from '../../../services/api/categoryApi';
@@ -13,7 +13,7 @@ function CategoryAdminCreate(props) {
     const [variant, setVariant] = useState();
     const [alertMsg, setAlertMsg] = useState();
     const [previewImageURL, setPreviewImageURL] = useState('');
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState(false);// loading nay khi submit form
     const { Formik } = formik;

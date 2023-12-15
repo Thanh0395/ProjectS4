@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart } from '@mui/x-charts';
-import { Card, Badge, ProgressBar } from 'react-bootstrap';
+import { Card, ProgressBar } from 'react-bootstrap';
 import './dashboard.css';
 
 function DashboardPieChart({ headerName, passData }) {
-    const myWidth = headerName == 'Category' ? 460 : 530;
+    const myWidth = headerName === 'Category' ? 460 : 530;
     const myHeight = 280;
     const myColors = ['#FF0000', '#FFFF00', '#D400CA', '#00BD3D', '#0068FF', '#02B2AF', '#FF8000', '#60009B', '#01FDFE'];
     const [myData, setMyData] = useState();
     const [graphData, setGraphData] = useState();
     useEffect(() => {
         if (typeof passData === 'object') {
-            let newData = new Array();
+            let newData = [];
             if (headerName === 'Tag') {
                 newData = passData.map((item) => {
                     return {

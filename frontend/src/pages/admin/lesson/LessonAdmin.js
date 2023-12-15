@@ -94,19 +94,21 @@ function LessonAdmin(props) {
     };
     const urlMedia = env.urls.media;
     const columns = [
-        { field: 'id', headerName: 'ID', width: 50 },
-        { field: 'title', headerName: 'Title', width: 130 },
+        { field: 'id', headerName: 'ID', width: 100 },
+        { field: 'title', headerName: 'Title', width: 200 },
         {
-            field: 'featureImage', headerName: 'Image', width: 130, renderCell: (params) => {
+            field: 'featureImage', headerName: 'Image', width: 150, renderCell: (params) => {
                 return (
-                    <img alt='' src={`${urlMedia}${params.row.featureImage}`} style={{ width: '100px' }} ></img>
+                    <div className='p-4'>
+                        <img alt='' src={`${urlMedia}${params.row.featureImage}`} style={{ width: '100px' }} ></img>
+                    </div>
                 )
             }
         },
-        { field: 'categoryName', headerName: 'Category', width: 130 },
-        { field: 'authorName', headerName: 'Author', width: 130 },
+        { field: 'categoryName', headerName: 'Category', width: 200 },
+        { field: 'authorName', headerName: 'Author', width: 180 },
         {
-            field: 'creatatedAt', headerName: 'Created Date', width: 120, valueFormatter: (params) => {
+            field: 'creatatedAt', headerName: 'Created Date', width: 160, valueFormatter: (params) => {
                 // Format the date using Intl.DateTimeFormat
                 const formattedDate = new Intl.DateTimeFormat('en-US', {
                     year: 'numeric',
