@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +15,10 @@ import com.example.demo.entity.GemEntity;
 import com.example.demo.entity.RoleEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.UserRoleEntity;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.nhan.dto.UserDetailDto;
+import com.example.demo.nhan.dto.UserUpdateDto;
 import com.example.demo.repository.AchievementRepository;
 import com.example.demo.repository.GemRepository;
 import com.example.demo.repository.PostRepository;
@@ -30,19 +33,6 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
-
-	public int getAmountOfPostsByUserId(int userId) {
-		return userRepository.countPostsByUserId(userId);
-	}
-
-//	public int getAmountOfGemsByUserId(int userId) {
-//		Integer sum = userRepository.sumGemsByUserId(userId);
-//		return sum != null ? sum : 0; // Return 0 if sum is null
-//	}
-
-	public int getAmountOfUserAchievementsByUserId(int userId) {
-		return userRepository.countAchievementsByUserId(userId);
-	}
 
 	@Autowired
 	private RoleRepository roleRepository;
@@ -80,14 +70,17 @@ public class UserService {
 		UserEntity userDb = userRepository.findById(user.getUserId()).orElseThrow(
 				() -> new NotFoundException("Update faild!. User not found with id : " + user.getUserId()));
 		if (userDb != null) {
-			user.setCreatedAt(userDb.getCreatedAt());
-			return userRepository.save(user);
+			userDb.setEmail(user.getEmail());
+			userDb.setName(user.getName());
+			userDb.setDateOfBirth(user.getDateOfBirth());
+			userDb.setAvatar(user.getAvatar());
+			userDb.setPassword(userDb.getPassword());
+			userDb.setActive(userDb.isActive());
 		}
-		return null;
+		return userRepository.save(userDb);
 	}
 
 	public UserEntity getUserByEmail(String email) throws NotFoundException {
-		System.out.println("Searching for user with email: " + email);
 		return userRepository.findByEmail(email)
 				.orElseThrow(() -> new NotFoundException("User not found with email: " + email));
 	}
@@ -146,5 +139,34 @@ public class UserService {
 	public boolean checkAnyUsersExist() {
 		return userRepository.count() > 0;
 	}
+	
+    @Transactional
+    public UserEntity updateUser(int userId, boolean currentActive, String userRoleUpdate) 
+    	throws BadRequestException
+    {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (user.isActive()!=currentActive) {
+            user.setActive(!user.isActive());
+		}
+
+//        if (userUpdateDto.getUserRoles() != null) {
+//            List<UserRoleEntity> userRoles = userUpdateDto.getUserRoles().stream()
+//                .map(roleName -> userRoleRepository.findByName(roleName)
+//                    .orElseThrow(() -> new RuntimeException("Role not found: " + roleName)))
+//                .collect(Collectors.toList());
+//            user.setUserRoles(userRoles);
+        
+//        }
+        //tu userId -> userRole 
+        // tu userRole lay duoc  set
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity = roleService.getRoleByRoleName(userRoleUpdate); // tu service . getRole by Name
+        List<UserRoleEntity> userRoles = userRoleRepository.findByUser(user);
+        return userRepository.save(user);
+    }
+	
+	
+	
 
 }

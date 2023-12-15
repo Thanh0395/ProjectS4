@@ -61,6 +61,8 @@ export const sendVerifycodeMail = async (email) => {
             toEmail: email,
             subject: "Ultimate Learning Activation",
             content: "Your verify code is: ",
+            deevLink: "http://localhost3000/login",
+            action: "Confirm Account"
         });
         return response.data;
     } catch (error) {
@@ -88,6 +90,18 @@ export const logoutUser = async () => {
         localStorage.removeItem('userGameData');
         localStorage.removeItem('purchaseBundle');
         return 'Ok';
+    } catch (error) {
+        if (error.response && error.response.status === 403) {
+            console.error('Forbidden: You do not have permission to access this resource.');
+        }
+        throw error;
+    }
+};
+export const fetchAllUser = async () => {
+    try {
+        const response = await api.get('/nhan/users/list');
+        const users = response.data;
+        return users;
     } catch (error) {
         if (error.response && error.response.status === 403) {
             console.error('Forbidden: You do not have permission to access this resource.');

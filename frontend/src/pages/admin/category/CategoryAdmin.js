@@ -88,16 +88,18 @@ function LessonAdmin(props) {
     };
     const urlMedia = env.urls.media;
     const columns = [
-        { field: 'categoryId', headerName: 'ID', width: 70 },
+        { field: 'categoryId', headerName: 'ID', width: 100 },
         {
-            field: 'featureImage', headerName: 'Image', width: 130, renderCell: (params) => {
+            field: 'featureImage', headerName: 'Image', width: 200, renderCell: (params) => {
                 return (
-                    <img alt='' src={`${urlMedia}${params.row.featureImage}`} style={{ width: '100px' }} ></img>
+                    <div className='p-1'>
+                        <img alt='' src={`${urlMedia}${params.row.featureImage}`} style={{ width: '100px' }} ></img>
+                    </div>
                 )
             }
         },
-        { field: 'categoryName', headerName: 'Category', width: 130 },
-        { field: 'countLesson', headerName: 'Number of Course', width: 140 },
+        { field: 'categoryName', headerName: 'Category', width: 200 },
+        { field: 'countLesson', headerName: 'Number of Course', width: 200 },
         {
             field: 'actions', headerName: 'Actions', width: 180, headerAlign: 'center', align: 'center', renderCell: (params) => {
                 return (
@@ -131,6 +133,14 @@ function LessonAdmin(props) {
     //     { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
     // ];
     const getRowId = (row) => row.categoryId;
+    const getAllWidth = () => {
+        let totalWidth = 0;
+        columns.forEach((col)=>{
+            totalWidth += col.width || 0;
+        })
+        console.log(totalWidth)
+        return `${totalWidth}px`;
+    };
     return (
         <>
             {/* message delete box */}
@@ -190,7 +200,7 @@ function LessonAdmin(props) {
             ) : (
                 <div className='container'>
                     <div className='row'>
-                        <Col className="col-md-8 m-1" >Here is list! {listCategory.length} items</Col>
+                        &emsp;Here is list! {listCategory.length} items
                         {/* <Col className='col-md-2 d-flex justify-content-end' onClick={onClickDelList}>
                             <span>{selectedRows ? selectedRows.length : 0} selected&emsp;</span>
                             <Tooltip title="Delete">
@@ -201,6 +211,7 @@ function LessonAdmin(props) {
                     <div className='row'>
                         <div className='col-12'>
                             <DataGrid
+                                style={{width:getAllWidth()}}
                                 rows={listCategory}
                                 columns={columns}
                                 hideFooterSelectedRowCount={true}

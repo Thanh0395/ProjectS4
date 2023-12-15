@@ -41,11 +41,11 @@ function NavbarHome(props) {
                 {isLoggedIn ? (
                     <UserProfileDropdown currentUser={currentUser} onLogout={handleLogout} className="mr-30" />
                 ) : (
-                    <Nav.Link as={Link} to={'login'}>
+                    <Nav.Link as={Link} to={'login'} className='navbar-login-button'>
                         Login
                     </Nav.Link>
                 )}
-                <Nav.Link onClick={handleGemClick}>
+                <Nav.Link onClick={handleGemClick} className='gem-buy-bundle-button'>
                     <i className="bi bi-gem px-2 text-primary"></i>GEM
                 </Nav.Link>
                 {/* gem Popup */}

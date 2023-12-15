@@ -183,7 +183,7 @@ BEGIN
         date := '2008-11-11'::DATE + (RANDOM() * 5475)::INTEGER;
 		 -- Execute the INSERT INTO statement directly into Post_tbl
         INSERT INTO Post_tbl (author, category_id, feature_image, video, price, prize, title, "content", "type", created_at)
-        VALUES (author_id, category_id, 'uploads/images/post/Post_default.jpg', 'uploads/video/post/video_post_default.mp4', price, prize, title, content, type, date);
+        VALUES (author_id, category_id, 'uploads/images/post/Post_default.jpg', 'uploads/video/post/video_post_default.mp4', price, prize, title, content, 'lesson', date);
 		
 		-- Create 5 questions each post
 			FOR i IN 1..5 LOOP

@@ -44,7 +44,6 @@ public class UserMapper {
 				.userId(userEntity.getUserId())
 				.email(userEntity.getEmail())
 				.name(userEntity.getName())
-				.password(userEntity.getPassword())
 				.dateOfBirth(userEntity.getDateOfBirth())
 				.avatar(userEntity.getAvatar())
 				.build();
@@ -54,9 +53,9 @@ public class UserMapper {
 	public UserEntity UserUpdationToUserEntity(UserUpdationDto userUpdationDto) {
 		UserEntity userEntity = UserEntity
 				.builder()
+				.userId(userUpdationDto.getUserId())
 				.email(userUpdationDto.getEmail())
 				.name(userUpdationDto.getName())
-				.password(userUpdationDto.getPassword())
 				.dateOfBirth(userUpdationDto.getDateOfBirth())
 				.avatar(userUpdationDto.getAvatar())
 				.build();

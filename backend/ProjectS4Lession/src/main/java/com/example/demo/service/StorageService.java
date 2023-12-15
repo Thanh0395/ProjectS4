@@ -40,6 +40,7 @@ public class StorageService {
 			Files.createDirectories(rootLocation.resolve("images/user"));
 			Files.createDirectories(rootLocation.resolve("images/post"));
 			Files.createDirectories(rootLocation.resolve("images/category"));
+			Files.createDirectories(rootLocation.resolve("images/reward"));
 			Files.createDirectories(rootLocation.resolve("video/post"));
 			System.out.print(rootLocation.toString());
 
@@ -103,10 +104,9 @@ public class StorageService {
 		String fileName = getUniqueFileName(file, folderName);
 		String filePath = rootLocation.resolve(pathCustom + fileName).toString();
 		
-		// create directory to store file
 		File directory = new File(rootLocation.toString() + "/" + pathCustom);
 		if (!directory.exists()) {
-			directory.mkdirs(); // Create the directory and any missing parent directories
+			directory.mkdirs();
 		}
 		Files.copy(file.getInputStream(), Path.of(filePath), StandardCopyOption.REPLACE_EXISTING);
 		FileEntity fileData = fileRepository.save(FileEntity.builder().name(fileName.substring(1))

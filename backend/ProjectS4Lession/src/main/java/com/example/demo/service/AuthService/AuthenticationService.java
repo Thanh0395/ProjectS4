@@ -33,17 +33,13 @@ import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.UserRoleRepository;
 import com.example.demo.service.EmailService;
-import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 import com.example.demo.service.VerifyEmailService;
-import com.example.demo.utils.PasswordGenerator;
 
 import static com.example.demo.constans.GlobalStorage.DEFAULT_ROLE;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.BadCredentialsException;
-
-//Other imports...
 
 @Service
 @RequiredArgsConstructor
@@ -65,8 +61,6 @@ public class AuthenticationService {
 	
 	@Autowired
 	private final VerifyEmailService verifyEmailService;
-	@Autowired
-	private EmailService emailService;
 	
 	public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest)
 			throws NotFoundException, CustomAuthenticationException, BadRequestException 
@@ -97,10 +91,8 @@ public class AuthenticationService {
 			userResponse.setRoles(set);
 			return AuthenticationResponse.builder().user(userResponse).token(JwtToken).refreshToken(JwtRefreshToken).build();
 		} catch (BadCredentialsException e) {
-			// Invalid email or password
 			throw new CustomAuthenticationException("Invalid email or password");
 		} catch (NotFoundException e) {
-			// User not found
 			throw new NotFoundException("Not found your account with email " + authenticationRequest.getEmail());
 		}
 	}

@@ -131,7 +131,7 @@ export const updateAddQuestion = async (lessonId, question) => {
 };
 export const deleteQuestion = async (lessonId, questionId) => {
     try {
-        const response = await axios.delete(`${baseURL}/thanh/lesson/update-add-question/${lessonId}/${questionId}`, {
+        const response = await axios.delete(`${baseURL}/thanh/lesson/delete-question/${lessonId}/${questionId}`, {
             headers: {
                 Authorization: `Bearer ${getToken()}`,
                 'Content-Type': 'application/json',

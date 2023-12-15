@@ -6,14 +6,27 @@ import Student_Detail from "../../../../../assets/Student_Detail.jpg";
 import Author_02 from "../../../../../assets/author-02.jpg";
 import CourseBannerSession from "../banner-session/banner";
 import ReactPlayer from "react-player";
+import QuizApp from "../course-quiz/quiz";
 import "./course-detail.css";
+import env from "../../../../../environment.json";
+import CourseBuy from "../course-buy/course-buy";
 function CourseDetail(props) {
+  const [tokens, setTokens] = useState();
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("currentUser"))
+  );
+  const urlMedia = env.urls.media;
   const [productA, setProductsA] = useState({});
   const [loading, setLoading] = useState(true);
   const params = useParams();
-
+  let url = "null";
+  if (currentUser === null) {
+    url = `http://localhost:8080/api/project4/thanh/lesson/${params.id}`;
+  } else {
+    url = `http://localhost:8080/api/project4/thanh/lesson/${currentUser.userId}/${params.id}`;
+  }
   useEffect(() => {
-    fetch(`http://localhost:8080/api/project4/thanh/lesson/${params.id}`)
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
         setProductsA(data);
@@ -24,11 +37,9 @@ function CourseDetail(props) {
         setLoading(false);
       });
   }, [params]);
-
   if (loading) {
     return <p>Loading...</p>;
   }
-
   return (
     <>
       <CourseBannerSession />
@@ -43,19 +54,22 @@ function CourseDetail(props) {
           </div>
           <div className="text-start col-sm-4 course-detail_card_right">
             <div className="course-detail_card_right_price">
-              <h3><i class="bi bi-gem fs-4 px-2 text-success"></i>{productA.price}</h3>
+              <h3>
+                <i class="bi bi-gem fs-4 px-2 text-success"></i>
+                {productA.price}
+              </h3>
+            </div>
+            <div className="course-common course-detail_card_right_authorname">
+              <h6 className="">Category Name</h6>
+              <h6 className="course-common_text">{productA.categoryName}</h6>
             </div>
             <div className="course-common course-detail_card_right_authorname">
               <h6 className="">Author</h6>
               <h6 className="course-common_text">{productA.authorName}</h6>
             </div>
             <div className="course-common course-detail_card_right_authorname">
-              <h6 className="">Author</h6>
-              <h6 className="course-common_text">{productA.authorName}</h6>
-            </div>
-            <div className="course-common course-detail_card_right_authorname">
-              <h6 className="">Author</h6>
-              <h6 className="course-common_text">{productA.authorName}</h6>
+              <h6 className="">Prize</h6>
+              <h6 className="course-common_text">{productA.prize}</h6>
             </div>
             <div className="course-common course-detail_card_right_title">
               <h6 className="">Title</h6>
@@ -63,11 +77,13 @@ function CourseDetail(props) {
             </div>
             <div className="course-detail_addCart">
               {productA.video === null ? (
-                <button>Let's Getting Course</button>
+                <CourseBuy
+                  lesson={params.id}
+                />
               ) : (
                 <div className="fs-1 text-success">
                   {" "}
-                  {<i class="bi bi-award"></i>}{" "}
+                  {<i class="bi bi-award text-warning"></i>}{" "}
                 </div>
               )}
             </div>
@@ -92,14 +108,14 @@ function CourseDetail(props) {
           </div>
         </Row>
         <Row>
-          {productA.video ===null ? (
+          {productA.video === null ? (
             <div className="course-detail_video">
               <div className="course-detail_video_message">
                 <h3>{productA.errorMessage}</h3>
               </div>
               <div className="youtube-player">
                 <ReactPlayer
-                  url="https://www.youtube.com/watch?v=jitUg6uumxw"
+                  url={urlMedia + productA.video}
                   controls={true}
                   width="800px"
                   height="450px"
@@ -113,7 +129,7 @@ function CourseDetail(props) {
               </div>
               <div className="youtube-active">
                 <ReactPlayer
-                  url="https://www.youtube.com/watch?v=jitUg6uumxw"
+                  url={urlMedia + productA.video}
                   controls={true}
                   width="800px"
                   height="450px"
@@ -121,6 +137,13 @@ function CourseDetail(props) {
               </div>
             </div>
           )}
+        </Row>
+        <Row>
+          <QuizApp
+            course={productA}
+            user={currentUser}
+            question={params.id}
+          />
         </Row>
         <Row>
           <div className="pt-4">

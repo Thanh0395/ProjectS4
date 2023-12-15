@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.ProfileDto.ProfileResponse;
+import com.example.demo.dto.HungDto.ProfileDto.ProfileResponse;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.service.ProfileService;
 import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
@@ -20,8 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProfileController {
 	
-	@Autowired
-	private ProfileService profileService;
+	private final ProfileService profileService;
 	
 	@GetMapping("/{userId}")
 	public ResponseEntity<ProfileResponse> Profile(@PathVariable int userId) 

@@ -60,6 +60,12 @@ public class PaymentController {
 			if (user == null) {
 				return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
 			}
+			GemEntity gemEntity = gemService.getOrCreateGemByUserId(user.getUserId());
+			int price = postService.getPostById(lessonId).getPrice();
+			int gem = gemEntity.getCurrent();
+			if (gem < price) {
+				return new ResponseEntity<>("Nah! You do not enough gem", HttpStatus.EXPECTATION_FAILED);
+			}
 			UserPostEntity userBuy = userPostService.UserPayPost(user.getUserId(), lessonId);
 			if (userBuy != null) {
 				return new ResponseEntity<>("Nah! You have already bought it", HttpStatus.EXPECTATION_FAILED);
@@ -70,12 +76,6 @@ public class PaymentController {
 				userPost.setIsPass(false);
 				userPost.setCreatedAt(Timestamp.from(Instant.now()));
 				userPostService.createUserPost(userPost);
-			}
-			GemEntity gemEntity = gemService.getOrCreateGemByUserId(user.getUserId());
-			int price = postService.getPostById(lessonId).getPrice();
-			int gem = gemEntity.getCurrent();
-			if (gem < price) {
-				return new ResponseEntity<>("Nah! You do not enough gem", HttpStatus.EXPECTATION_FAILED);
 			}
 			gemEntity.setCurrent(gemEntity.getCurrent() - price);
 			gemEntity.setSpent(gemEntity.getSpent() + price);

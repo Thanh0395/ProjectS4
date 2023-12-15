@@ -4,12 +4,16 @@ import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.UserRoleEntity;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.nhan.dto.UserDetailDto;
+import com.example.demo.nhan.dto.UserUpdateDto;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
@@ -19,7 +23,7 @@ import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
 
 @RestController
 
-@RequestMapping(DEV_DOMAIN_API + "/nhan/users")
+@RequestMapping(DEV_DOMAIN_API + "/nhan/user")
 public class UserDetailController {
 
 	private final UserService userService;
@@ -44,17 +48,7 @@ public class UserDetailController {
 
 	private UserDetailDto convertToUserDetailDto(UserEntity userEntity) {
 		int userId = userEntity.getUserId();
-		int amountOfPosts = userService.getAmountOfPostsByUserId(userId);
-		//int amountOfGems = userService.getAmountOfGemsByUserId(userId);
-		int amountOfUserAchievements = userService.getAmountOfUserAchievementsByUserId(userId);
-
-		UserDetailDto userDetailDto = new UserDetailDto();
-		
-		userDetailDto.setAmountOfPosts(amountOfPosts);
-		//userDetailDto.setAmountOfGems(amountOfGems);
-		userDetailDto.setAmountOfUserAchievements(amountOfUserAchievements);
-		
-		
+		UserDetailDto userDetailDto = new UserDetailDto();		
 		userDetailDto.setAvatar(userEntity.getAvatar());
 		userDetailDto.setUserName(userEntity.getName());
 		userDetailDto.setEmail(userEntity.getEmail());
@@ -68,4 +62,6 @@ public class UserDetailController {
 
 		return userDetailDto;
 	}
+	
+	
 }
