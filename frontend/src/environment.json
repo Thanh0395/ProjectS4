@@ -6,7 +6,7 @@
     "media": "http://localhost:8080/"
   },
   "apikey":{
-    "chatGPT": "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",
+    "chatGPT": "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",
     "NhanchatGPT": "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"
   },
   "REACT_APP_PAYPAL_CLIENT_ID":"AQUfEDWFH5OXanka15cbkJnHUgbPkWi0RGorBso17-i2AMd2ydBOmoxBtWW6v_burACQRp_uIdK19LH1",

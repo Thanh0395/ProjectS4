@@ -9,8 +9,9 @@ import ReactPlayer from "react-player";
 import QuizApp from "../course-quiz/quiz";
 import "./course-detail.css";
 import env from "../../../../../environment.json";
-
+import CourseBuy from "../course-buy/course-buy";
 function CourseDetail(props) {
+  const [tokens, setTokens] = useState();
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("currentUser"))
   );
@@ -76,11 +77,13 @@ function CourseDetail(props) {
             </div>
             <div className="course-detail_addCart">
               {productA.video === null ? (
-                <button>Let's Getting Course</button>
+                <CourseBuy
+                  lesson={params.id}
+                />
               ) : (
                 <div className="fs-1 text-success">
                   {" "}
-                  {<i class="bi bi-award"></i>}{" "}
+                  {<i class="bi bi-award text-warning"></i>}{" "}
                 </div>
               )}
             </div>

@@ -190,7 +190,7 @@ public class LessonController {
 						questionDtos, feedbackDtos, tagDtos, userBuy.getIsPass(), userBuy.getScore());
 				return new ResponseEntity<>(lessonDto, HttpStatus.OK);
 			} else {
-				LessonDto lessonDto = new LessonDto(lesson.getPostId(), lesson.getFeatureImage(), lesson.getPrice(),
+				LessonDto lessonDto = new LessonDto(lesson.getPostId(), lesson.getFeatureImage(), lesson.getPrice(), lesson.getPrize(),
 						lesson.getTitle(), lesson.getContent(), lesson.getCreatedAt(), lesson.getUpdatedAt(),
 						lesson.getDeletedAt(), lesson.getUser() != null ? lesson.getUser().getUserId() : -1, authorName,
 						lesson.getCategory() != null ? lesson.getCategory().getCategoryId() : -1, cateName,
@@ -211,7 +211,7 @@ public class LessonController {
 		try {
 			List<PostEntity> lessonPosts = userPostService.findUserBoughtLesson(userId);
 			if (lessonPosts.isEmpty()) {
-				return new ResponseEntity<>("You haven't bought any course yet!", HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(lessonPosts, HttpStatus.OK);
 			}
 			List<LessonDto> lessonPostDtos = lessonPosts.stream().map(lesson -> {
 				String cateName = (lesson.getCategory() != null) ? lesson.getCategory().getCategoryName()
@@ -311,7 +311,7 @@ public class LessonController {
 			List<TagEntity> tags = tagService.allTagByPostId(lessonId);
 			tagDtos = tags.stream().map(tag -> new TagDto(tag.getTagId(), tag.getTagName()))
 					.collect(Collectors.toList());
-			LessonDto lessonDto = new LessonDto(lesson.getPostId(), lesson.getFeatureImage(), lesson.getPrice(),
+			LessonDto lessonDto = new LessonDto(lesson.getPostId(), lesson.getFeatureImage(), lesson.getPrice(),lesson.getPrize(),
 					lesson.getTitle(), lesson.getContent(), lesson.getCreatedAt(), lesson.getUpdatedAt(),
 					lesson.getDeletedAt(), lesson.getUser() != null ? lesson.getUser().getUserId() : -1, authorName,
 					lesson.getCategory() != null ? lesson.getCategory().getCategoryId() : -1, cateName, feedbackDtos,

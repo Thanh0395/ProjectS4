@@ -6,7 +6,7 @@ import CourseSection from './components/homepage/course';
 
 function Home(props) {
     return (
-        <div>
+        <div className='container'>
             <Banner/>
             <Brands/>
             <Feature/>

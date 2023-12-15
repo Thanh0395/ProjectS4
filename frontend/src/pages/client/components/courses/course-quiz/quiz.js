@@ -130,16 +130,23 @@ const QuizApp = (props) => {
                     Total Answer: {course.questions.length - unansweredCount} /{" "}
                     {course.questions.length}
                   </p>
-                  <p>Achievements: {responseData.achievements}</p>
-                  <p>Passed: {responseData.passed ? "Yes" : "No"}</p>
-                  <p>Total Answers: {responseData.totalAnswer}</p>
-                  <p>Correct Answers: {responseData.correctAnswer}</p>
-                  <p>Gain Gems: {responseData.gainGem}</p>
-                  <p>Old Level: {responseData.oldLevel}</p>
-                  <p>New Level: {responseData.newLevel}</p>
-                  <p>Old Experience: {responseData.oldExp}</p>
-                  <p>New Experience: {responseData.newExp}</p>
-                  <p>Result Message: {responseData.resultMessage}</p>
+                  <p>
+                    Result:{" "}
+                    {responseData.passed ? (
+                      <span className="text-success">Passed</span>
+                    ) : (
+                      <span className="text-danger">Fail</span>
+                    )}
+                  </p>
+                  <p>Achievements: {responseData.achievements ?  (responseData.achievements) : ("-")}</p>
+                  <p>Total Answers: {responseData.totalAnswer ?  (responseData.totalAnswer) : ("-")}</p>
+                  <p>Correct Answers: {responseData.correctAnswer ?  (responseData.correctAnswer) : ("-")}</p>
+                  <p>Gain Gems: {responseData.gainGem ?  (responseData.gainGem) : ("-")}</p>
+                  <p>Old Level: {responseData.oldLevel ?  (responseData.oldLevel) : ("-")}</p>
+                  <p>New Level: {responseData.newLevel ?  (responseData.newLevel) : ("-")}</p>
+                  <p>Old Experience: {responseData.oldExp ?  (responseData.oldExp) : ("-")}</p>
+                  <p>New Experience: {responseData.newExp ?  (responseData.newExp) : ("-")}</p>
+                  <p>Result Message: {responseData.resultMessage ?  (responseData.resultMessage) : ("-")}</p>
                 </div>
               )}
               <button className="btn btn-primary" onClick={resetQuiz}>

@@ -95,12 +95,11 @@ const CourseSession = () => {
                       </div>
                     </div>
                     <div className="course-list_card_title_percent_price">
-                      <h6>
-                        <i class="bi bi-gem px-2 text-primary"></i>{course.price}{" "}
-                        <i class="bi bi-gem px-2 text-primary"></i>
-                      </h6>
+                      <button>
+                        <i class="bi bi-gem px-2 text-primary p-0"></i>{course.price}
+                      </button>
                       <button
-                        className="course-list_card_button_detail"
+                        className="course-list_card_button_detail p-0"
                         onClick={() => handleGetPageDetail(course)}
                       >
                         Course Detail

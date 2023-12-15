@@ -12,22 +12,28 @@ function BreadcrumbEx(props) {
         .map(crumb => {
             currentLink += `/${crumb}`;
             const upperCase = crumb.charAt(0).toUpperCase() + crumb.slice(1);
+            if (crumb.includes("update") || crumb.includes("detail") || crumb.includes("delete")) {
+                return (
+                    <div className="crumb" key={crumb}>
+                        <div>{upperCase}</div>
+                    </div>
+                )
+            }
             return (
                 <div className="crumb" key={crumb}>
                     <Link to={currentLink}>{upperCase}</Link>
                 </div>
-            )
+            );
         })
 
     return (
         // <div className="breadcrumbs"><Link className="crumb" to="/">Home</Link>{crumbs}</div>
-            <Breadcrumbs
-                separator={<NavigateNextIcon fontSize="medium" />}
-                aria-label="breadcrumb"
-            >
-                {crumbs}
-            </Breadcrumbs>
-        
+        <Breadcrumbs
+            separator={<NavigateNextIcon fontSize="medium" />}
+            aria-label="breadcrumb"
+        >
+            {crumbs}
+        </Breadcrumbs>
     );
 }
 

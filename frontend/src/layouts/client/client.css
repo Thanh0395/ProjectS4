@@ -31,3 +31,35 @@ ul.pagination li.page-item a.page-link:hover {
 .img-fluid{
   border-radius: 50%;
 }
+
+/* Start contact page */
+.client-contact-page{
+ background-color: rgb(232, 232, 232);
+ padding: 12px;
+}
+.contact-map{
+ border-radius: 10px;
+ border: 2px solid var(--primary-color);
+}
+.client-faq{
+  background-color: var(--light-secondary-color);
+  border-radius: 6px;
+  margin-top: 8px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+}
+.client-faq-item{
+  margin-top: 6px;
+}
+.MuiButtonBase-root.client-faq-question{
+  background-color: var(--light-primary-color);
+}
+.MuiButtonBase-root.client-faq-question p{
+  font-weight: 450;
+}
+.MuiButtonBase-root.client-faq-question div svg{
+  font-weight: 450;
+}
+.client-faq-asked{
+  background-color: white;
+}
+/* End contact page */
