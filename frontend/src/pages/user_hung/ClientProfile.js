@@ -5,7 +5,6 @@ import CourseSessionProfile from "./course-session/course";
 import { useEffect, useState } from "react";
 import { ProfileDataByUserId } from "../../services/api/AuthApi";
 import { Row } from "reactstrap";
-import AchievementProfile from "./Component/AchivementProfile";
 import { Colxx } from "./Custom/CustomBoostrap";
 import UserProfile from "./Component/UserProfile";
 import BlogAchievementProfile from "./Component/BlogAchievementProfile";
@@ -19,6 +18,9 @@ function ClientProfile(props) {
   const [userLevel, setUserLevel] = useState({});
   const [posts, setPosts] = useState([]);
   const [achievements, setAchievements] = useState([]);
+  const [recentTop5Posts, setRecentTop5Posts] = useState([]);
+  const [top5PostsByFeedbackCount, setTop5PostsByFeedbackCount] = useState([]);
+  const [top5PostsByPrize, setTop5PostsByPrize] = useState([]);
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
@@ -29,6 +31,10 @@ function ClientProfile(props) {
         setUserLevel(rs.userLevel);
         setPosts(rs.posts);
         setAchievements(rs.achievements);
+        setRecentTop5Posts(rs.recentTop5Posts);
+        setTop5PostsByFeedbackCount(rs.top5PostsByFeedbackCount);
+        setTop5PostsByPrize(rs.top5PostsByPrize);
+        setReRender(false);
         console.log("response data profile :", rs);
       })
       .catch(err => console.log("Err fetch api profile data:", err));
@@ -44,11 +50,16 @@ function ClientProfile(props) {
             </Colxx>
           </Row>
           <Row>
-            <UserProfile user={user} gem={gem} userLevel={userLevel} setReRender={setReRender} />
+            <UserProfile user={user} gem={gem} userLevel={userLevel} 
+              setReRender={setReRender} 
+              recentTop5Posts={recentTop5Posts}
+              top5PostsByFeedbackCount={top5PostsByFeedbackCount} 
+              top5PostsByPrize={top5PostsByPrize}
+            />
           </Row>
           <Row>
             <Colxx xxs="12">
-              <h5 className="mb-4">All recipes</h5>
+              <h5 className="mb-4">Your Achievements</h5>
               <BlogAchievementProfile achievements={achievements} />
             </Colxx>
             {/* <AchievementProfile achievements={achievements} /> */}

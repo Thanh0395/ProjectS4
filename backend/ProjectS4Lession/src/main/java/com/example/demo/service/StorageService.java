@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.config.StorageFileProperties;
 import com.example.demo.entity.FileEntity;
 import com.example.demo.exception.EmptyFileException;
-import com.example.demo.exception.NotFoundException;
 import com.example.demo.repository.FileRepository;
 
 @Service
