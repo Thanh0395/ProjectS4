@@ -22,7 +22,11 @@ public class ProfileResponse {
 	private UserDto user;
 	private List<PostDto> posts;
 	private GemDto gem;
+	private List<PostDto> recentTop5Posts;
 	private UserLevelDto userLevel;
 	private List<AchievementDto> achievements;
+	private List<PostDto> top5PostsByFeedbackCount;
+	private List<PostDto> top5PostsByPrize;
+
 }
 

@@ -110,7 +110,7 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
                                         Close
                                     </Button>
                                     <Button variant="primary" type="submit" disabled={isSubmitting}>
-                                        Update Profile
+                                        submit
                                     </Button>
                                 </Form>
                             )}

@@ -1,8 +1,6 @@
 package com.example.demo.dto.HungDto;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,12 +12,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostDto {
-	public int postId;
-	public String featureImage;
-	public String video;
-	public int price;
-	public int prize;
-	public String title;
-	public String content;
-	public String type;
+	private int postId;
+	private String featureImage;
+	private String video;
+	private int price;
+	private int prize;
+	private String title;
+	private String content;
+	private String type;
+	private Timestamp createdAt;
+	private int userId;
+	private String authorName;
+	private String categoryName;
+	private int countFeedback;
+	@Builder.Default
+	private boolean isSetTopPrize = false;
 }
