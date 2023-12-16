@@ -3,14 +3,14 @@ import { Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import * as formik from 'formik';
 import * as yup from 'yup';
 import OpenAI from 'openai';
-import environment from '../../environment.json';
+import key from '../../ultimateKey.json';
 
 function Planning(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [answer, setAnswer] = useState('');
     const [question, setQuestion] = useState('');
 
-    const openAi = new OpenAI({ apiKey: environment.apikey.chatGPT, dangerouslyAllowBrowser: true });
+    const openAi = new OpenAI({ apiKey: key.apikey.chatGPT, dangerouslyAllowBrowser: true });
 
     const { Formik } = formik;
     const schema = yup.object().shape({
@@ -34,8 +34,6 @@ function Planning(props) {
             });
             setQuestion(message);
             setAnswer(response.choices[0].text);
-            // const koko = answer
-            // console.log(koko)
             resetForm();
             // console.log('Answer: ', response.choices[0].text);
         } catch (error) {
