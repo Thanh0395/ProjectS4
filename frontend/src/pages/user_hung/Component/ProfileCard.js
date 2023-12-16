@@ -12,7 +12,7 @@ const ProfileCard = ({ user, gem, userLevel, setSelectedUpdateProfile }) => {
         <div>
             <Card className="mb-4">
                 <CardBody>
-                    <div style={{ marginLeft: "30px" }}>
+                    <div style={{ marginLeft: "100px" }}>
                         <Avatar alt={user.userName} src={`http://localhost:8080/${user.avatar}`} sx={{ width: 250, height: 250 }} />
                         <div className="text-center pt-4">
                             <p className="list-item-heading pt-2">{user.userName}</p>

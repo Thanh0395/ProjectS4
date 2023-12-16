@@ -25,11 +25,11 @@ function PaypalCheckoutButton(props) {
                 <Badge className='m-2' bg='warning' text='light' >
                     BUY for ${bundle.price}
                 </Badge>
-                <Badge className='m-2' bg='info' text='light' onClick={()=>{setShowQr(!showQr);}}>
+                <Badge as={'button'} className='m-2' bg='info' text='light' onClick={()=>{setShowQr(!showQr);}}>
                     Show QR code
                 </Badge>
             </div>
-                <QRCode value={jsonBundle}  className={showQr?'':'qr-hidden'} />
+                <QRCode value={jsonBundle}  className={showQr?'mb-2':'qr-hidden'} />
             {showAlert ?
                 <Alert variant={variant} dismissible>{alertMsg}</Alert>
                 : <></>

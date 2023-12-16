@@ -68,6 +68,23 @@ public class LessonDto {
         this.creatatedAt = createDate;
         this.updatedAt = updateDate;
     }
+	//list my lesson
+		public LessonDto(int id, String image, String title, String content, int price, int prize,
+				int userId,String userName,int cateId, String categoryName, Timestamp createDate, Timestamp updateDate) {
+			super();
+	        this.id = id;
+	        this.featureImage = image;
+	        this.title = title;
+	        this.content = content;
+	        this.price = price;
+	        this.prize = prize;
+	        this.authorId = userId;
+	        this.authorName = userName;
+	        this.categoryId = cateId;
+	        this.categoryName = categoryName;
+	        this.creatatedAt = createDate;
+	        this.updatedAt = updateDate;
+	    }
 	public LessonDto(int id, String image, String video, String title, String content, int price,
 			String userName, String categoryName) {
 		super();

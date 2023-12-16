@@ -1,0 +1,68 @@
+/* Badges */
+.position-absolute {
+    position: absolute;
+  }
+  
+  .badge-top-right {
+    top: 0;
+    right: 0;
+    background-color: #ff00fb; /* Primary badge color */
+    color: white;
+    z-index: 1;
+  }
+  
+  .badge-top-right2 {
+    position: absolute;
+    top: 17%;
+    right: 0;
+    transform: translateY(0);
+    background-color: #08467c; /* Secondary badge color */
+    color: white;
+    z-index: 0;
+  }
+  
+  /* Card and Card Body */
+  .card {
+    border: 1px solid #dee2e6; /* Border color for the card */
+    border-radius: 8px; /* Rounded corners for the card */
+    margin-bottom: 0px; /* Spacing between cards */
+  }
+  
+  .card-top-buttons {
+    z-index: 999; /* Ensures buttons stay on top */
+  }
+  
+  .card-body {
+    padding: 0px; /* Padding inside the card body */
+  }
+  
+  .list-thumbnail {
+    width: 100px; /* Width of the list thumbnails */
+    height: 100px; /* Height of the list thumbnails */
+    object-fit: cover; /* Maintain aspect ratio for images */
+    border-radius: 4px; /* Rounded corners for images */
+    border: 1px solid #ced4da; /* Border for images */
+    margin-right: 0px; /* Spacing between thumbnail and content */
+  }
+  
+  .list-item-heading {
+    font-size: 1.25rem; /* Font size for the list item heading */
+    margin-bottom: 10px; /* Spacing below the heading */
+  }
+  
+  .text-muted {
+    color: #6c757d; /* Color for muted text */
+  }
+  
+  .text-primary {
+    color: #007bff10; /* Color for primary text */
+  }
+  
+  .text-small {
+    font-size: 0.875rem; /* Font size for small text */
+  }
+  
+  .font-weight-medium {
+    font-weight: 500; /* Medium font weight */
+  }
+  
