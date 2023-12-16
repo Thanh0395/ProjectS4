@@ -6,12 +6,7 @@ import { Spinner } from "react-bootstrap";
 import { Rating } from "@mui/material";
 import FilterCourse from "./filter-course";
 import "./course.css";
-import Course_01 from "../../../../../assets/courses-01.jpg";
-import Course_02 from "../../../../../assets/courses-02.jpg";
-import Course_03 from "../../../../../assets/courses-03.jpg";
 import Author_01 from "../../../../../assets/author-01.jpg";
-import Author_02 from "../../../../../assets/author-02.jpg";
-import Author_03 from "../../../../../assets/author-03.jpg";
 import env from "../../../../../environment.json";
 import "animate.css";
 

@@ -138,7 +138,7 @@ const QuizApp = (props) => {
                       <span className="text-danger">Fail</span>
                     )}
                   </p>
-                  <p>Achievements: {responseData.achievements ?  (responseData.achievements) : ("-")}</p>
+                  <p>Achievements: {responseData.achievements ?  (responseData.achievements) :  ("-")}</p>
                   <p>Total Answers: {responseData.totalAnswer ?  (responseData.totalAnswer) : ("-")}</p>
                   <p>Correct Answers: {responseData.correctAnswer ?  (responseData.correctAnswer) : ("-")}</p>
                   <p>Gain Gems: {responseData.gainGem ?  (responseData.gainGem) : ("-")}</p>
