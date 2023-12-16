@@ -95,7 +95,7 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
                                     </FormGroup>
                                     <FormGroup>
                                         <Label>Email Address</Label>
-                                        <Field type="email" name="email" className="form-control" />
+                                        <Field type="email" name="email" className="form-control" disabled />
                                     </FormGroup>
                                     <FormGroup>
                                         <Label>Profile Picture</Label>

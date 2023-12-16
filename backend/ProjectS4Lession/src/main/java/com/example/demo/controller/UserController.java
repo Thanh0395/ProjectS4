@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.UserCreationDto;
 import com.example.demo.dto.UserUpdationDto;
 import com.example.demo.entity.UserEntity;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.service.UserService;
@@ -67,7 +68,9 @@ public class UserController {
 	}
 	
 	@PutMapping("/update-user")
-	public ResponseEntity<UserEntity> updateUser(@Valid @RequestBody UserUpdationDto userUpdationDto) throws NotFoundException{
+	public ResponseEntity<UserEntity> updateUser(@Valid @RequestBody UserUpdationDto userUpdationDto) 
+			throws NotFoundException, BadRequestException
+	{
 		UserEntity user = userMapper.UserUpdationToUserEntity(userUpdationDto);
 		UserEntity userUpdated = userService.updateUser(user);
 		return new ResponseEntity<>(userUpdated, HttpStatus.OK);
