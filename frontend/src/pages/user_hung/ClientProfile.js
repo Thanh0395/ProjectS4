@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import CourseBannerSessionProfile from "./banner-session/banner";
-import CourseSessionProfile from "./course-session/course";
+import CourseBannerSessionProfile from "./banner-session/CourseBannerSessionProfile";
+import CourseSessionProfile from "./course-session/CourseProfile";
 import { useEffect, useState } from "react";
 import { ProfileDataByUserId } from "../../services/api/AuthApi";
 import { Row } from "reactstrap";

@@ -22,7 +22,6 @@ import com.example.demo.entity.UserAchievementEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.UserLevelEntity;
 import com.example.demo.exception.NotFoundException;
-import com.example.demo.repository.PostRepository;
 
 @Service
 public class ProfileService {

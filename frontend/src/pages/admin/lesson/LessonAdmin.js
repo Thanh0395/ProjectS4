@@ -94,8 +94,8 @@ function LessonAdmin(props) {
     };
     const urlMedia = env.urls.media;
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
-        { field: 'title', headerName: 'Title', width: 200 },
+        { field: 'id', headerName: 'ID', width: 60 },
+        { field: 'title', headerName: 'Title', width: 180 },
         {
             field: 'featureImage', headerName: 'Image', width: 150, renderCell: (params) => {
                 return (
@@ -105,17 +105,28 @@ function LessonAdmin(props) {
                 )
             }
         },
-        { field: 'categoryName', headerName: 'Category', width: 200 },
+        { field: 'categoryName', headerName: 'Category', width: 150 },
         { field: 'authorName', headerName: 'Author', width: 180 },
         {
-            field: 'creatatedAt', headerName: 'Created Date', width: 160, valueFormatter: (params) => {
+            field: 'creatatedAt', headerName: 'Created Date', width: 150, valueFormatter: (params) => {
                 // Format the date using Intl.DateTimeFormat
                 const formattedDate = new Intl.DateTimeFormat('en-US', {
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric',
                 }).format(new Date(params.value));
-
+                return formattedDate;
+            },
+        },
+        {
+            field: 'updatedAt', headerName: 'Updated Date', width: 150, valueFormatter: (params) => {
+                if (!params.value) return 'N/A';
+                // Format the date using Intl.DateTimeFormat
+                const formattedDate = new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                }).format(new Date(params.value));
                 return formattedDate;
             },
         },
