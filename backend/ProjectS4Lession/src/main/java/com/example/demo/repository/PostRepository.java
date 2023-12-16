@@ -30,7 +30,22 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer>{
 	List<PostEntity> findFirst5ByTypeAndCategoryOrderByCreatedAtDesc(String type, CategoryEntity category);
 
 	//Hung
-	List<PostEntity> findByUserUserId(int userId);
+	List<PostEntity> findByUserUserIdAndDeletedAtIsNull(int userId);
 
-	List<PostEntity> findByCategoryCategoryId(int categoryId);
+	List<PostEntity> findByCategoryCategoryIdAndDeletedAtIsNull(int categoryId);
+	
+	List<PostEntity> findTop5ByUserAndDeletedAtIsNullOrderByCreatedAtDesc(UserEntity user);
+	
+	List<PostEntity> findTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
+	
+	List<PostEntity> findTop5ByDeletedAtIsNullOrderByPrizeDesc();
+	
+	@Query("SELECT p, COUNT(f) AS feedbackCount " +
+	           "FROM PostEntity p " +
+	           "LEFT JOIN p.feedbacks f " +
+	           "WHERE p.deletedAt IS NULL " +
+	           "GROUP BY p " +
+	           "ORDER BY feedbackCount DESC")
+	List<Object[]> findTop5PostsByFeedbackCount();
+	
 }

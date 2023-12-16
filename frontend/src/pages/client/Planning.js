@@ -20,7 +20,6 @@ function Planning(props) {
         try {
             setIsLoading(true);
             const message = values.ask;
-            console.log('My message: ', message);
             // const response = await openAi.chat.completions.create({
             //     model: "davinci",
             //     messages: [{"role": "user", "content": message}],
@@ -31,12 +30,14 @@ function Planning(props) {
                 model: "text-davinci-003",
                 prompt: message,
                 temperature: 0,
-                max_tokens: 256,
+                max_tokens: 1000,
             });
             setQuestion(message);
             setAnswer(response.choices[0].text);
+            // const koko = answer
+            // console.log(koko)
             resetForm();
-            console.log('Answer: ', response.choices[0].text);
+            // console.log('Answer: ', response.choices[0].text);
         } catch (error) {
             console.error('Error:', error);
         } finally {
@@ -46,7 +47,7 @@ function Planning(props) {
     };
     return (
         <div className='container'>
-            <br/>
+            <br />
             <Col className="align-items-center justify-content-center">
                 <Formik
                     validationSchema={schema}
@@ -61,11 +62,18 @@ function Planning(props) {
 
                             <Row className="mb-3">
                                 <Form.Group as={Col} md="12">
-                                    <Form.Label>Your message</Form.Label>
+                                    <Form.Label style={{ fontStyle: 'italic' }}>
+                                        <strong>Hint: </strong>
+                                        Write a lesson plan for an introductory algebra class. The lesson plan should cover the distributive law, in particular how it works in simple cases involving mixes of positive and negative numbers. Come up with some examples that show common student errors.
+                                        <br></br>
+                                        <strong>or simple: </strong>
+                                        What are Newton's 3 laws
+                                    </Form.Label>
                                     <Form.Control
                                         as="textarea" rows={4}
                                         type="text"
                                         name="ask"
+                                        placeholder='Your message...'
                                         value={values.ask}
                                         onChange={handleChange}
                                         onKeyPress={(e) => {
@@ -87,25 +95,25 @@ function Planning(props) {
                                     {isLoading ? (<Spinner size="sm"></Spinner>) : ("Send")}
                                 </Button>
                             </div>
-                            {question && (
-                                <Row className="mt-3">
-                                    <Col>
-                                        <strong>{question}</strong>
-                                    </Col>
-                                </Row>
-                            )}
-                            {answer && (
-                                <Row className="mt-3">
-                                    <Col>
-                                        <strong>Answer: </strong>
-                                        <p>{answer}</p>
-                                    </Col>
-                                </Row>
-                            )}
                         </Form>
                     )}
                 </Formik>
             </Col>
+            {question && (
+                <Row className="mt-2">
+                    <Col>
+                        <strong>Your question: </strong>{question}
+                    </Col>
+                </Row>
+            )}
+            {answer && (
+                <Row className="mt-1" style={{ backgroundColor: 'var(--light-secondary-color)', borderRadius: '10px', padding: '10px' }}>
+                    <Col>
+                        <strong>Answer: </strong>
+                        <div dangerouslySetInnerHTML={{ __html: answer }}></div>
+                    </Col>
+                </Row>
+            )}
         </div>
     );
 }

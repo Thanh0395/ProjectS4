@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.config.StorageFileProperties;
 import com.example.demo.entity.FileEntity;
 import com.example.demo.exception.EmptyFileException;
-import com.example.demo.exception.NotFoundException;
 import com.example.demo.repository.FileRepository;
 
 @Service
@@ -40,6 +39,7 @@ public class StorageService {
 			Files.createDirectories(rootLocation.resolve("images/user"));
 			Files.createDirectories(rootLocation.resolve("images/post"));
 			Files.createDirectories(rootLocation.resolve("images/category"));
+			Files.createDirectories(rootLocation.resolve("images/reward"));
 			Files.createDirectories(rootLocation.resolve("video/post"));
 			System.out.print(rootLocation.toString());
 

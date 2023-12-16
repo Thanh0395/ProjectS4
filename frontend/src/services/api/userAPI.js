@@ -61,6 +61,8 @@ export const sendVerifycodeMail = async (email) => {
             toEmail: email,
             subject: "Ultimate Learning Activation",
             content: "Your verify code is: ",
+            deevLink: "http://localhost3000/login",
+            action: "Confirm Account"
         });
         return response.data;
     } catch (error) {

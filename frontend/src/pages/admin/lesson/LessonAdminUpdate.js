@@ -11,6 +11,7 @@ import 'react-quill/dist/quill.snow.css';
 import env from '../../../environment.json';
 import { uploadFile } from '../../../services/api/fileApi';
 import CircularProgress from '@mui/material/CircularProgress';
+import { ProgressBar } from 'react-bootstrap';
 import './lesson.css'
 
 function LessonAdminUpdate(props) {
@@ -27,6 +28,7 @@ function LessonAdminUpdate(props) {
     const [alertMsg, setAlertMsg] = useState();
     const [showInvalidContent, setShowInvalidContent] = useState(false);
     const [previewImageURL, setPreviewImageURL] = useState('');
+    const [isVideoUploading, setIsVideoUploading] = useState(0);
     const [previewVideoURL, setPreviewVideoURL] = useState('');
     const urlMedia = env.urls.media;
 
@@ -58,6 +60,9 @@ function LessonAdminUpdate(props) {
         fetchData();
     }, [params.id]);
 
+    const limitImage = 350000;
+    const limitVideo = 2000000;
+
     const [isLoading, setIsLoading] = useState(false);// loading nay khi submit form
     const { Formik } = formik;
     const schema = yup.object().shape({
@@ -68,29 +73,29 @@ function LessonAdminUpdate(props) {
         content: yup.string().required(),
         newImage: yup
             .mixed().nullable()
-            .test('filesize', 'Image is too large >500kB', function (file) {
+            .test('filesize', `Image is too large > ${limitImage/1000}KB`, function (file) {
                 if (!file) {
-                    return true; // Allow for empty or undefined values
+                    return true; 
                 }
-                const maxSize = 500000; // 1MB
+                const maxSize = limitImage; 
                 const valid = file.size <= maxSize;
                 // if (valid) setFileImage(file);
                 return valid;
             })
             .test('fileformat', 'Unsupported image format', function (file) {
                 if (!file) {
-                    return true; // Allow for empty or undefined values
+                    return true; 
                 }
                 const supportedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
                 return supportedFormats.includes(file.type);
             }),
         newVideo: yup
             .mixed().nullable()
-            .test('filesize', 'Video is too large >100MB', function (file) {
+            .test('filesize', `Video is too large >${limitVideo/1000000}MB`, function (file) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
-                const maxSize = 100000000; // 100MB
+                const maxSize = limitVideo; // 100MB
                 return file.size <= maxSize;
             })
             .test('fileformat', 'Unsupported video format', function (file) {
@@ -100,8 +105,8 @@ function LessonAdminUpdate(props) {
                 const supportedFormats = ['video/mp4', 'video/avi', 'video/mov', 'video/mpeg-4'];
                 return supportedFormats.includes(file.type);
             }),
-        tags: yup
-            .array(),
+        // tags: yup
+        //     .array(),
 
     });
 
@@ -230,10 +235,52 @@ function LessonAdminUpdate(props) {
                                         )}
                                     /> */}
 
+                                    
                                     <Form.Group as={Col} md="6" >
-                                        <img className='mt-2' src={urlMedia + lesson.featureImage} alt="Lesson" style={{ width: '90%' }} /><br />
+                                        <video className='mt-2' width="90%" controls>
+                                            <source src={urlMedia + lesson.video} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <Form.Label style={{ fontStyle: 'italic', color: 'blue' }}> or New Video</Form.Label>
+                                        {previewVideoURL &&
+                                            <video className='mb-2' width="90%" controls>
+                                                <source src={previewVideoURL} type="video/mp4" />
+                                                Your browser does not support the video tag.
+                                            </video>}
+                                        {(isVideoUploading !== 0 && !previewVideoURL) ?
+                                            <ProgressBar className='mb-2' animated now={100} />
+                                            :
+                                            <></>
+                                        }
+                                        <Form.Control
+                                            type="file"
+                                            name="newVideo"
+                                            onClick={() => { setPreviewVideoURL(''); setIsVideoUploading(0) }}
+                                            onChange={(event) => {
+                                                const file = event.currentTarget.files[0];
+                                                if (file) {
+                                                    setIsVideoUploading(isVideoUploading + 1);
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => {
+                                                        setPreviewVideoURL(reader.result);
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                    setFieldValue('newVideo', event.currentTarget.files[0]);
+                                                } else {
+                                                    setPreviewVideoURL('');
+                                                }
+                                            }}
+                                            isInvalid={touched.newVideo && !!errors.newVideo}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.newVideo}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} md="6" >
+                                        <img className='mt-2' src={urlMedia + lesson.featureImage} alt="Lesson" style={{ width: '70%' }} /><br />
                                         <Form.Label style={{ fontStyle: 'italic', color: 'blue' }}> or New Image</Form.Label>
-                                        {previewImageURL && <img className='mb-2' src={previewImageURL} alt="Lesson" style={{ width: '90%' }} />}
+                                        {previewImageURL && <img className='mb-2' src={previewImageURL} alt="Lesson" style={{ width: '70%' }} />}
                                         <Form.Control
                                             type="file"
                                             name="newImage"
@@ -256,40 +303,6 @@ function LessonAdminUpdate(props) {
                                             {errors.newImage}
                                         </Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group as={Col} md="6" >
-                                        <video className='mt-2' width="90%" controls>
-                                            <source src={urlMedia + lesson.video} type="video/mp4" />
-                                            Your browser does not support the video tag.
-                                        </video>
-                                        <Form.Label style={{ fontStyle: 'italic', color: 'blue' }}> or New Video</Form.Label>
-                                        {previewVideoURL && <video className='mb-2' width="90%" controls>
-                                            <source src={previewVideoURL} type="video/mp4" />
-                                            Your browser does not support the video tag.
-                                        </video>}
-                                        <Form.Control
-                                            type="file"
-                                            name="newVideo"
-                                            onChange={(event) => {
-                                                const file = event.currentTarget.files[0];
-                                                if (file) {
-                                                    const reader = new FileReader();
-                                                    reader.onloadend = () => {
-                                                        setPreviewVideoURL(reader.result);
-                                                    };
-                                                    reader.readAsDataURL(file);
-                                                } else {
-                                                    setPreviewVideoURL('');
-                                                }
-                                                setFieldValue('newVideo', event.currentTarget.files[0]);
-                                            }}
-                                            isInvalid={touched.newVideo && !!errors.newVideo}
-                                        />
-                                        <Form.Control.Feedback type="invalid">
-                                            {errors.newVideo}
-                                        </Form.Control.Feedback>
-                                    </Form.Group>
-
-
                                 </Row>
                                 <Row>
                                     <Form.Group as={Col} md="6" >
@@ -367,7 +380,7 @@ function LessonAdminUpdate(props) {
                                 </div>
                                 {showAlert && <Alert variant={variant} dismissible>{alertMsg}</Alert>}
                                 <Form.Group as={Col} md="12">
-                                    <TagsEditor postId={lesson.id} lessonTags={tags} updateTag={updateTag}/>
+                                    <TagsEditor postId={lesson.id} lessonTags={tags} updateTag={updateTag} />
                                     {/* <Form.Control.Feedback type="invalid">
                                             {errors.tags}
                                         </Form.Control.Feedback> */}
@@ -389,6 +402,7 @@ function LessonAdminUpdate(props) {
                     </div>
                 )}
             </div>
+            {/* <div dangerouslySetInnerHTML={{__html:'<h1>haha</h1>'}}></div> */}
         </div>
     );
 }

@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +32,7 @@ public class ProfileService {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private PostRepository postRepository;
+	private PostService postService;
 	@Autowired
 	private GemService gemService;
 	@Autowired
@@ -44,30 +46,57 @@ public class ProfileService {
 	public ProfileResponse profile(int userId) throws NotFoundException {
 
 		UserEntity userDb = userService.getUserById(userId);
-		List<PostEntity> postsDb = postRepository.findByUserUserId(userId);
+		List<PostEntity> postsDb = postService.getUserBoughtLesson(userId);
 		GemEntity gemDb = gemService.getOrCreateGemByUserId(userId);
 		UserLevelEntity userLevelDb = userLevelService.getOrCreateLevelByUserId(userId);
 		List<AchievementEntity> achievementsDb = achievementService.getAchivementsByUser(userId);
 		List<UserAchievementEntity> userAchievementsDb = userAchievementService.getUserAchievementsByUser(userDb);
+		List<PostEntity> recentTop5PostDb = postService.getTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
+		List<PostDto> top5PostsByFeedbackCountDto = postService.getTop5PostsByFeedbackCount();
+		List<PostDto> top5PostsByPrizeDto = postService.getTop5ByDeletedAtIsNullOrderByPrizeDesc();
+
 
 		UserDto userDto = mapper.map(userDb, UserDto.class);
 		GemDto gemDto = mapper.map(gemDb, GemDto.class);
 		UserLevelDto userLevelDto = mapper.map(userLevelDb, UserLevelDto.class);
-		List<PostDto> postsDto = postsDb.stream().map(postEntity -> mapper.map(postEntity, PostDto.class))
-				.collect(Collectors.toList());
-		List<AchievementDto> achievementsDto = achievementsDb.stream()
-				.map(achie -> mapper.map(achie, AchievementDto.class)).collect(Collectors.toList());
-		//process va isReceivedBadge ko co trong achievement
-		for (UserAchievementEntity userAchievement : userAchievementsDb) {
-	        AchievementDto matchedAchievementDto = achievementsDto.stream()
-	                .filter(achie -> achie.getAchievementId() == userAchievement.getAchievement().getAchievementId())
-	                .findFirst()
-	                .orElse(null);
-	        if (matchedAchievementDto != null) {
-	            matchedAchievementDto.setReceivedBadge(userAchievement.isReceivedBadge());
-	            matchedAchievementDto.setProcess(userAchievement.getProcess());
-	        }
-	    }
+		List<PostDto> postsDto = postsDb.stream().map(postEntity -> {
+            PostDto postDto = mapper.map(postEntity, PostDto.class);
+            String authorName = (postEntity.getUser() != null) ? postEntity.getUser().getName() : "Anonymous";
+            String categoryName = (postEntity.getCategory() != null) ? postEntity.getCategory().getCategoryName()
+					: "Uncategory";
+            postDto.setAuthorName(authorName);
+            postDto.setCategoryName(categoryName);
+            return postDto;
+        }).collect(Collectors.toList());
+		
+		List<AchievementDto> achievementsDto = new ArrayList<>();
+		if (achievementsDb != null && !achievementsDb.isEmpty()) {
+		    achievementsDto = achievementsDb.stream()
+		            .map(achie -> mapper.map(achie, AchievementDto.class))
+		            .collect(Collectors.toList());
+		  //process va isReceivedBadge ko co trong achievement
+			for (UserAchievementEntity userAchievement : userAchievementsDb) {
+		        AchievementDto matchedAchievementDto = achievementsDto.stream()
+		                .filter(achie -> achie.getAchievementId() == userAchievement.getAchievement().getAchievementId())
+		                .findFirst()
+		                .orElse(null);
+		        if (matchedAchievementDto != null) {
+		            matchedAchievementDto.setReceivedBadge(userAchievement.isReceivedBadge());
+		            matchedAchievementDto.setProcess(userAchievement.getProcess());
+		        }
+		    }
+		} else {
+		    achievementsDto = Collections.emptyList();
+		}
+		List<PostDto> recentTop5PostDto = recentTop5PostDb.stream().map(postEntity -> {
+            PostDto postDto = mapper.map(postEntity, PostDto.class);
+            String authorName = (postEntity.getUser() != null) ? postEntity.getUser().getName() : "Anonymous";
+            String categoryName = (postEntity.getCategory() != null) ? postEntity.getCategory().getCategoryName()
+					: "Uncategory";
+            postDto.setAuthorName(authorName);
+            postDto.setCategoryName(categoryName);
+            return postDto;
+        }).collect(Collectors.toList());
 		ProfileResponse profileResponse = ProfileResponse
 				.builder()
 				.user(userDto)
@@ -75,6 +104,9 @@ public class ProfileService {
 				.userLevel(userLevelDto)
 				.posts(postsDto)
 				.achievements(achievementsDto)
+				.recentTop5Posts(recentTop5PostDto)
+				.top5PostsByFeedbackCount(top5PostsByFeedbackCountDto)
+				.top5PostsByPrize(top5PostsByPrizeDto)
 				.build();
 		return profileResponse;
 	}

@@ -31,4 +31,8 @@ public class UserPostService {
 		List<PostEntity> list = userPostRepository.findLesonsBoughtUserId(userId);
 		return list;
 	}
+	public List<PostEntity> findLesonAuthorId(int authorId) {
+		List<PostEntity> list = userPostRepository.findLesonAuthorId(authorId);
+		return list;
+	}
 }
