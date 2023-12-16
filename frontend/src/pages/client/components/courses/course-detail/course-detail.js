@@ -91,7 +91,7 @@ function CourseDetail(props) {
         </Row>
         <Row className="px-3">
           <div className="course-common course-detail_card_right_title">
-            <p className="course-common_text">{productA.content}</p>
+            <div dangerouslySetInnerHTML={{__html: productA.content}}></div>
           </div>
         </Row>
         <Row>

@@ -13,6 +13,8 @@ import Author_01 from "../../../../../assets/author-01.jpg";
 import Author_02 from "../../../../../assets/author-02.jpg";
 import Author_03 from "../../../../../assets/author-03.jpg";
 import env from "../../../../../environment.json";
+import "animate.css";
+
 const CourseSession = () => {
   const urlMedia = env.urls.media;
 
@@ -73,7 +75,7 @@ const CourseSession = () => {
               <div className="text-center">No data to show</div>
             ) : (
               currentItems.map((course) => (
-                <div className="card course-list_card" key={course.id}>
+                <div className="card course-list_card animate__animated animate__fadeInLeft" key={course.id}>
                   <div className="card-body">
                     <div className="course-list_card_image">
                       <img
