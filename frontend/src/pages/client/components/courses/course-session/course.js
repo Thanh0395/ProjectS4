@@ -13,6 +13,8 @@ import Author_01 from "../../../../../assets/author-01.jpg";
 import Author_02 from "../../../../../assets/author-02.jpg";
 import Author_03 from "../../../../../assets/author-03.jpg";
 import env from "../../../../../environment.json";
+import "animate.css";
+
 const CourseSession = () => {
   const urlMedia = env.urls.media;
 
@@ -73,7 +75,7 @@ const CourseSession = () => {
               <div className="text-center">No data to show</div>
             ) : (
               currentItems.map((course) => (
-                <div className="card course-list_card" key={course.id}>
+                <div className="card p-3 course-list_card animate__animated animate__fadeInLeft" key={course.id}>
                   <div className="card-body">
                     <div className="course-list_card_image">
                       <img
@@ -96,10 +98,10 @@ const CourseSession = () => {
                     </div>
                     <div className="course-list_card_title_percent_price">
                       <button>
-                        <i class="bi bi-gem px-2 text-primary p-0"></i>{course.price}
+                        <i class="bi bi-gem px-2 text-primary"></i>{course.price}
                       </button>
                       <button
-                        className="course-list_card_button_detail p-0"
+                        className="course-list_card_button_detail"
                         onClick={() => handleGetPageDetail(course)}
                       >
                         Course Detail
