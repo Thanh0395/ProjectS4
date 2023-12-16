@@ -64,10 +64,10 @@ function ClientContact(props) {
 
                 <Col md={6}>
                     <div className='mt-3'>
-                    <Typography level="h2" color='white' fontWeight={800} align='center' fontSize='30pt' sx={{ mb: 0.5 }} 
-                        borderRadius={2} 
-                        style={{backgroundColor:'var(--primary-color)'}}>FAQs
-                    </Typography>
+                        <Typography color='white' fontWeight={800} align='center' fontSize='30pt' sx={{ mb: 0.5 }}
+                            borderRadius={2}
+                            style={{ backgroundColor: 'var(--primary-color)' }}>FAQs
+                        </Typography>
                         {isLoading ? (<div> Loading... </div>)
                             : (<div>
                                 {listFaq.length === 0 ? (<>No data</>) : (
@@ -89,7 +89,7 @@ function ClientContact(props) {
                                 )}
                             </div>)
                         }
-                        </div>
+                    </div>
                 </Col>
 
                 <Col md={6} >

@@ -22,6 +22,14 @@ public class UserPostService {
 		} else
 			return null;
 	}
+	
+	public UserPostEntity UserPayPostRefund(int userId, int postId) {
+		List<UserPostEntity> userPosts = userPostRepository.findByUserIdAndPostId(userId, postId);
+		if (userPosts != null && !userPosts.isEmpty()) {
+			return userPosts.get(0);
+		} else
+			return null;
+	}
 
 	public UserPostEntity createUserPost(UserPostEntity userPost) {
 		return userPostRepository.save(userPost);

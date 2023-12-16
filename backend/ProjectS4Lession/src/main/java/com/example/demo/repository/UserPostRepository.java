@@ -18,6 +18,11 @@ public interface UserPostRepository extends JpaRepository<UserPostEntity, Intege
 	           "AND (up.isRefunded = false OR up.isRefunded IS NULL)")
 	    List<UserPostEntity> findByUserIdAndPostIdAndNotRefunded(@Param("userId") int userId, @Param("postId") int postId);
 	
+	@Query("SELECT up FROM UserPostEntity up " +
+	           "WHERE up.user.userId = :userId " +
+	           "AND up.post.postId = :postId")
+	    List<UserPostEntity> findByUserIdAndPostId(@Param("userId") int userId, @Param("postId") int postId);
+	
 	@Query("SELECT DISTINCT up.post FROM UserPostEntity up " +
 	        "WHERE up.user.userId = :userId " +
 	        "AND up.post.type = 'lesson' " +
