@@ -1,5 +1,5 @@
 import React from 'react';
-import './banner.css'
+import './BannerProfile.css'
 import banner from '../../../assets/course-banner.jpg'
 const CourseBannerSessionProfile = () => {
   return (

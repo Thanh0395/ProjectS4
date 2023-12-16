@@ -15,7 +15,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { ProductContext } from "../../../components/context/ProductContext";
-function FilterCourse(props) {
+function FilterCourseProfile(props) {
   const [proState, proDispatch] = useContext(ProductContext);
   // Category
   const handleCategoryChange = (category) => {
@@ -143,4 +143,4 @@ function FilterCourse(props) {
   );
 }
 
-export default FilterCourse;
+export default FilterCourseProfile;
