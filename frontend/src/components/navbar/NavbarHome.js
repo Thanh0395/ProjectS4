@@ -77,6 +77,11 @@ function NavbarHome(props) {
                             <NavDropdown.Item href="#action5">
                                 Something else here
                             </NavDropdown.Item>
+                            {isLoggedIn && currentUser.roles.some(role => role.name === 'TEACHER' || role.name === 'ADMIN') && (
+                                <NavDropdown.Item href="/admin/lessons">
+                                    Lesson Dashboard
+                                </NavDropdown.Item>
+                            )}
                         </NavDropdown>
                         {/* <Form className="d-flex">
                             <Form.Control

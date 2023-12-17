@@ -69,7 +69,7 @@ public class UserService {
 	public UserEntity updateUser(UserEntity user) throws NotFoundException, BadRequestException {
 		UserEntity userDb = userRepository.findById(user.getUserId()).orElseThrow(
 				() -> new NotFoundException("Update faild!. User not found with id : " + user.getUserId()));
-		if(userDb.getEmail().equals(user.getEmail())){
+		if(!userDb.getEmail().equals(user.getEmail())){
 			throw new BadRequestException("Can not update email!");
 		}
 		if (userDb != null) {

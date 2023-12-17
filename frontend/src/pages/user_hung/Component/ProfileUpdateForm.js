@@ -41,6 +41,8 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
         } catch (error) {
             console.log("err update profile :", error);
             setMessage('Failed to update profile');
+            setReRender(true);
+            setShowModal(false);
         } finally {
             setSubmitting(false);
         }
@@ -51,7 +53,7 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
         setShowModal(false);
     };
     const handleShow = () => setShowModal(true);
-
+    
     return (
         <div>
             <Card.Body>
