@@ -10,6 +10,7 @@ import QuizApp from "../course-quiz/quiz";
 import "./course-detail.css";
 import env from "../../../../../environment.json";
 import CourseBuy from "../course-buy/course-buy";
+import RefundCourse from "../refund-course/refund";
 function CourseDetail(props) {
   const [tokens, setTokens] = useState();
   const [currentUser, setCurrentUser] = useState(
@@ -82,8 +83,8 @@ function CourseDetail(props) {
                 />
               ) : (
                 <div className="fs-1 text-success">
-                  {" "}
-                  {<i class="bi bi-award text-warning"></i>}{" "}
+                  <div className="course-detail_addCart_award"><i class="bi bi-award text-warning"></i></div>
+                  <RefundCourse lesson={params.id}/>
                 </div>
               )}
             </div>
