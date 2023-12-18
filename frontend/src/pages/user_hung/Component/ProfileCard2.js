@@ -3,6 +3,8 @@ import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCar
 import { Diamond } from "@mui/icons-material";
 import StarIcon from "@mui/icons-material/Star";
 import "../Custom/ProfileCard2.css";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 export default function ProfileCard2({ user, gem, userLevel }) {
   return (
@@ -17,8 +19,15 @@ export default function ProfileCard2({ user, gem, userLevel }) {
                   <MDBCardImage src={`http://localhost:8080/${user.avatar}`}
                     alt="Avatar" className="my-5" style={{ width: '200px' }} fluid />
                   <MDBTypography tag="h5">{user.name}</MDBTypography>
-                  <MDBCardText>Web Designer</MDBCardText>
-                  <MDBIcon far icon="edit mb-5" />
+                  <Dropdown data-bs-theme="dark" style={{opacity: 0.4, width:'60%'}}>
+                    <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
+                      Action
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="/change-password">Change Password</Dropdown.Item>
+                      <Dropdown.Item href="/forgot-password">Forgot Password</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </MDBCol>
                 <MDBCol md="8">
                   <MDBCardBody className="p-4">

@@ -19,7 +19,7 @@ const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5P
     useEffect(() => {
         const timer = setTimeout(() => {
             setMessage('');
-        }, 3000);
+        }, 5000);
         return () => clearTimeout(timer);
     }, [message]);
 
@@ -46,7 +46,7 @@ const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5P
                                             active={activeTab === '1'} 
                                             onClick={() => { toggle('1'); }}
                                         >
-                                            Recent Posts
+                                            Top Recent Posts
                                         </NavLink>
                                     </NavItem>
                                     <NavItem>
@@ -55,7 +55,7 @@ const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5P
                                             active={activeTab === '2'}
                                             onClick={() => { toggle('2'); }}
                                         >
-                                            Favorite Posts
+                                            Top Favorite Posts
                                         </NavLink>
                                     </NavItem>
                                     <NavItem>

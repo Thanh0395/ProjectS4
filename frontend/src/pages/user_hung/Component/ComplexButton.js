@@ -3,10 +3,10 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import GemPopup from '../../../components/payment/GemPopup';
+//import Modal from 'react-bootstrap/Modal';
+//import GemPopup from '../../../components/payment/GemPopup';
 
 const images = [
   {
@@ -90,24 +90,7 @@ const ImageMarked = styled('span')(({ theme }) => ({
   transition: theme.transitions.create('opacity'),
 }));
 
-export default function ComplexButton() {
-
-  const navigate = useNavigate();
-  const handleClick = (titleBtn) => {
-    if(titleBtn === "Get Course"){
-      navigate("/products");
-    }else if(titleBtn === "AI-Chat"){
-      navigate("/planning");
-    }else{
-      setShowGemPopup(!showGemPopup);
-    }
-  }
-
-  // Gem Popup
-  const [showGemPopup, setShowGemPopup] = useState(false);
-  const handleCloseGemPopup = () => {
-      setShowGemPopup(false);
-  };
+export default function ComplexButton( {handleClick} ) {
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
@@ -138,16 +121,6 @@ export default function ComplexButton() {
             >
               {image.title}
               <ImageMarked className="MuiImageMarked-root" />
-              {/* gem Popup */}
-              <Modal size='lg' centered show={showGemPopup} onHide={handleCloseGemPopup}>
-                    <Modal.Header closeButton>
-                        <Modal.Title id="example-custom-modal-styling-title">
-                            Choose wisely!!
-                        </Modal.Title>
-                    </Modal.Header>
-                    <GemPopup onClose={handleCloseGemPopup} />
-                </Modal>
-                {/* end gem popup */}
             </Typography>
           </Image>
         </ImageButton>

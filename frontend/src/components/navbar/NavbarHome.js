@@ -74,8 +74,8 @@ function NavbarHome(props) {
                                 Another action
                             </NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Something else here
+                            <NavDropdown.Item href="/change-password">
+                                Changge Password
                             </NavDropdown.Item>
                             {isLoggedIn && currentUser.roles.some(role => role.name === 'TEACHER' || role.name === 'ADMIN') && (
                                 <NavDropdown.Item href="/admin/lessons">

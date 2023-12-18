@@ -16,6 +16,7 @@ import com.example.demo.auth.AuthenticationRequest;
 import com.example.demo.auth.AuthenticationResponse;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.dto.AuthDto.ActiveUserRequestDto;
+import com.example.demo.dto.AuthDto.ChangePasswordRequest;
 import com.example.demo.dto.AuthDto.ResetPasswordRequestDto;
 import com.example.demo.dto.AuthDto.VerifyEmailResponseDto;
 import com.example.demo.entity.EmailEntity;
@@ -189,5 +190,26 @@ public class AuthenticationService {
 			throw new BadRequestException("Your account not active!");
 		}
 		return user;
+	}
+	
+	public void changePassword(ChangePasswordRequest request) 
+			throws BadRequestException, NotFoundException
+	{
+		UserEntity userDb = userRepository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new NotFoundException("Not found your account with email " + request.getEmail()));
+		if(!request.getNewPassword().equals(request.getConfirmPassword())) {
+			throw new BadRequestException("Confirm password not correct!");
+		}
+		Boolean isActive = userDb.isActive();
+		if(!isActive) {
+			throw new BadRequestException("Your account is not active!");
+		}
+		Boolean isPwdMatch = passwordEncoder.matches(request.getOldPassword(), userDb.getPassword());
+		if(!isPwdMatch){
+			throw new BadRequestException("Old password not correct!");
+		}
+		userDb.setPassword(passwordEncoder.encode(request.getNewPassword()));
+		userRepository.save(userDb);
+		
 	}
 }

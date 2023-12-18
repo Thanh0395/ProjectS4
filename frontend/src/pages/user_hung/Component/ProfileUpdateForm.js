@@ -38,6 +38,9 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
             setMessage('Profile updated successfully');
             setReRender(true);
             setShowModal(false);
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         } catch (error) {
             console.log("err update profile :", error);
             setMessage('Failed to update profile');
