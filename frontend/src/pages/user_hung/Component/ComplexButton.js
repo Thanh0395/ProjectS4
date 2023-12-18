@@ -103,7 +103,7 @@ export default function ComplexButton( {handleClick} ) {
           }}
           onClick={() => handleClick(image.title)}
         >
-          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+          <ImageSrc style={{ backgroundImage: `url(${image.url})`, opacity:0.9 }} />
           <ImageBackdrop className="MuiImageBackdrop-root" />
           <Image>
             <Typography

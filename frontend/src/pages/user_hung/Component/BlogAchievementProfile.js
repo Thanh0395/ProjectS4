@@ -13,11 +13,9 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 
 const BlogAchievementProfile = ({ achievements }) => {
 
-    const navigateToDetailPage = (recipe) => {
-        // history.push({
-        //     pathname: `${adminRoot}/home-user/detail-recipe`,
-        //     state: { recipe }
-        // });
+    const handleSetImageIcon = (badge) => {
+        localStorage.setItem("imageIcon", badge);
+        window.location.reload();
     };
 
     const getIconByTitle = (title) => {
@@ -82,7 +80,11 @@ const BlogAchievementProfile = ({ achievements }) => {
                                     <Typography variant="body1">
                                         Received Badge: {achievement.receivedBadge ? 'Done' : 'Incomplete'}
                                     </Typography>
-                                    <Button type="button" color="primary">
+                                    <Button 
+                                        type="button" 
+                                        color="primary"
+                                        onClick={() => handleSetImageIcon(achievement.badge)}
+                                    >
                                         Set Image Icon
                                     </Button>
                                 </CardBody>

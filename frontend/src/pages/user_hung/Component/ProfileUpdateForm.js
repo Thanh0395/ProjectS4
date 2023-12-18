@@ -10,6 +10,7 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
     const [file, setFile] = useState(null);
     const [originalFile, setOriginalFile] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const userData = JSON.parse(localStorage.getItem('currentUser'));
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -38,6 +39,8 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
             setMessage('Profile updated successfully');
             setReRender(true);
             setShowModal(false);
+            userData.avatar = uploadedImage || user.avatar;
+            localStorage.setItem('currentUser', JSON.stringify(userData));
             setTimeout(() => {
                 window.location.reload();
             }, 2000);

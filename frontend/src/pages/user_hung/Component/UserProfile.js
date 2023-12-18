@@ -37,6 +37,7 @@ const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5P
                             <Col xs="6">
                                 {/* <ProfileCard user={user} gem={gem} userLevel={userLevel} /> */}
                                 <ProfileCard2 user={user} gem={gem} userLevel={userLevel} />
+                                <ProfileUpdateForm user={user} setReRender={setReRender} setMessage={setMessage} />
                             </Col>
                             <Col xs="6">
                                 <Nav tabs>
@@ -86,9 +87,6 @@ const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5P
                                     </TabPane>
                                 </TabContent>
                             </Col>
-                        </Row>
-                        <Row>
-                            <ProfileUpdateForm user={user} setReRender={setReRender} setMessage={setMessage} />
                         </Row>
                     </>
                 )}

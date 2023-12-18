@@ -31,8 +31,8 @@ const Top5PostProfile = ({ posts }) => {
                 {posts && (
                     <div className="scroll dashboard-list-with-thumbs">
                         {posts.map((item, index) => (
-                            <div key={index} className="d-flex flex-row mb-0">
-                                <Card 
+                            <div key={index} className="d-flex flex-row mb-0 p-3">
+                                <Card
                                     className="d-block position-relative hover-card"
                                     onClick={() => handleGetPageDetail(item)}
                                 >
@@ -65,8 +65,8 @@ const Top5PostProfile = ({ posts }) => {
                                     )}
 
                                 </Card>
-                                <div className="pl-1 pt-0 pr-0 pb-0" style={{ width: '85%' }}>
-                                    <Card 
+                                <div className="pl-1 pt-1 pr-0 pb-0" style={{ width: '85%' }}>
+                                    <Card
                                         className="hover-card"
                                         onClick={() => handleGetPageDetail(item)}
                                     >

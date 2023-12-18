@@ -56,6 +56,8 @@ function ClientProfile(props) {
         setTop5PostsByFeedbackCount(rs.top5PostsByFeedbackCount);
         setTop5PostsByPrize(rs.top5PostsByPrize);
         setReRender(false);
+        console.log("User data profile:", rs);
+        console.log("badge :", rs.achievements.badge);
       })
       .catch(err => console.log("Err fetch api profile data:", err));
   }, [userId, reRender]);
@@ -79,8 +81,9 @@ function ClientProfile(props) {
             <GemPopup onClose={handleCloseGemPopup} />
           </Modal>
           {/* end gem popup */}
+          <br />
           <ComplexButton handleClick={handleClick} />
-          <Row>
+          <Row className="mt-5">
             <UserProfile user={user} gem={gem} userLevel={userLevel}
               setReRender={setReRender}
               recentTop5Posts={recentTop5Posts}
@@ -101,7 +104,7 @@ function ClientProfile(props) {
             </>
 
           )}
-          {posts.length !== 0 ? (
+          {posts ? (
             <Row>
               <CourseSessionProfile posts={posts} />
             </Row>
