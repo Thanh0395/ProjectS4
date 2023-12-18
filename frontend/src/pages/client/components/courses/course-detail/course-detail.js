@@ -7,6 +7,7 @@ import Author_02 from "../../../../../assets/author-02.jpg";
 import CourseBannerSession from "../banner-session/banner";
 import ReactPlayer from "react-player";
 import QuizApp from "../course-quiz/quiz";
+import CourseComment from "../course-comment/course-comment";
 import "./course-detail.css";
 import env from "../../../../../environment.json";
 import CourseBuy from "../course-buy/course-buy";
@@ -19,8 +20,9 @@ function CourseDetail(props) {
   const urlMedia = env.urls.media;
   const [productA, setProductsA] = useState({});
   const [loading, setLoading] = useState(true);
+  const [count, setCount] = useState(0);
   const params = useParams();
-  let url = "null";
+  let url = "";
   if (currentUser === null) {
     url = `http://localhost:8080/api/project4/thanh/lesson/${params.id}`;
   } else {
@@ -30,6 +32,7 @@ function CourseDetail(props) {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
+        setCount(data.comments.length);
         setProductsA(data);
         setLoading(false);
       })
@@ -41,6 +44,15 @@ function CourseDetail(props) {
   if (loading) {
     return <p>Loading...</p>;
   }
+  const formatCreateDate = (createdDate) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+
+    return new Date(createdDate).toLocaleString(undefined, options);
+  };
   return (
     <>
       <CourseBannerSession />
@@ -78,9 +90,7 @@ function CourseDetail(props) {
             </div>
             <div className="course-detail_addCart">
               {productA.video === null ? (
-                <CourseBuy
-                  lesson={params.id}
-                />
+                <CourseBuy lesson={params.id} />
               ) : (
                 <div className="fs-1 text-success">
                   <div className="course-detail_addCart_award"><i class="bi bi-award text-warning"></i></div>
@@ -92,7 +102,7 @@ function CourseDetail(props) {
         </Row>
         <Row className="px-3">
           <div className="course-common course-detail_card_right_title">
-            <p className="course-common_text">{productA.content}</p>
+            <div dangerouslySetInnerHTML={{__html: productA.content}}></div>
           </div>
         </Row>
         <Row>
@@ -140,15 +150,24 @@ function CourseDetail(props) {
           )}
         </Row>
         <Row>
-          <QuizApp
-            course={productA}
-            user={currentUser}
-            question={params.id}
-          />
+          <QuizApp course={productA} user={currentUser} question={params.id} />
         </Row>
         <Row>
           <div className="pt-4">
-            <h5 className="p-2">Comments</h5>
+            <div className="d-flex justify-content-between pt-3 pb-3">
+              <h5 className="p-2">
+                Comments <span className="fs-6">({count})</span>
+              </h5>
+              {productA.video === null ? (
+               <span></span>
+              ) : (
+                <CourseComment
+                  className="d-block"
+                  user={currentUser.userId}
+                  lesson={params.id}
+                />
+              )}
+            </div>
             <div
               className="comments-container shadow-sm"
               style={{ maxHeight: "400px", overflow: "auto" }}
@@ -158,10 +177,19 @@ function CourseDetail(props) {
                   <Row key={item.feedbackId} className="mb-2">
                     <Col className="border-bottom-light">
                       <div className="d-flex justify-content-between">
-                        <h6 className="text-success mb-0">{item.userName}</h6>
-                        <small className="text-muted">{item.creatatedAt}</small>
+                        <h6 className="text-success mb-0">
+                          <i class="bi bi-person-fill pe-2 text-secondary"></i>{" "}
+                          {item.userName}
+                        </h6>
+                        <small className="text-muted">
+                          <i class="bi bi-calendar3 pe-2"></i>
+                          {formatCreateDate(item.creatatedAt)}
+                        </small>
                       </div>
-                      <p className="text-muted">{item.content}</p>
+                      <p className="text-muted">
+                        <i class="bi bi-chat-dots pe-2"></i>
+                        {item.content}
+                      </p>
                     </Col>
                   </Row>
                 ))}
