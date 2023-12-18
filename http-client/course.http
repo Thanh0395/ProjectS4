@@ -16,3 +16,11 @@ PUT  {{api}}/api/project4/thanh/test-result/10/3
 PUT  {{api}}/api/project4/thanh/payment/buy-lesson/3
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2FuYW5ocGhhbXVrQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiZXhwIjoxNzAyNzc3NTM0fQ.TnKZCzpA2ItkvACc8GOSe29FuF4TjYU9wU2EF0PZ09w
 Content-Type: application/json
+
+###
+POST  {{api}}/api/project4/thanh/lesson/comment/10/3
+Content-Type: application/json
+
+{
+    "content": "bai nay khong on"
+}

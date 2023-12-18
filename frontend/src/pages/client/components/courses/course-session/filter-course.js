@@ -3,6 +3,7 @@ import { ProductContext } from "../../../../../components/context/ProductContext
 import { Link } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import { Box, Slider } from "@mui/material";
+import "animate.css";
 import {
   Navigation,
   Pagination,
@@ -55,7 +56,9 @@ function FilterCourse(props) {
         <div className="course-filter_custom">
           <label className="course-filter_custom_price">
             <span className="text-secondary">
-              Coin Range: <i class="bi bi-gem px-2 text-primary"></i>{proState.filterBy.price[0] || 0} <span className="px-2">-</span> <i class="bi bi-gem pe-2 text-primary"></i>
+              Coin Range: <i class="bi bi-gem px-2 text-primary"></i>
+              {proState.filterBy.price[0] || 0} <span className="px-2">-</span>{" "}
+              <i class="bi bi-gem pe-2 text-primary"></i>
               {proState.filterBy.price[1] || 1000}
             </span>
 
@@ -77,10 +80,12 @@ function FilterCourse(props) {
               placeholder="Search: courses, authors, teachers"
               onChange={handleSearchChange}
             />
-            <div className="course-filter_input_icon"><i class="bi bi-search"></i></div>
+            <div className="course-filter_input_icon">
+              <i class="bi bi-search"></i>
+            </div>
           </div>
         </div>
-
+        {/* 
         <div className="course-filter">
           <Swiper
             // install Swiper modules
@@ -137,6 +142,28 @@ function FilterCourse(props) {
               </SwiperSlide>
             ))}
           </Swiper>
+        </div> */}
+        <div className="course-filter-by-cate text-center pt-5">
+          <button
+            onClick={() => handleCategoryChange("")}
+            className={`cate-filter ${
+              proState.filterBy.category === "" ? "active" : ""
+            }`}
+          >
+            All Course
+          </button>
+          {categories.map((item, index) => (
+            <button
+              as={Link}
+              key={index}
+              onClick={() => handleCategoryChange(item.categoryName)}
+              className={`cate-filter animate__animated animate__fadeIn ${
+                proState.filterBy.category === item.categoryName ? "active" : ""
+              }`}
+            >
+              {item.categoryName}
+            </button>
+          ))}
         </div>
       </section>
     </>
