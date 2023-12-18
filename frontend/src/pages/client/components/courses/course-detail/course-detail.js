@@ -21,7 +21,7 @@ function CourseDetail(props) {
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const params = useParams();
-  let url = "null";
+  let url = "";
   if (currentUser === null) {
     url = `http://localhost:8080/api/project4/thanh/lesson/${params.id}`;
   } else {
