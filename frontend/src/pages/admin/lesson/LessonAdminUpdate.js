@@ -60,7 +60,7 @@ function LessonAdminUpdate(props) {
         fetchData();
     }, [params.id]);
 
-    const limitImage = 350000;
+    const limitImage = 300000;
     const limitVideo = 2000000;
 
     const [isLoading, setIsLoading] = useState(false);// loading nay khi submit form

@@ -45,6 +45,9 @@ function LessonAdminCreate(props) {
         fetchData();
     }, []);
 
+    const limitImage = 300000;
+    const limitVideo = 2000000;
+
     const [isLoading, setIsLoading] = useState(false);// loading nay khi submit form
     const { Formik } = formik;
     const schema = yup.object().shape({
@@ -64,7 +67,7 @@ function LessonAdminCreate(props) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
-                const maxSize = 500000; // 1MB
+                const maxSize = limitImage; // 1MB
                 const valid = file.size <= maxSize;
                 return valid;
             })
@@ -81,7 +84,7 @@ function LessonAdminCreate(props) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
-                const maxSize = 100000000; // 100MB
+                const maxSize = limitVideo; // 100MB
                 return file.size <= maxSize;
             })
             .test('fileformat', 'Unsupported video format', function (file) {
