@@ -27,4 +27,6 @@ public class PostDto {
 	private int countFeedback;
 	@Builder.Default
 	private boolean isSetTopPrize = false;
+	@Builder.Default
+	private boolean isSetTopNew = false;
 }

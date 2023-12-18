@@ -205,4 +205,23 @@
 .course .active{
     background-color: rgb(72, 182, 204) !important;
     color: white !important;
+}
+
+/* Thiết kế chung cho nút */
+/* .custom-button {
+    padding: 10px 20px; 
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid #4e5357; 
+    border-radius: 5px;
+    background-color: #00ff4c;
+    color: white; 
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.custom-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    color: white; 
 } */

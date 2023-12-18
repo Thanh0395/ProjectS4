@@ -49,7 +49,7 @@ const BlogAchievementProfile = ({ achievements }) => {
             {achievements.map((achievement, index) => (
                 <Col xxs="12" lg="4" className="mb-5" key={`blogItem_${index}`}>
                     <Card>
-                        <div >
+                        <div>
                             <div style={{ position: 'relative', display: 'flex' }}>
                                 <img
                                     className="card-img-left"
