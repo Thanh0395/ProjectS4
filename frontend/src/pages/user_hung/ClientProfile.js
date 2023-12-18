@@ -8,6 +8,9 @@ import { Row } from "reactstrap";
 import { Colxx } from "./Custom/CustomBoostrap";
 import UserProfile from "./Component/UserProfile";
 import BlogAchievementProfile from "./Component/BlogAchievementProfile";
+import CourseHeader from "./course-session/CourseHeaderProfile";
+import ComplexButton from "./Component/ComplexButton";
+import MovingButton from "./Component/MovingButton";
 
 function ClientProfile(props) {
 
@@ -21,6 +24,9 @@ function ClientProfile(props) {
   const [recentTop5Posts, setRecentTop5Posts] = useState([]);
   const [top5PostsByFeedbackCount, setTop5PostsByFeedbackCount] = useState([]);
   const [top5PostsByPrize, setTop5PostsByPrize] = useState([]);
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("currentUser"))
+  );
   const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
@@ -49,24 +55,33 @@ function ClientProfile(props) {
               <CourseBannerSessionProfile />
             </Colxx>
           </Row>
+          <ComplexButton />
           <Row>
-            <UserProfile user={user} gem={gem} userLevel={userLevel} 
-              setReRender={setReRender} 
+            <UserProfile user={user} gem={gem} userLevel={userLevel}
+              setReRender={setReRender}
               recentTop5Posts={recentTop5Posts}
-              top5PostsByFeedbackCount={top5PostsByFeedbackCount} 
+              top5PostsByFeedbackCount={top5PostsByFeedbackCount}
               top5PostsByPrize={top5PostsByPrize}
             />
           </Row>
-          <Row>
-            <Colxx xxs="12">
-              <h5 className="mb-4">Your Achievements</h5>
-              <BlogAchievementProfile achievements={achievements} />
-            </Colxx>
-            {/* <AchievementProfile achievements={achievements} /> */}
-          </Row>
-          <Row>
-            <CourseSessionProfile posts={posts} />
-          </Row>
+          {achievements.length !== 0 ? (
+            <Row>
+              <Colxx xxs="12">
+                <CourseHeader header={"Your Achievements"} />
+                <BlogAchievementProfile achievements={achievements} />
+              </Colxx>
+            </Row>
+          ) : (
+            <>
+              <br />
+            </>
+
+          )}
+          {posts.length !== 0 ? (
+            <Row>
+              <CourseSessionProfile posts={posts} />
+            </Row>
+          ) : <MovingButton />}
         </>
       )}
     </>

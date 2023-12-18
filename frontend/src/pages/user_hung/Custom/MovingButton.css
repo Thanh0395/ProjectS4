@@ -1,0 +1,23 @@
+.moving-button-container {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+}
+
+.moving-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: left 0.5s linear;
+    width: 300px;
+    height: 100%;
+    background-color: #34db45;
+    color: #ff56229c;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    border-radius: 25px; /* Set border radius for rounded corners */
+  }

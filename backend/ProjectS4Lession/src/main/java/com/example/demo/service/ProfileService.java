@@ -45,29 +45,18 @@ public class ProfileService {
 	public ProfileResponse profile(int userId) throws NotFoundException {
 
 		UserEntity userDb = userService.getUserById(userId);
-		List<PostEntity> postsDb = postService.getUserBoughtLesson(userId);
 		GemEntity gemDb = gemService.getOrCreateGemByUserId(userId);
 		UserLevelEntity userLevelDb = userLevelService.getOrCreateLevelByUserId(userId);
 		List<AchievementEntity> achievementsDb = achievementService.getAchivementsByUser(userId);
 		List<UserAchievementEntity> userAchievementsDb = userAchievementService.getUserAchievementsByUser(userDb);
-		List<PostEntity> recentTop5PostDb = postService.getTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
+		List<PostDto> recentTop5PostDto = postService.getTop5ByDeletedAtIsNullOrderByCreatedAtDesc();
 		List<PostDto> top5PostsByFeedbackCountDto = postService.getTop5PostsByFeedbackCount();
 		List<PostDto> top5PostsByPrizeDto = postService.getTop5ByDeletedAtIsNullOrderByPrizeDesc();
-
+		List<PostDto> postsDto = postService.getUserBoughtLesson(userId);
 
 		UserDto userDto = mapper.map(userDb, UserDto.class);
 		GemDto gemDto = mapper.map(gemDb, GemDto.class);
 		UserLevelDto userLevelDto = mapper.map(userLevelDb, UserLevelDto.class);
-		List<PostDto> postsDto = postsDb.stream().map(postEntity -> {
-            PostDto postDto = mapper.map(postEntity, PostDto.class);
-            String authorName = (postEntity.getUser() != null) ? postEntity.getUser().getName() : "Anonymous";
-            String categoryName = (postEntity.getCategory() != null) ? postEntity.getCategory().getCategoryName()
-					: "Uncategory";
-            postDto.setAuthorName(authorName);
-            postDto.setCategoryName(categoryName);
-            return postDto;
-        }).collect(Collectors.toList());
-		
 		List<AchievementDto> achievementsDto = new ArrayList<>();
 		if (achievementsDb != null && !achievementsDb.isEmpty()) {
 		    achievementsDto = achievementsDb.stream()
@@ -87,15 +76,6 @@ public class ProfileService {
 		} else {
 		    achievementsDto = Collections.emptyList();
 		}
-		List<PostDto> recentTop5PostDto = recentTop5PostDb.stream().map(postEntity -> {
-            PostDto postDto = mapper.map(postEntity, PostDto.class);
-            String authorName = (postEntity.getUser() != null) ? postEntity.getUser().getName() : "Anonymous";
-            String categoryName = (postEntity.getCategory() != null) ? postEntity.getCategory().getCategoryName()
-					: "Uncategory";
-            postDto.setAuthorName(authorName);
-            postDto.setCategoryName(categoryName);
-            return postDto;
-        }).collect(Collectors.toList());
 		ProfileResponse profileResponse = ProfileResponse
 				.builder()
 				.user(userDto)

@@ -41,6 +41,8 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
         } catch (error) {
             console.log("err update profile :", error);
             setMessage('Failed to update profile');
+            setReRender(true);
+            setShowModal(false);
         } finally {
             setSubmitting(false);
         }
@@ -51,7 +53,7 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
         setShowModal(false);
     };
     const handleShow = () => setShowModal(true);
-
+    
     return (
         <div>
             <Card.Body>
@@ -95,7 +97,7 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
                                     </FormGroup>
                                     <FormGroup>
                                         <Label>Email Address</Label>
-                                        <Field type="email" name="email" className="form-control" />
+                                        <Field type="email" name="email" className="form-control" disabled />
                                     </FormGroup>
                                     <FormGroup>
                                         <Label>Profile Picture</Label>

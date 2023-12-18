@@ -65,4 +65,10 @@
   .font-weight-medium {
     font-weight: 500; /* Medium font weight */
   }
+
+  .hover-card:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Example shadow effect on hover */
+    transition: box-shadow 0.3s ease; /* Smooth transition for the effect */
+    cursor: pointer;
+}
   
