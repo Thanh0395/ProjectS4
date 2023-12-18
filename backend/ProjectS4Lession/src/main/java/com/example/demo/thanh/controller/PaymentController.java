@@ -151,7 +151,7 @@ public class PaymentController {
 			UserPostEntity userBuy = userPostService.UserPayPost(user.getUserId(), lessonId);
 			if (userBuy == null)
 				return new ResponseEntity<>("You have not bought it yet", HttpStatus.UNAUTHORIZED);
-			// Ko cho mua lai course da refund
+			// Ko cho refund lai course da refund
 			if (userBuy != null && userBuy.getIsRefunded() != null && userBuy.getIsRefunded() == false)
 				return new ResponseEntity<>("You have been refunded once", HttpStatus.SERVICE_UNAVAILABLE);
 			Timestamp buyDay = userBuy.getCreatedAt();

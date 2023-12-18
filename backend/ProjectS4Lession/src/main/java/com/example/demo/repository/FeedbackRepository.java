@@ -12,4 +12,7 @@ public interface FeedbackRepository extends JpaRepository<FeedbackEntity, Intege
 
 	//Thanh
 	List<FeedbackEntity> findByPostPostId(int postId);
+
+	List<FeedbackEntity> findByPostPostIdOrderByCreatedAtDesc(int postId);
+
 }
