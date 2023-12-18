@@ -183,7 +183,7 @@ public class TestResultController {
 		int score1 = achiService.findScore(levelBronze);
 		int score2 = achiService.findScore(levelSilver);
 		int score3 = achiService.findScore(levelGold);
-		if (newValue < score1) {
+		if (newValue < score1) { 
 			userAchiService.updateOrCreateUserAchievement(false, (score1 - newValue) * 100 / score1, levelBronze, user);
 		} else if (newValue >= score1 && newValue < score2) {
 			userAchiService.updateOrCreateUserAchievement(true, 100, levelBronze, user);
