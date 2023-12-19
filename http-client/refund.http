@@ -1,0 +1,6 @@
+
+@api=http://localhost:8080
+###
+PUT  {{api}}/api/project4/thanh/payment/refund-lesson/150
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2FuYW5ocGhhbXVrQGdtYWlsLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwiZXhwIjoxNzAzMjAyMDc0fQ.6jxl_f_Sn_D1N5JD6QQkq2DEA1J7lx5MD-_B-JMFveY
+Content-Type: application/json

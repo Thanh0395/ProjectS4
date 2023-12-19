@@ -11,9 +11,9 @@ import CourseComment from "../course-comment/course-comment";
 import "./course-detail.css";
 import env from "../../../../../environment.json";
 import CourseBuy from "../course-buy/course-buy";
+import RefundCourse from "../refund-course/refund-course"
 function CourseDetail(props) {
-  const [tokens, setTokens] = useState();
-  const [currentUser, setCurrentUser] = useState(
+  const [currentUser] = useState(
     JSON.parse(localStorage.getItem("currentUser"))
   );
   const urlMedia = env.urls.media;
@@ -21,14 +21,21 @@ function CourseDetail(props) {
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const params = useParams();
-  let url = "";
-  if (currentUser === null) {
-    url = `http://localhost:8080/api/project4/thanh/lesson/${params.id}`;
-  } else {
-    url = `http://localhost:8080/api/project4/thanh/lesson/${currentUser.userId}/${params.id}`;
-  }
   useEffect(() => {
-    fetch(url)
+    let apiUrl = '';
+    if (currentUser === null) {
+      apiUrl = `http://localhost:8080/api/project4/thanh/lesson/${params.id}`;
+    } else {
+      apiUrl = `http://localhost:8080/api/project4/thanh/lesson/${currentUser.userId}/${params.id}`;
+    }
+  
+    if (!currentUser) {
+      apiUrl = `http://localhost:8080/api/project4/thanh/lesson/${params.id}`;
+    } else {
+      apiUrl = `http://localhost:8080/api/project4/thanh/lesson/${currentUser.userId}/${params.id}`;
+    }
+    console.log("aip:",apiUrl)
+    fetch(apiUrl)
       .then((res) => res.json())
       .then((data) => {
         setCount(data.comments.length);
@@ -39,7 +46,7 @@ function CourseDetail(props) {
         console.error("Error fetching data:", error);
         setLoading(false);
       });
-  }, [params]);
+  }, [params,currentUser]);
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -92,8 +99,8 @@ function CourseDetail(props) {
                 <CourseBuy lesson={params.id} />
               ) : (
                 <div className="fs-1 text-success">
-                  {" "}
-                  {<i class="bi bi-award text-warning"></i>}{" "}
+                  <div className="course-detail_addCart_award"><i class="bi bi-award text-warning"></i></div>
+                  <RefundCourse lesson={params.id}/>
                 </div>
               )}
             </div>
