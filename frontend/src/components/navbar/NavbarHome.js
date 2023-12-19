@@ -68,10 +68,10 @@ function NavbarHome(props) {
                         <Nav.Link as={NavLink} to={"planning"}>AI-Chat</Nav.Link>
                         <Nav.Link as={NavLink} to={"products"}>Course</Nav.Link>
 
-                        <NavDropdown title="Dropdown" className="mb-3">
-                            <NavDropdown.Item href="action3">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="action4">
-                                Another action
+                        <NavDropdown title="Action" className="mb-3">
+                            <NavDropdown.Item href="action3">Action 404</NavDropdown.Item>
+                            <NavDropdown.Item href="/unauthorized">
+                                Action Unauthorize
                             </NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href="/change-password">
