@@ -4,38 +4,40 @@ import { Row, Col, Button, Form, Spinner, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import * as formik from 'formik';
 import * as yup from 'yup';
-import { registerUser, sendVerifycodeMail } from '../services/api/userAPI';
-import { sendResetPassword } from '../services/api/AuthApi';
+import { sendChangePassword } from '../services/api/AuthApi';
 
-function ResetPassword() {
-    const navigate = useNavigate();
+function ChangePassword() {
+
     const { Formik } = formik;
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(null);
+    const [message, setMessage] = useState(null);
     const [variant, setVariant] = useState('info');
-    const location = useLocation();
+    const [currentUser, setCurrentUser] = useState(
+        JSON.parse(localStorage.getItem("currentUser"))
+    );
     const schema = yup.object().shape({
         email: yup.string().email().required(),
         newPassword: yup.string().min(3, "Please enter at least 3 characters").required(),
         confirmPassword: yup.string().oneOf([yup.ref('newPassword'), null], "Passwords must match").required(),
-        code: yup.string().required("Verification code is required"),
+        oldPassword: yup.string().required("Please enter this feild"),
     });
 
     const handleSubmit = async (values) => {
         try {
+
+            console.log('Submitting form...', values);
             setIsLoading(true);
-            await sendResetPassword(values.email, values.newPassword, values.confirmPassword,values.code);
-            setVariant("success");
-            setErrorMessage("Password changed successfully!");
+            await sendChangePassword(values.email, values.oldPassword, values.newPassword, values.confirmPassword);
+            setMessage('Password changed successfully!');
             setTimeout(() => {
-                setErrorMessage(null);
+                setMessage(null);
                 navigate("/login");
             }, 3000);
         } catch (error) {
-            const errorObj = error.response.data;
-            console.log("err reset :", errorObj);
+            const errorObj = error.response ? error.response.data : error.message;
             setVariant('warning');
-            setErrorMessage(errorObj['Error Message']);
+            setMessage(errorObj['Error Message'] || 'An error occurred.');
         } finally {
             setIsLoading(false);
         }
@@ -45,15 +47,15 @@ function ResetPassword() {
         <div className="register-container">
             <div className="register-content">
                 <h2 className="fw-bold mb-2 text-uppercase">Ultimate Learning</h2>
-                <p className="mb-5">Here is your reset password form!</p>
+                <p className="mb-5">Here is your change password form!</p>
                 <Formik
                     validationSchema={schema}
                     onSubmit={handleSubmit}
                     initialValues={{
-                        email: location.state.email || '',
+                        email: currentUser.email || '',
                         newPassword: '',
                         confirmPassword: '',
-                        code: '',
+                        oldPassword: ''
                     }}
                 >
                     {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -70,6 +72,19 @@ function ResetPassword() {
                                     />
                                     <Form.Control.Feedback type="invalid">
                                         {errors.email}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group as={Col} md="6">
+                                    <Form.Label>Old Password</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        name="oldPassword"
+                                        value={values.oldPassword}
+                                        onChange={handleChange}
+                                        isInvalid={touched.oldPassword && !!errors.oldPassword}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.oldPassword}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group as={Col} md="6">
@@ -98,28 +113,15 @@ function ResetPassword() {
                                         {errors.confirmPassword}
                                     </Form.Control.Feedback>
                                 </Form.Group>
-                                <Form.Group as={Col} md="6">
-                                    <Form.Label>Verify Code</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        name="code"
-                                        value={values.code}
-                                        onChange={handleChange}
-                                        isInvalid={touched.code && !!errors.code}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.code}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
                             </Row>
-                            {errorMessage && (
-                                <Alert variant={variant}>
-                                    {errorMessage}
+                            {message && (
+                                <Alert variant={variant} onClose={() => setMessage(null)} dismissible className="text-center">
+                                    {message}
                                 </Alert>
                             )}
                             <div className="d-grid">
-                                <Button variant="primary" type="submit" disabled={isLoading}>
-                                    {isLoading ? (<Spinner size="sm" />) : ("Submit")}
+                                <Button variant="primary" type="submit">
+                                    Submit
                                 </Button>
                             </div>
                         </Form>
@@ -139,4 +141,4 @@ function ResetPassword() {
     );
 }
 
-export default ResetPassword;
+export default ChangePassword;

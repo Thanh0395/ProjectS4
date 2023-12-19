@@ -59,9 +59,15 @@ public class ProfileService {
 		UserLevelDto userLevelDto = mapper.map(userLevelDb, UserLevelDto.class);
 		List<AchievementDto> achievementsDto = new ArrayList<>();
 		if (achievementsDb != null && !achievementsDb.isEmpty()) {
-		    achievementsDto = achievementsDb.stream()
-		            .map(achie -> mapper.map(achie, AchievementDto.class))
-		            .collect(Collectors.toList());
+		    achievementsDto = achievementsDb.stream().map(achie -> {
+		    	AchievementDto achieDto = mapper.map(achie, AchievementDto.class);
+		    	String badge = "";
+		    	if (achie.getReward() != null) {
+		            badge = achie.getReward().getBadge();
+		        }
+		        achieDto.setBadge(badge);
+		    	return achieDto;
+		    }).collect(Collectors.toList());
 		  //process va isReceivedBadge ko co trong achievement
 			for (UserAchievementEntity userAchievement : userAchievementsDb) {
 		        AchievementDto matchedAchievementDto = achievementsDto.stream()

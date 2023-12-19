@@ -1,10 +1,14 @@
-import React from 'react';
-import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon } from 'mdb-react-ui-kit';
+import React, { useState } from 'react';
+import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon, Badge } from 'mdb-react-ui-kit';
 import { Diamond } from "@mui/icons-material";
 import StarIcon from "@mui/icons-material/Star";
 import "../Custom/ProfileCard2.css";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 export default function ProfileCard2({ user, gem, userLevel }) {
+  const [showImageIcon , setShowImageIcon] = useState();
+  const imageIcon = localStorage.getItem("imageIcon");
   return (
     <section style={{ backgroundColor: '#f4f5f7' }}>
       <MDBContainer className="py-5 h-100">
@@ -12,13 +16,31 @@ export default function ProfileCard2({ user, gem, userLevel }) {
           <MDBCol className="mb-4 mb-lg-0">
             <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }}>
               <MDBRow className="g-0">
-                <MDBCol md="4" className="gradient-custom text-center text-white"
+                <MDBCol md="4" className="position-relative gradient-custom text-center text-white"
                   style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
+                  <div className="position-relative">
                   <MDBCardImage src={`http://localhost:8080/${user.avatar}`}
-                    alt="Avatar" className="my-5" style={{ width: '200px' }} fluid />
+                    alt="Avatar" className="my-5 p-3" style={{ width: '200px' }} fluid />
+
+                  {/* Icon at bottom right */}
+                  <div className="position-absolute bottom-0 end-0 p-2">
+                    {imageIcon == "ImageHung/icon_image_default.jpg" ? (
+                      <img src={`${imageIcon}`} alt="Icon" style={{ width: '40px', height: '40px' }} />
+                    ) : (
+                      <img src={`localhost:8080/${imageIcon}`} alt="Icon" style={{ width: '40px', height: '40px' }} />
+                    )}
+                  </div>
+                  </div>
                   <MDBTypography tag="h5">{user.name}</MDBTypography>
-                  <MDBCardText>Web Designer</MDBCardText>
-                  <MDBIcon far icon="edit mb-5" />
+                  <Dropdown data-bs-theme="dark" style={{opacity: 0.4, width:'60%'}}>
+                    <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
+                      Action
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item href="/change-password">Change Password</Dropdown.Item>
+                      <Dropdown.Item href="/forgot-password">Forgot Password</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </MDBCol>
                 <MDBCol md="8">
                   <MDBCardBody className="p-4">

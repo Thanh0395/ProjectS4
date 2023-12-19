@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CourseBannerSessionProfile from "./banner-session/CourseBannerSessionProfile";
 import CourseSessionProfile from "./course-session/CourseProfile";
 import { useEffect, useState } from "react";
@@ -11,6 +11,8 @@ import BlogAchievementProfile from "./Component/BlogAchievementProfile";
 import CourseHeader from "./course-session/CourseHeaderProfile";
 import ComplexButton from "./Component/ComplexButton";
 import MovingButton from "./Component/MovingButton";
+import Modal from 'react-bootstrap/Modal';
+import GemPopup from "../../components/payment/GemPopup";
 
 function ClientProfile(props) {
 
@@ -24,10 +26,23 @@ function ClientProfile(props) {
   const [recentTop5Posts, setRecentTop5Posts] = useState([]);
   const [top5PostsByFeedbackCount, setTop5PostsByFeedbackCount] = useState([]);
   const [top5PostsByPrize, setTop5PostsByPrize] = useState([]);
-  const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem("currentUser"))
-  );
   const [reRender, setReRender] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClick = (titleBtn) => {
+    if (titleBtn === "Get Course") {
+      navigate("/products");
+    } else if (titleBtn === "AI-Chat") {
+      navigate("/planning");
+    } else {
+      setShowGemPopup(!showGemPopup);
+    }
+  }
+  // Gem Popup
+  const [showGemPopup, setShowGemPopup] = useState(false);
+  const handleCloseGemPopup = () => {
+    setShowGemPopup(false);
+  };
 
   useEffect(() => {
     ProfileDataByUserId(userId)
@@ -41,7 +56,8 @@ function ClientProfile(props) {
         setTop5PostsByFeedbackCount(rs.top5PostsByFeedbackCount);
         setTop5PostsByPrize(rs.top5PostsByPrize);
         setReRender(false);
-        console.log("response data profile :", rs);
+        console.log("User data profile:", rs);
+        console.log("badge :", rs.achievements.badge);
       })
       .catch(err => console.log("Err fetch api profile data:", err));
   }, [userId, reRender]);
@@ -55,8 +71,19 @@ function ClientProfile(props) {
               <CourseBannerSessionProfile />
             </Colxx>
           </Row>
-          <ComplexButton />
-          <Row>
+          {/* gem Popup */}
+          <Modal size='lg' centered show={showGemPopup} onHide={handleCloseGemPopup}>
+            <Modal.Header closeButton>
+              <Modal.Title id="example-custom-modal-styling-title">
+                Choose wisely!!
+              </Modal.Title>
+            </Modal.Header>
+            <GemPopup onClose={handleCloseGemPopup} />
+          </Modal>
+          {/* end gem popup */}
+          <br />
+          <ComplexButton handleClick={handleClick} />
+          <Row className="mt-5">
             <UserProfile user={user} gem={gem} userLevel={userLevel}
               setReRender={setReRender}
               recentTop5Posts={recentTop5Posts}
@@ -77,7 +104,7 @@ function ClientProfile(props) {
             </>
 
           )}
-          {posts.length !== 0 ? (
+          {posts ? (
             <Row>
               <CourseSessionProfile posts={posts} />
             </Row>

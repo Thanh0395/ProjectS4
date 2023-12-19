@@ -6,14 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class ResetPasswordRequestDto {
-
+public class ChangePasswordRequest {
 	private String email;
+	private String oldPassword;
 	private String newPassword;
 	private String confirmPassword;
-	@Builder.Default
-	private String code = "0";
 }
