@@ -85,7 +85,6 @@ const CourseSessionProfile = ({ posts }) => {
                     </div>
                   </div>
                   <div className="course-list_card_title_percent_price">
-                    <h6>{progress}% Completed</h6>
                     <h6>
                       {course.price}{" "}
                       <i class="bi bi-gem px-2 text-primary"></i>

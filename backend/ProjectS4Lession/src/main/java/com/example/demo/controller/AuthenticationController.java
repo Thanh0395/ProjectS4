@@ -15,6 +15,7 @@ import com.example.demo.auth.AuthenticationResponse;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.dto.AuthDto.ActiveUserRequestDto;
 import com.example.demo.dto.AuthDto.AddPermissionDto;
+import com.example.demo.dto.AuthDto.AdminAddUserRequestDto;
 import com.example.demo.dto.AuthDto.ChangePasswordRequest;
 import com.example.demo.dto.AuthDto.RegisterRequestDto;
 import com.example.demo.dto.AuthDto.ResetPasswordRequestDto;
@@ -132,12 +133,19 @@ public class AuthenticationController {
     	return new ResponseEntity<>("Reset password success", HttpStatus.OK);
     }
     
-    @PostMapping("change-password")
+    @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request)
     		throws NotFoundException, BadRequestException
     {
     	authenticationService.changePassword(request);
     	return new ResponseEntity<>("Change password sucess", HttpStatus.OK);
+    }
+    
+    @PostMapping("/admin-add-user")
+    public ResponseEntity<UserResponseDto> adminAddUser(@Valid @RequestBody AdminAddUserRequestDto request) 
+    {
+    	UserResponseDto response = authenticationService.adminAddUser(request);
+    	return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
 

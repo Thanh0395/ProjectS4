@@ -1,10 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
 import '../Custom/MovingButton.css'; // Import CSS file for styles
+import { useNavigate } from 'react-router-dom';
 
 const MovingButton = () => {
+  const navigate = useNavigate();
   const buttonRef = useRef(null);
-
+  const handleClick = () => {
+    navigate("/products");
+  }
   useEffect(() => {
     const button = buttonRef.current;
 
@@ -32,7 +36,7 @@ const MovingButton = () => {
 
   return (
     <div className="moving-button-container">
-      <button ref={buttonRef} className="moving-button">
+      <button ref={buttonRef} className="moving-button" onClick={()=>handleClick()}>
         <QueuePlayNextIcon /> Let's Get Course Here !
       </button>
     </div>

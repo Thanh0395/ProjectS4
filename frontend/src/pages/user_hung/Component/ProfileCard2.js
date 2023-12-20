@@ -7,7 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
 export default function ProfileCard2({ user, gem, userLevel }) {
-  const [showImageIcon , setShowImageIcon] = useState();
+  const [showImageIcon, setShowImageIcon] = useState();
   const imageIcon = localStorage.getItem("imageIcon");
   return (
     <section style={{ backgroundColor: '#f4f5f7' }}>
@@ -19,20 +19,30 @@ export default function ProfileCard2({ user, gem, userLevel }) {
                 <MDBCol md="4" className="position-relative gradient-custom text-center text-white"
                   style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
                   <div className="position-relative">
-                  <MDBCardImage src={`http://localhost:8080/${user.avatar}`}
-                    alt="Avatar" className="my-5 p-3" style={{ width: '200px' }} fluid />
+                    <MDBCardImage src={`http://localhost:8080/${user.avatar}`}
+                      alt="Avatar" className="my-5 p-3" style={{ width: '200px' }} fluid />
 
-                  {/* Icon at bottom right */}
-                  <div className="position-absolute bottom-0 end-0 p-2">
-                    {imageIcon == "ImageHung/icon_image_default.jpg" ? (
-                      <img src={`${imageIcon}`} alt="Icon" style={{ width: '40px', height: '40px' }} />
-                    ) : (
-                      <img src={`localhost:8080/${imageIcon}`} alt="Icon" style={{ width: '40px', height: '40px' }} />
-                    )}
-                  </div>
+                    {/* Icon at bottom right */}
+                    <div className="position-absolute bottom-0 end-0 p-2">
+                      {imageIcon == "ImageHung/icon_image_default.jpg" ? (
+                        <img src={`${imageIcon}`} alt="Icon" style={{ width: '40px', height: '40px' }} />
+                      ) : (
+                        //<img src={`localhost:8080/${imageIcon}`} alt="Icon" style={{ width: '40px', height: '40px' }} />
+                        //https://vapeaz.com.vn/wp-content/uploads/2023/12/explore-the-nature.png
+                        <img
+                        src={`http://localhost:8080/${imageIcon}`}
+                          style={{
+                            width: '50px',
+                            height: '50px',
+                            boxShadow: '0px 4px 8px 0px rgba(0,0,0,0.8)',
+                            borderRadius: '50%'
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
                   <MDBTypography tag="h5">{user.name}</MDBTypography>
-                  <Dropdown data-bs-theme="dark" style={{opacity: 0.4, width:'60%'}}>
+                  <Dropdown data-bs-theme="dark" style={{ opacity: 0.4, width: '60%' }}>
                     <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary">
                       Action
                     </Dropdown.Toggle>

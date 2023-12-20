@@ -1,5 +1,6 @@
 package com.example.demo.service.AuthService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import com.example.demo.auth.AuthenticationRequest;
 import com.example.demo.auth.AuthenticationResponse;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.dto.AuthDto.ActiveUserRequestDto;
+import com.example.demo.dto.AuthDto.AdminAddUserRequestDto;
 import com.example.demo.dto.AuthDto.ChangePasswordRequest;
 import com.example.demo.dto.AuthDto.ResetPasswordRequestDto;
 import com.example.demo.dto.AuthDto.VerifyEmailResponseDto;
@@ -211,5 +213,42 @@ public class AuthenticationService {
 		userDb.setPassword(passwordEncoder.encode(request.getNewPassword()));
 		userRepository.save(userDb);
 		
+	}
+	
+	public UserResponseDto adminAddUser(AdminAddUserRequestDto request) 
+			throws ResourceAlreadyExistsException 
+	{
+		Optional<UserEntity> userDb = userRepository.findByEmail(request.getEmail());
+		if(userDb.isPresent()) {
+			throw new ResourceAlreadyExistsException("Your account already exist with email " + request.getEmail());
+		}
+		
+		List<RoleEntity> roles = new ArrayList<>();;
+		if (!request.getListNameRole().isEmpty() && request.getListNameRole() != null) {
+		    for (String nameRole : request.getListNameRole()) {
+		        RoleEntity role = roleRepository.findByName(nameRole);
+		        if (role != null) {
+		            roles.add(role);
+		        }
+		    }
+		}
+
+		
+		UserEntity user = UserEntity
+				.builder()
+				.name(request.getName())
+				.dateOfBirth(request.getDateOfBirth())
+				.avatar("uploads/images/user/User_default.jpg")
+				.email(request.getEmail())
+				.isActive(request.isActive())
+				.password(request.getPassword())
+				.build();
+    	UserEntity userCreated = userService.createUser(user);
+    	UserResponseDto userResponseDto = null;
+    	if(userCreated != null) {
+    		userResponseDto = userMapper.UserEntityToUserResponse(userCreated);
+    		userService.createUserWithRoles(userCreated, roles);
+    	}
+    	return userResponseDto;
 	}
 }

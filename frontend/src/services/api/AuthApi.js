@@ -19,7 +19,7 @@ export const sendVerifycodeMailForgotPassword = async (email) => {
     try {
         const response = await api.post('/auth/forgot-password', {
             toEmail: email,
-            subject: "Forgot Password",
+            subject: "Ultimate Learning Activation",
             content: "You have requested to reset your password. Here is your verification code",
             deevLink: "http://localhost3000/reset-password",
             action:"Reset Password"

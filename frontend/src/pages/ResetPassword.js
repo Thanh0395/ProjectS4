@@ -4,7 +4,7 @@ import { Row, Col, Button, Form, Spinner, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import * as formik from 'formik';
 import * as yup from 'yup';
-import { registerUser, sendVerifycodeMail } from '../services/api/userAPI';
+import { logoutUser, registerUser, sendVerifycodeMail } from '../services/api/userAPI';
 import { sendResetPassword } from '../services/api/AuthApi';
 
 function ResetPassword() {
@@ -27,6 +27,7 @@ function ResetPassword() {
             await sendResetPassword(values.email, values.newPassword, values.confirmPassword,values.code);
             setVariant("success");
             setErrorMessage("Password changed successfully!");
+            logoutUser();
             setTimeout(() => {
                 setErrorMessage(null);
                 navigate("/login");

@@ -43,7 +43,7 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
             localStorage.setItem('currentUser', JSON.stringify(userData));
             setTimeout(() => {
                 window.location.reload();
-            }, 2000);
+            }, 1000);
         } catch (error) {
             console.log("err update profile :", error);
             setMessage('Failed to update profile');
