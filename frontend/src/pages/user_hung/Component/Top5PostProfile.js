@@ -14,6 +14,9 @@ const Top5PostProfile = ({ posts }) => {
         console.log("Item:", item.postId);
         navigate(`/products/detail/${item.postId}`, { state: { product: item } });
     };
+    const handleClickShowFeedback = () => {
+        console.log("click comment badfe");
+    }
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
         const year = date.getFullYear();
@@ -34,13 +37,14 @@ const Top5PostProfile = ({ posts }) => {
                             <div key={index} className="d-flex flex-row mb-2 p-2">
                                 <Card
                                     className="d-block position-relative hover-card"
-                                    onClick={() => handleGetPageDetail(item)}
+                                    //onClick={() => handleGetPageDetail(item)}
                                 >
                                     <img
                                         src={`http://localhost:8080/${item.featureImage}`}
                                         alt=""
                                         className="list-thumbnail border-0"
                                         style={{ width: '100%' }}
+                                        onClick={() => handleGetPageDetail(item)}
                                     />
                                     <Badge
                                         className="position-absolute badge-top-right"
@@ -49,7 +53,7 @@ const Top5PostProfile = ({ posts }) => {
                                         {item.categoryName}
                                     </Badge>
                                     {item.countFeedback !== 0 && (
-                                        <Badge className="position-absolute badge-top-right2" pill>
+                                        <Badge className="position-absolute badge-top-right2" pill onClick={() => handleClickShowFeedback()} >
                                             <CommentIcon /> {item.countFeedback}
                                         </Badge>
                                     )}

@@ -20,6 +20,22 @@
     color: white;
     z-index: 0;
   }
+
+  .badge-top-left {
+    top: 0;
+    right: 0;
+    background-color: #00ff84; /* Primary badge color */
+    color: white;
+    z-index: 1;
+  }
+
+  .badge-top-left2 {
+    top: 0;
+    right: 0;
+    background-color: #bc1f36; /* Primary badge color */
+    color: white;
+    z-index: 1;
+  }
   
   /* Card and Card Body */
   .card {
