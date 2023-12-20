@@ -73,7 +73,7 @@ public class PaymentController {
 			if (gem < price) {
 				return new ResponseEntity<>("Nah! You do not enough gem", HttpStatus.EXPECTATION_FAILED);
 			}
-			// Xu li buy lesson sau khi qua dc cac dieu kien tren. 
+			// Xu li buy lesson sau khi qua dc cac dieu kien tren.
 			// Neu mua roi da refund va mua nua thi gan is Refund la false
 			Boolean isRefund = null;
 			if (userBuy != null && userBuy.getIsRefunded() != null && userBuy.getIsRefunded() == true) {
@@ -98,14 +98,17 @@ public class PaymentController {
 			int score2 = achiService.findScore(8);
 			int score3 = achiService.findScore(9);
 			if (newSpent < score1) {
-				userAchiService.updateOrCreateUserAchievement(false, (score1 - newSpent) * 100 / score1, 7, user);
+				userAchiService.updateOrCreateUserAchievement(false, (newSpent) * 100 / score1, 7, user);
+				userAchiService.updateOrCreateUserAchievement(false, 0, 8, user);
+				userAchiService.updateOrCreateUserAchievement(false, 0, 9, user);
 			} else if (newSpent >= score1 && newSpent < score2) {
 				userAchiService.updateOrCreateUserAchievement(true, 100, 7, user);
-				userAchiService.updateOrCreateUserAchievement(false, (score2 - newSpent) * 100 / score2, 8, user);
+				userAchiService.updateOrCreateUserAchievement(false, (newSpent) * 100 / score2, 8, user);
+				userAchiService.updateOrCreateUserAchievement(false, 0, 9, user);
 			} else if (newSpent >= score2 && newSpent < score3) {
 				userAchiService.updateOrCreateUserAchievement(true, 100, 7, user);
 				userAchiService.updateOrCreateUserAchievement(true, 100, 8, user);
-				userAchiService.updateOrCreateUserAchievement(false, (score3 - newSpent) * 100 / score3, 9, user);
+				userAchiService.updateOrCreateUserAchievement(false, (newSpent) * 100 / score3, 9, user);
 			} else {
 				userAchiService.updateOrCreateUserAchievement(true, 100, 7, user);
 				userAchiService.updateOrCreateUserAchievement(true, 100, 8, user);
@@ -154,10 +157,14 @@ public class PaymentController {
 			// Ko cho refund lai course da refund
 			if (userBuy != null && userBuy.getIsRefunded() != null && userBuy.getIsRefunded() == false)
 				return new ResponseEntity<>("You have been refunded once", HttpStatus.SERVICE_UNAVAILABLE);
+			if (userBuy != null && userBuy.getIsPass() != null && userBuy.getIsPass() == true)
+				return new ResponseEntity<>("You cannot refund the course for which you took the exam",
+						HttpStatus.SERVICE_UNAVAILABLE);
+			int daysRefund = 2;
 			Timestamp buyDay = userBuy.getCreatedAt();
-			Instant before30days = Instant.now().minus(30, ChronoUnit.DAYS);
-			if (buyDay.toInstant().isBefore(before30days))
-				return new ResponseEntity<>("You have been buy more than 30 days", HttpStatus.SERVICE_UNAVAILABLE);
+			Instant beforeRefundDays = Instant.now().minus(daysRefund, ChronoUnit.DAYS);
+			if (buyDay.toInstant().isBefore(beforeRefundDays))
+				return new ResponseEntity<>("You have been buy more than "+ daysRefund +" days", HttpStatus.SERVICE_UNAVAILABLE);
 			// xu li refund sau khi qua dc cac dieu kien tren
 			int price = postService.getPostById(lessonId).getPrice();
 			userBuy.setIsRefunded(true);
@@ -173,14 +180,17 @@ public class PaymentController {
 			int score2 = achiService.findScore(8);
 			int score3 = achiService.findScore(9);
 			if (newSpent < score1) {
-				userAchiService.updateOrCreateUserAchievement(false, (score1 - newSpent) * 100 / score1, 7, user);
+				userAchiService.updateOrCreateUserAchievement(false, (newSpent) * 100 / score1, 7, user);
+				userAchiService.updateOrCreateUserAchievement(false, 0, 8, user);
+				userAchiService.updateOrCreateUserAchievement(false, 0, 9, user);
 			} else if (newSpent >= score1 && newSpent < score2) {
 				userAchiService.updateOrCreateUserAchievement(true, 100, 7, user);
-				userAchiService.updateOrCreateUserAchievement(false, (score2 - newSpent) * 100 / score2, 8, user);
+				userAchiService.updateOrCreateUserAchievement(false, (newSpent) * 100 / score2, 8, user);
+				userAchiService.updateOrCreateUserAchievement(false, 0, 9, user);
 			} else if (newSpent >= score2 && newSpent < score3) {
 				userAchiService.updateOrCreateUserAchievement(true, 100, 7, user);
 				userAchiService.updateOrCreateUserAchievement(true, 100, 8, user);
-				userAchiService.updateOrCreateUserAchievement(false, (score3 - newSpent) * 100 / score3, 9, user);
+				userAchiService.updateOrCreateUserAchievement(false, (newSpent) * 100 / score3, 9, user);
 			} else {
 				userAchiService.updateOrCreateUserAchievement(true, 100, 7, user);
 				userAchiService.updateOrCreateUserAchievement(true, 100, 8, user);

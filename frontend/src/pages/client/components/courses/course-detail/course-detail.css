@@ -19,6 +19,7 @@
     padding: 3rem;
     background-color: rgba(127, 255, 131, 0.166);
     border-radius: 1rem;
+    position: relative;
 }
 
 .course-detail .course-detail_card_right_price {
@@ -123,4 +124,11 @@
     display: flex;
     justify-self: center;
     justify-content: center;
+}
+.course-detail .course-detail_addCart_award i{
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    font-size: 2rem;
+    transform: translateX(-2%, -2%);
 }
