@@ -14,6 +14,9 @@ import {
   Chip,
 } from "@mui/material";
 
+import env from '../../environment.json'
+
+
 function UserAdmin(props) {
   const [users, setUsers] = useState([]);
   const [reRender, setRerender] = useState(false);
@@ -25,6 +28,9 @@ function UserAdmin(props) {
   });
   const [roleOptions, setRoleOptions] = useState([]);
   const userHasAdminRole = (userRoles) => userRoles.includes("ADMIN");
+  const urlMedia = env.urls.media;
+  const loggedInUserId = JSON.parse(localStorage.getItem('currentUser')).userId;
+
 
   // Fetch users data
   useEffect(() => {
@@ -214,7 +220,7 @@ function UserAdmin(props) {
                 <TableCell>
                   {user.avatar && (
                     <img
-                      src={user.avatar}
+                      src={`${urlMedia}${user.avatar}`}
                       alt="Avatar"
                       style={{ width: "50px", height: "50px" }}
                     />
@@ -228,6 +234,7 @@ function UserAdmin(props) {
                         isActive: e.target.checked,
                       })
                     }
+                    disabled={user.userId === loggedInUserId}
                   />
                 </TableCell>
                 <TableCell>

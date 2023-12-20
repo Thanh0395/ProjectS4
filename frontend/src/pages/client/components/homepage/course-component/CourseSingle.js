@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-import PostImage from "../../../../../assets/images/all-img/PostImage.png";
+import env from '../../../../../environment.json'
 
 
 const CourseSingle = ({ data }) => {
+    const urlMedia = env.urls.media;
+
     return (
         <>
             { }
@@ -15,7 +17,7 @@ const CourseSingle = ({ data }) => {
                 >
                     <div className="course-thumb h-[248px] rounded-t-[8px]  relative">
                         <img
-                            src={PostImage}
+                            src={`${urlMedia}${data.featureImage}`}
                             alt=""
                             className=" w-full h-full object-cover rounded-t-[8px]"
                         />

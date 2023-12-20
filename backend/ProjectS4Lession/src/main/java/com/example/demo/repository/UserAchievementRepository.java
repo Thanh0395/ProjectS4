@@ -15,4 +15,7 @@ public interface UserAchievementRepository extends JpaRepository<UserAchievement
 	List<UserAchievementEntity> findByUser(UserEntity user);
 	
 	List<UserAchievementEntity> findByUserAndAchievement_AchievementId(UserEntity user, int achievementId);
+	
+    List<UserAchievementEntity> findByAchievement_AchievementId(int achievementId);
+
 }

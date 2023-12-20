@@ -15,6 +15,12 @@ public class NhanAchievementDto {
 	        this.score = score;
 	    }
 
+	public NhanAchievementDto(int achievementId, String title) {
+		super();
+		this.achievementId = achievementId;
+		this.title = title;
+	}
+
 	public int getAchievementId() {
 		return achievementId;
 	}

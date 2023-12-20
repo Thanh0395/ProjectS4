@@ -29,7 +29,6 @@ public class RoleService {
 	}
 
 	public boolean checkRoleExists(String string) {
-		
 		return false;
 	}
 	

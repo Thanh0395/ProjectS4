@@ -47,6 +47,5 @@ public class UserPostEntity extends BaseEntity{
 	@JsonBackReference
 	private PostEntity post;
 	
-	
-
+//	private int isRefund;
 }
