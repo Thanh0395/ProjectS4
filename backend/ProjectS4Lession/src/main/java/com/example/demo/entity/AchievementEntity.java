@@ -41,8 +41,6 @@ public class AchievementEntity {
 	private String title;
 	
 	@Column(name = "score")
-	@NotNull(message = "Score must not be null")
-	@NotBlank(message = "Score must not be left blank!")
 	private int score;
 	
 	@ManyToOne

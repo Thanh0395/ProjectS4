@@ -35,10 +35,12 @@ function CourseBuy(props) {
       } else {
         setShowErrorModal();
         setShowErrorModal(true);
-        setShowSuccessModalContent("Do Have Enough Gem for buying. Please Buy More Gem");
+        setShowSuccessModalContent(
+          "Do Have Enough Gem for buying. Please Buy More Gem"
+        );
       }
     } catch (error) {
-      setShowErrorModalContent("Error buying course");
+      setShowErrorModalContent(error.response.data);
       setShowConfirmModal(false);
       setShowErrorModal(true);
     }
@@ -75,7 +77,7 @@ function CourseBuy(props) {
         setShowErrorModal(false);
         setShowSuccessModal(false);
       }, 2000); // 4 seconds in milliseconds
-      
+
       return () => clearTimeout(timeoutId); // Cleanup the timeout when the component unmounts or when modal is hidden
     }
   }, [showErrorModal]);

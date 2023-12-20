@@ -9,7 +9,7 @@ export const uploadFile = async (file, folderName, folderPath) => {
         data.append('file', file);
         data.append('folderName', folderName);
         data.append('folderPath', folderPath);
-        const response = await axios.post(`${baseURL}/file/upload`, data);
+        const response = await axios.post(`${baseURL}/file/upload-image`, data);
         return response.data;
     } catch (error) {
         console.error('An error Network occurred while upload file', error);

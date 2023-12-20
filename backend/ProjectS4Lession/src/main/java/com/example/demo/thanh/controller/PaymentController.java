@@ -73,7 +73,7 @@ public class PaymentController {
 			if (gem < price) {
 				return new ResponseEntity<>("Nah! You do not enough gem", HttpStatus.EXPECTATION_FAILED);
 			}
-			// Xu li buy lesson sau khi qua dc cac dieu kien tren. 
+			// Xu li buy lesson sau khi qua dc cac dieu kien tren.
 			// Neu mua roi da refund va mua nua thi gan is Refund la false
 			Boolean isRefund = null;
 			if (userBuy != null && userBuy.getIsRefunded() != null && userBuy.getIsRefunded() == true) {
@@ -151,13 +151,17 @@ public class PaymentController {
 			UserPostEntity userBuy = userPostService.UserPayPost(user.getUserId(), lessonId);
 			if (userBuy == null)
 				return new ResponseEntity<>("You have not bought it yet", HttpStatus.UNAUTHORIZED);
-			// Ko cho mua lai course da refund
+			// Ko cho refund lai course da refund
 			if (userBuy != null && userBuy.getIsRefunded() != null && userBuy.getIsRefunded() == false)
 				return new ResponseEntity<>("You have been refunded once", HttpStatus.SERVICE_UNAVAILABLE);
+			if (userBuy != null && userBuy.getIsPass() != null && userBuy.getIsPass() == true)
+				return new ResponseEntity<>("You cannot refund the course for which you took the exam",
+						HttpStatus.SERVICE_UNAVAILABLE);
+			int daysRefund = 2;
 			Timestamp buyDay = userBuy.getCreatedAt();
-			Instant before30days = Instant.now().minus(30, ChronoUnit.DAYS);
-			if (buyDay.toInstant().isBefore(before30days))
-				return new ResponseEntity<>("You have been buy more than 30 days", HttpStatus.SERVICE_UNAVAILABLE);
+			Instant beforeRefundDays = Instant.now().minus(daysRefund, ChronoUnit.DAYS);
+			if (buyDay.toInstant().isBefore(beforeRefundDays))
+				return new ResponseEntity<>("You have been buy more than "+ daysRefund +" days", HttpStatus.SERVICE_UNAVAILABLE);
 			// xu li refund sau khi qua dc cac dieu kien tren
 			int price = postService.getPostById(lessonId).getPrice();
 			userBuy.setIsRefunded(true);

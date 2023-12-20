@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { Card, CardBody, CardTitle, Badge } from 'reactstrap';
+import { useNavigate } from "react-router-dom";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import "../Custom/Badge.css";
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import CommentIcon from '@mui/icons-material/Comment';
+import FiberNewIcon from '@mui/icons-material/FiberNew';
 
 const Top5PostProfile = ({ posts }) => {
 
+    const navigate = useNavigate();
+    const handleGetPageDetail = (item) => {
+        console.log("Item:", item.postId);
+        navigate(`/products/detail/${item.postId}`, { state: { product: item } });
+    };
     const formatDate = (timestamp) => {
         const date = new Date(timestamp);
         const year = date.getFullYear();
@@ -24,8 +31,11 @@ const Top5PostProfile = ({ posts }) => {
                 {posts && (
                     <div className="scroll dashboard-list-with-thumbs">
                         {posts.map((item, index) => (
-                            <div key={index} className="d-flex flex-row mb-0">
-                                <Card className="d-block position-relative" >
+                            <div key={index} className="d-flex flex-row mb-0 p-3">
+                                <Card
+                                    className="d-block position-relative hover-card"
+                                    onClick={() => handleGetPageDetail(item)}
+                                >
                                     <img
                                         src={`http://localhost:8080/${item.featureImage}`}
                                         alt=""
@@ -48,10 +58,18 @@ const Top5PostProfile = ({ posts }) => {
                                             <CardGiftcardIcon /> {item.prize}
                                         </Badge>
                                     )}
+                                    {item.setTopNew && (
+                                        <Badge className="position-absolute badge-top-right2" pill>
+                                            <FiberNewIcon />
+                                        </Badge>
+                                    )}
 
                                 </Card>
-                                <div className="pl-1 pt-0 pr-0 pb-0" style={{ width: '85%' }}>
-                                    <Card>
+                                <div className="pl-1 pt-1 pr-0 pb-0" style={{ width: '85%' }}>
+                                    <Card
+                                        className="hover-card"
+                                        onClick={() => handleGetPageDetail(item)}
+                                    >
                                         <p className="list-item-heading" style={{ fontSize: 'larger' }}>{item.title}</p>
                                         <div className="pr-1">
                                             <p className="text-muted mb-0 text-small">

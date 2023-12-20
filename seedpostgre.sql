@@ -262,7 +262,7 @@ END $$;
 INSERT INTO faq_tbl (question, asked)
 VALUES
   ('How do I purchase a course?', 'To purchase a course.The cours pay for gem. First, log in to your acccount. You must have gem, or purchase a bundle of gem. Then, browse the courses, select the one you want, and click the "Buy Now" button.'),
-  ('Can I get a refund if I''m not satisfied with a course?', 'Yes, we offer a 30-day gem-back guarantee. You can get your gem back if the refunding is successfully.'),
+  ('Can I get a refund if I''m not satisfied with a course?', 'Yes, we offer a 2-days gem-back guarantee. You can get your gem back if the refunding is successfully.'),
   ('How can I become a course instructor?', 'To become a course instructor, contact us to be a teacher who can add your own course. Follow the steps to create and publish your courses.'),
   ('How can I earn gem?', 'Finish the test in course, some course will not had. If your score is more 50 you can get gem, badges. Be careful, you only gain gem, exp, badge on first test, for next time you won''t get any reward. The simplest way is to BUY'),
   ('Can I enroll in multiple courses at once?', 'Yes, you can enroll in multiple courses simultaneously. Your enrolled courses will be listed in your dashboard.'),

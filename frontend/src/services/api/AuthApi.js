@@ -30,6 +30,20 @@ export const sendVerifycodeMailForgotPassword = async (email) => {
     }
 };
 
+export const sendChangePassword = async (email, oldPassword ,newPassword, confirmPassword) => {
+    try {
+        const response = await api.post('/auth/change-password', {
+            email: email,
+            oldPassword:oldPassword,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 /*
     User Profile API
 */
