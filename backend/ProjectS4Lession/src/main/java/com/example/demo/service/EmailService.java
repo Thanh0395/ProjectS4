@@ -72,7 +72,6 @@ public class EmailService {
             template = template.replace("${subject}", email.getSubject());
             template = template.replace("${content}", email.getContent());
             template = template.replace("${userName}", user.get().getName());
-            template = template.replace("${deevLink}", email.getDeevLink());
             template = template.replace("${verificationCode}", code);
             helper.setText(template, true); // true indicates the content is HTML
             javaMailSender.send(message);
