@@ -104,9 +104,9 @@ INSERT INTO Tag_tbl (Tag_Name) VALUES
 ('analytical skills'),('natural'),('cultural'),('social');
 -- Insert data into Reward table
 INSERT INTO Reward_tbl (Badge) VALUES
-('badge 01'),('badge 02'),('badge 03'),
-('badge 04'),('badge 05'),('badge 06'),
-('badge 07'),('badge 08'),('badge 09');
+('uploads/images/reward/badge_01.jpg'),('uploads/images/reward/badge_02.jpg'),('uploads/images/reward/badge_03.jpg'),
+('uploads/images/reward/badge_04.jpg'),('uploads/images/reward/badge_05.jpg'),('uploads/images/reward/badge_06.jpg'),
+('uploads/images/reward/badge_07.jpg'),('uploads/images/reward/badge_08.jpg'),('uploads/images/reward/badge_09.jpg');
 -- Insert data into Achievement table
 INSERT INTO Achievement_tbl (Reward_id, Title, Score) VALUES
 (1,'Fresher',100),(2,'Junior',300),(3,'Senior',1000),

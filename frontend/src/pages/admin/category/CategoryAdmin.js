@@ -5,7 +5,7 @@ import { ModeEditOutlineOutlined, DeleteOutline } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 import { deleleListLesson } from '../../../services/api/lessonApi';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert, Col } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 import AddIcon from '@mui/icons-material/Add';
 import { deleteCategory, fetchListCategory } from '../../../services/api/categoryApi';
 import env from '../../../environment.json'
