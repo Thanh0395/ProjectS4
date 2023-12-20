@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Container, Grid, TextField, Typography } from "@mui/material";
-import { Diamond } from "@mui/icons-material";
-import StarsIcon from '@mui/icons-material/Stars';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { ProfileDataByUserId, UpdateUserAPI, UploadImageAPI } from "../../../services/api/AuthApi";
-import { Row, Col } from "reactstrap";
+import { Container } from "@mui/material";
+import { Row, Col, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import ProfileUpdateForm from "./ProfileUpdateForm";
 import ProfileCard from "./ProfileCard";
-import { FormGroup, Label, Card, Button } from "reactstrap";
 import { Alert } from "react-bootstrap";
+import Top5PostProfile from "./Top5PostProfile";
+import ProfileCard2 from "./ProfileCard2";
 
-const UserProfile = ({ user, gem, userLevel, setReRender }) => {
+const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5PostsByFeedbackCount, top5PostsByPrize }) => {
 
-    const [file, setFile] = useState(null);
-    const [originalFile, setOriginalFile] = useState(null);
+    const [activeTab, setActiveTab] = useState('1');
+    const toggle = (tab) => {
+        if (activeTab !== tab) {
+            setActiveTab(tab);  
+        }
+    };
     const [message, setMessage] = useState('');
     useEffect(() => {
         const timer = setTimeout(() => {
             setMessage('');
-        }, 3000);
+        }, 5000);
         return () => clearTimeout(timer);
     }, [message]);
 
@@ -33,12 +34,59 @@ const UserProfile = ({ user, gem, userLevel, setReRender }) => {
                 {user && (
                     <>
                         <Row>
-                            <Col xs="4">
-                                <ProfileCard user={user} gem={gem} userLevel={userLevel} />
+                            <Col xs="6">
+                                {/* <ProfileCard user={user} gem={gem} userLevel={userLevel} /> */}
+                                <ProfileCard2 user={user} gem={gem} userLevel={userLevel} />
+                                <ProfileUpdateForm user={user} setReRender={setReRender} setMessage={setMessage} />
                             </Col>
-                        </Row>
-                        <Row>
-                            <ProfileUpdateForm user={user} setReRender={setReRender} setMessage={setMessage} />
+                            <Col xs="6">
+                                <Nav tabs>
+                                    <NavItem>
+                                        <NavLink
+                                            href="#"
+                                            active={activeTab === '1'} 
+                                            onClick={() => { toggle('1'); }}
+                                        >
+                                            Top Recent Posts
+                                        </NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink
+                                            href="#"
+                                            active={activeTab === '2'}
+                                            onClick={() => { toggle('2'); }}
+                                        >
+                                            Top Favorite Posts
+                                        </NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink
+                                            href="#"
+                                            active={activeTab === '3'}
+                                            onClick={() => { toggle('3'); }}
+                                        >
+                                            Top High Prize Posts
+                                        </NavLink>
+                                    </NavItem>
+                                </Nav>
+                                <TabContent activeTab={activeTab}>
+                                    <TabPane tabId="1">
+                                        {activeTab === '1' && (
+                                            <Top5PostProfile posts={recentTop5Posts} />
+                                        )}
+                                    </TabPane>
+                                    <TabPane tabId="2">
+                                        {activeTab === '2' && (
+                                            <Top5PostProfile posts={top5PostsByFeedbackCount} />
+                                        )}
+                                    </TabPane>
+                                    <TabPane tabId="3">
+                                        {activeTab === '3' && (
+                                            <Top5PostProfile posts={top5PostsByPrize} />
+                                        )}
+                                    </TabPane>
+                                </TabContent>
+                            </Col>
                         </Row>
                     </>
                 )}

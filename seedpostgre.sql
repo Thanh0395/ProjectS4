@@ -104,9 +104,9 @@ INSERT INTO Tag_tbl (Tag_Name) VALUES
 ('analytical skills'),('natural'),('cultural'),('social');
 -- Insert data into Reward table
 INSERT INTO Reward_tbl (Badge) VALUES
-('badge 01'),('badge 02'),('badge 03'),
-('badge 04'),('badge 05'),('badge 06'),
-('badge 07'),('badge 08'),('badge 09');
+('uploads/images/reward/badge_01.jpg'),('uploads/images/reward/badge_02.jpg'),('uploads/images/reward/badge_03.jpg'),
+('uploads/images/reward/badge_04.jpg'),('uploads/images/reward/badge_05.jpg'),('uploads/images/reward/badge_06.jpg'),
+('uploads/images/reward/badge_07.jpg'),('uploads/images/reward/badge_08.jpg'),('uploads/images/reward/badge_09.jpg');
 -- Insert data into Achievement table
 INSERT INTO Achievement_tbl (Reward_id, Title, Score) VALUES
 (1,'Fresher',100),(2,'Junior',300),(3,'Senior',1000),
@@ -261,12 +261,13 @@ BEGIN
 END $$;
 INSERT INTO faq_tbl (question, asked)
 VALUES
-  ('How do I purchase a course?', 'To purchase a course, first, log in to your account. Then, browse the courses, select the one you want, and click the "Buy Now" button. Follow the instructions to complete the payment.'),
-  ('Can I get a refund if I''m not satisfied with a course?', 'Yes, we offer a 30-day money-back guarantee. If you''re not satisfied with a course, contact our support team within 30 days of purchase, and we''ll process your refund.'),
-  ('How can I become a course instructor?', 'To become a course instructor, go to your profile settings and click "Become an Instructor." Follow the steps to create and publish your courses.'),
+  ('How do I purchase a course?', 'To purchase a course.The cours pay for gem. First, log in to your acccount. You must have gem, or purchase a bundle of gem. Then, browse the courses, select the one you want, and click the "Buy Now" button.'),
+  ('Can I get a refund if I''m not satisfied with a course?', 'Yes, we offer a 2-days gem-back guarantee. You can get your gem back if the refunding is successfully.'),
+  ('How can I become a course instructor?', 'To become a course instructor, contact us to be a teacher who can add your own course. Follow the steps to create and publish your courses.'),
+  ('How can I earn gem?', 'Finish the test in course, some course will not had. If your score is more 50 you can get gem, badges. Be careful, you only gain gem, exp, badge on first test, for next time you won''t get any reward. The simplest way is to BUY'),
   ('Can I enroll in multiple courses at once?', 'Yes, you can enroll in multiple courses simultaneously. Your enrolled courses will be listed in your dashboard.'),
   ('Is there a mobile app available?', 'Yes, we have a mobile app available for iOS and Android devices. You can download it from the App Store or Google Play.'),
-  ('Do you offer certificates upon course completion?', 'Yes, most of our courses offer certificates of completion. Check the course details for certificate availability.');
+  ('Do you offer certificates upon course completion?', 'Yes, the certificates is your knowledge...and badges. Check in your profile.');
   
 -- Insert data into gem table
 DO $$ 

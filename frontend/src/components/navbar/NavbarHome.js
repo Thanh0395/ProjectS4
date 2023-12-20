@@ -68,15 +68,20 @@ function NavbarHome(props) {
                         <Nav.Link as={NavLink} to={"planning"}>AI-Chat</Nav.Link>
                         <Nav.Link as={NavLink} to={"products"}>Course</Nav.Link>
 
-                        <NavDropdown title="Dropdown" className="mb-3">
-                            <NavDropdown.Item href="action3">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="action4">
-                                Another action
+                        <NavDropdown title="Action" className="mb-3">
+                            <NavDropdown.Item href="action3">Action 404</NavDropdown.Item>
+                            <NavDropdown.Item href="/unauthorized">
+                                Action Unauthorize
                             </NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                                Something else here
+                            <NavDropdown.Item href="/change-password">
+                                Changge Password
                             </NavDropdown.Item>
+                            {isLoggedIn && currentUser.roles.some(role => role.name === 'TEACHER' || role.name === 'ADMIN') && (
+                                <NavDropdown.Item href="/admin/lessons">
+                                    Lesson Dashboard
+                                </NavDropdown.Item>
+                            )}
                         </NavDropdown>
                         {/* <Form className="d-flex">
                             <Form.Control

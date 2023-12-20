@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import environment from '../environment.json';
+import key from '../ultimateKey.json';
 import axios from 'axios';
-
+//GPT ko dung nay, dung Planning.js
 const AIchat = () => {
     const [response, setResponse] = useState('');
     const callOpenAI = async () => {
         const prompt = 'A chicken has how many legs?';
-        const apiKey = environment.apikey.chatGPT;
+        const apiKey = key.apikey.chatGPT;
 
         try {
             const result = await axios.post(

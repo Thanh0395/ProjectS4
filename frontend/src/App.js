@@ -20,6 +20,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ClientProfile from "./pages/user_hung/ClientProfile";
 import UserAdminDetail from "./pages/admin/UserAdmin/UserAdminDetail";
 import UserAdminCreate from "./pages/admin/UserAdmin/UserAdminCreate";
+import ChangePassword from "./pages/ChangePassword";
 
 function App() {
   //Fix loi resize khi co form
@@ -112,6 +113,7 @@ function App() {
             {/* Hung add route */}
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -11,6 +11,13 @@ export const loginUser = async (email, password) => {
         localStorage.setItem('token', JSON.stringify(userData.token));
         localStorage.setItem('refreshToken', JSON.stringify(userData.refreshToken));
         localStorage.setItem('currentUser', JSON.stringify(userData.user));
+        const imageIcon = localStorage.getItem("imageIcon");
+        if(imageIcon == "ImageHung/icon_image_default.jpg"){
+            localStorage.setItem('imageIcon', "ImageHung/icon_image_default.jpg");
+        }
+        if(!imageIcon) {
+            localStorage.setItem('imageIcon', "ImageHung/icon_image_default.jpg");
+        }
         const roles = userData.user.roles;
         let listRole = [];
         roles.forEach(role => {

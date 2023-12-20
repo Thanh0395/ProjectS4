@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Row, Col, Button, Form, Spinner, Alert } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import * as formik from 'formik';
@@ -8,6 +8,7 @@ import { registerUser, sendVerifycodeMail } from '../services/api/userAPI';
 import { sendResetPassword } from '../services/api/AuthApi';
 
 function ResetPassword() {
+    const navigate = useNavigate();
     const { Formik } = formik;
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -24,6 +25,12 @@ function ResetPassword() {
         try {
             setIsLoading(true);
             await sendResetPassword(values.email, values.newPassword, values.confirmPassword,values.code);
+            setVariant("success");
+            setErrorMessage("Password changed successfully!");
+            setTimeout(() => {
+                setErrorMessage(null);
+                navigate("/login");
+            }, 3000);
         } catch (error) {
             const errorObj = error.response.data;
             console.log("err reset :", errorObj);

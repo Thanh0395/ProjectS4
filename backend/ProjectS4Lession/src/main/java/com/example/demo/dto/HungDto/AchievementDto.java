@@ -16,4 +16,5 @@ public class AchievementDto {
 	private int score;
 	private boolean isReceivedBadge;
 	private double process;
+	private String badge;
 }

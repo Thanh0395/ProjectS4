@@ -218,7 +218,7 @@ public class LessonController {
 						: "Uncategory";
 				String authorName = (lesson.getUser() != null) ? lesson.getUser().getName() : "Anonymous";
 				return new LessonDto(lesson.getPostId(), lesson.getFeatureImage(), lesson.getTitle(),
-						lesson.getContent(), lesson.getPrice(),
+						lesson.getContent(), lesson.getPrice(), lesson.getPrize(),
 						lesson.getUser() != null ? lesson.getUser().getUserId() : -1, authorName,
 						lesson.getCategory() != null ? lesson.getCategory().getCategoryId() : -1, cateName,
 						lesson.getCreatedAt(), lesson.getUpdatedAt());
@@ -507,7 +507,8 @@ public class LessonController {
 			PostEntity lesson = postService.getPostById(lessonDto.getId());
 			if (HttpRequestService.hasRole(request, "ADMIN") || lesson.getUser().getUserId() == userId) {
 				lesson.setTitle(lessonDto.getTitle());
-				lesson.setCategory(cateService.getCategoryById(lessonDto.getCategoryId()));
+				int cateId = lessonDto.getCategoryId()<1?1:lessonDto.getCategoryId();
+				lesson.setCategory(cateService.getCategoryById(cateId));
 				lesson.setPrice(lessonDto.getPrice());
 				lesson.setPrize(lessonDto.getPrize());
 				lesson.setContent(lessonDto.getContent());

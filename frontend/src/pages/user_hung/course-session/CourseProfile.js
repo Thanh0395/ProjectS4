@@ -1,16 +1,10 @@
 import { React, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import ReactPaginate from "react-paginate";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Nav } from "react-bootstrap";
 import { Rating } from "@mui/material";
-import FilterCourse from "./filter-course";
-import "./course.css";
-import Course_01 from "../../../assets/courses-01.jpg";
-import Course_02 from "../../../assets/courses-02.jpg";
-import Course_03 from "../../../assets/courses-03.jpg";
+import "./CourseProfile.css";
 import Author_01 from "../../../assets/author-01.jpg";
-import Author_02 from "../../../assets/author-02.jpg";
-import Author_03 from "../../../assets/author-03.jpg";
 import CourseHeaderProfile from "./CourseHeaderProfile";
 
 const CourseSessionProfile = ({ posts }) => {
@@ -19,6 +13,10 @@ const CourseSessionProfile = ({ posts }) => {
   const [itemOffset, setItemOffset] = useState(0);
   const [progress, setProgress] = useState(0);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const handleGetPageDetail = (item) => {
+    console.log("Item:", item.postId);
+    navigate(`/products/detail/${item.postId}`, { state: { product: item } });
+  };
   const handleSearch = (searchTerm) => {
     if (searchTerm) {
       const filtered = posts.filter((post) =>
@@ -56,58 +54,61 @@ const CourseSessionProfile = ({ posts }) => {
 
   return (
     <>
-      <CourseHeaderProfile totalCount={posts.length} onSearch={handleSearch} />
+      <CourseHeaderProfile header={"Your Course"} />
       {posts.length === 0 ? (
         <div className="text-center">No data a to show</div>
       ) : (
         <section className="course-list container">
-        {currentItems.length === 0 ? (
-          <div className="text-center">No data b to show</div>
-        ) : (
-          currentItems.map((course) => (
-            <div className="card course-list_card" key={course.id}>
-              <div className="card-body">
-                <div className="course-list_card_image">
-                  <img
-                    className="course-list_card_image_course"
-                    src={Course_02}
-                    alt={course.title}
-                  />
-                </div>
-                <div className="course-list_card_title">{course.title}</div>
-                <div className="course-list_card_title_author">
-                  <div className="course-list_card_title_author_image">
-                    <img src={Author_01} alt="course-01" />
+          {currentItems.length === 0 ? (
+            <div className="text-center">No data b to show</div>
+          ) : (
+            currentItems.map((course) => (
+              <div className="card course-list_card" key={course.id}>
+                <div className="card-body">
+                  <div className="course-list_card_image">
+                    <img
+                      className="course-list_card_image_course"
+                      src={`http://localhost:8080/${course.featureImage}`}
+                      alt={course.title}
+                    />
                   </div>
-                  <div className="course-list_card_title_author_detail">
+                  <div className="course-list_card_title">{course.title}</div>
+                  <div className="course-list_card_title_author">
+                    <div className="course-list_card_title_author_image">
+                      <img src={Author_01} alt="course-01" />
+                    </div>
+                    <div className="course-list_card_title_author_detail">
+                      <h6>
+                        {course.authorName} <i class="bi bi-pause"></i>{" "}
+                        {course.categoryName}
+                      </h6>
+                    </div>
+                  </div>
+                  <div className="course-list_card_title_percent_price">
+                    <h6>{progress}% Completed</h6>
                     <h6>
-                      {course.authorName} <i class="bi bi-pause"></i>{" "}
-                      {course.categoryName}
+                      {course.price}{" "}
+                      <i class="bi bi-gem px-2 text-primary"></i>
                     </h6>
+                    <div
+                      className="course-list_card_title_progress"
+                      style={{
+                        width: `${progress}%`,
+                      }}
+                    />
+                    <div className="course-list_card_title_progress_line"></div>
                   </div>
+                  <button
+                    className="course-list_card_button_detail"
+                    onClick={() => handleGetPageDetail(course)}
+                  >
+                    Course Detail
+                  </button>
                 </div>
-                <div className="course-list_card_title_percent_price">
-                  <h6>{progress}% Completed</h6>
-                  <h6>
-                    {course.price}{" "}
-                    <i class="bi bi-gem px-2 text-primary"></i>
-                  </h6>
-                  <div
-                    className="course-list_card_title_progress"
-                    style={{
-                      width: `${progress}%`,
-                    }}
-                  />
-                  <div className="course-list_card_title_progress_line"></div>
-                </div>
-                <button className="course-list_card_button_detail">
-                  Course Detail
-                </button>
               </div>
-            </div>
-          ))
-        )}
-      </section>
+            ))
+          )}
+        </section>
       )}
       <ReactPaginate
         previousLabel="<"

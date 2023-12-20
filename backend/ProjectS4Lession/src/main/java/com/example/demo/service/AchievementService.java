@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.AchievementEntity;
 import com.example.demo.entity.RewardEntity;
 import com.example.demo.entity.UserAchievementEntity;
@@ -49,12 +48,13 @@ public class AchievementService {
 		// From userId -> get list userAchivement -> get list achivement
 		UserEntity userDb = userService.getUserById(userId);
 		List<UserAchievementEntity> userAchievementDbs = userAchievementRepository.findByUser(userDb);
-		if (userAchievementDbs == null || userAchievementDbs.isEmpty()) {
-			throw new NotFoundException("Get List UserAchievement By User Fail. Maybe empty!");
+		List<AchievementEntity> achievements = null;
+		if(userAchievementDbs != null && !userAchievementDbs.isEmpty()) {
+			achievements = userAchievementDbs.stream()
+		            .map(UserAchievementEntity::getAchievement)
+		            .collect(Collectors.toList());
 		}
-		List<AchievementEntity> achievements = userAchievementDbs.stream().map(UserAchievementEntity::getAchievement)
-				.collect(Collectors.toList());
-		return achievements;
+	    return achievements;
 	}
 
 	// Nhan

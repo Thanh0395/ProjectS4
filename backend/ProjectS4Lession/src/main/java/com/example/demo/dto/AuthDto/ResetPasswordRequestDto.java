@@ -14,7 +14,6 @@ public class ResetPasswordRequestDto {
 	private String email;
 	private String newPassword;
 	private String confirmPassword;
-	
 	@Builder.Default
 	private String code = "0";
 }

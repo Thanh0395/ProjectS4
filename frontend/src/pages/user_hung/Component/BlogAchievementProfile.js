@@ -9,14 +9,13 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 const BlogAchievementProfile = ({ achievements }) => {
 
-    const navigateToDetailPage = (recipe) => {
-        // history.push({
-        //     pathname: `${adminRoot}/home-user/detail-recipe`,
-        //     state: { recipe }
-        // });
+    const handleSetImageIcon = (badge) => {
+        localStorage.setItem("imageIcon", badge);
+        window.location.reload();
     };
 
     const getIconByTitle = (title) => {
@@ -48,13 +47,13 @@ const BlogAchievementProfile = ({ achievements }) => {
             {achievements.map((achievement, index) => (
                 <Col xxs="12" lg="4" className="mb-5" key={`blogItem_${index}`}>
                     <Card>
-                        <div >
+                        <div>
                             <div style={{ position: 'relative', display: 'flex' }}>
                                 <img
                                     className="card-img-left"
                                     src="/ImageHung/blog_achie01.jpg"
                                     alt=""
-                                    style={{ width: '30%', height: 'auto' }} // Set image width to 100% and maintain aspect ratio
+                                    style={{ width: '200px', height: '200px' }} // Set image width to 100% and maintain aspect ratio
                                 />
                                 {achievement.receivedBadge ? (
                                     <Button disabled style={{ backgroundColor: 'green', color: 'white' }}>
@@ -73,15 +72,19 @@ const BlogAchievementProfile = ({ achievements }) => {
                                     <Typography variant="body1">
                                         Process: {achievement.process}%
                                     </Typography>
-                                    <LinearProgress
-                                        variant="determinate"
-                                        value={achievement.process}
-                                        tyle={{ width: '100%'}} 
-                                    />
+                                    {achievement.receivedBadge ? (
+                                        <ProgressBar variant="success" now={achievement.process} label={`${achievement.process}%`} />
+                                    ) : (
+                                        <ProgressBar variant="danger" now={achievement.process} label={`${achievement.process}%`} />
+                                    )}
                                     <Typography variant="body1">
                                         Received Badge: {achievement.receivedBadge ? 'Done' : 'Incomplete'}
                                     </Typography>
-                                    <Button type="button" color="primary">
+                                    <Button 
+                                        type="button" 
+                                        color="primary"
+                                        onClick={() => handleSetImageIcon(achievement.badge)}
+                                    >
                                         Set Image Icon
                                     </Button>
                                 </CardBody>
