@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import { sendChangePassword } from '../services/api/AuthApi';
+import { logoutUser } from '../services/api/userAPI';
 
 function ChangePassword() {
 
@@ -29,7 +30,9 @@ function ChangePassword() {
             console.log('Submitting form...', values);
             setIsLoading(true);
             await sendChangePassword(values.email, values.oldPassword, values.newPassword, values.confirmPassword);
+            setVariant("success");
             setMessage('Password changed successfully!');
+            logoutUser();
             setTimeout(() => {
                 setMessage(null);
                 navigate("/login");

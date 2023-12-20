@@ -95,7 +95,7 @@ function ClientProfile(props) {
             <Row>
               <Colxx xxs="12">
                 <CourseHeader header={"Your Achievements"} />
-                <BlogAchievementProfile achievements={achievements} />
+                <BlogAchievementProfile achievements={achievements} setReRender={setReRender} />
               </Colxx>
             </Row>
           ) : (

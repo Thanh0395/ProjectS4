@@ -47,7 +47,7 @@ const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5P
                                             active={activeTab === '1'} 
                                             onClick={() => { toggle('1'); }}
                                         >
-                                            Top Recent Posts
+                                            Top Recent Courses
                                         </NavLink>
                                     </NavItem>
                                     <NavItem>
@@ -56,7 +56,7 @@ const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5P
                                             active={activeTab === '2'}
                                             onClick={() => { toggle('2'); }}
                                         >
-                                            Top Favorite Posts
+                                            Top Favorite Courses
                                         </NavLink>
                                     </NavItem>
                                     <NavItem>
@@ -65,7 +65,7 @@ const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5P
                                             active={activeTab === '3'}
                                             onClick={() => { toggle('3'); }}
                                         >
-                                            Top High Prize Posts
+                                            Top High Prize Courses
                                         </NavLink>
                                     </NavItem>
                                 </Nav>

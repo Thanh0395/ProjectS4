@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Card, CardBody, Col } from 'reactstrap';
+import { Alert } from "react-bootstrap";
 import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
 import { Typography, LinearProgress } from '@mui/material';
@@ -11,12 +12,24 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
-const BlogAchievementProfile = ({ achievements }) => {
+const BlogAchievementProfile = ({ achievements, setReRender }) => {
 
-    const handleSetImageIcon = (badge) => {
-        localStorage.setItem("imageIcon", badge);
-        window.location.reload();
+    const handleSetImageIcon = (badge, receivedBadge) => {
+        if (receivedBadge) {
+            localStorage.setItem("imageIcon", badge);
+            setMessage("Set image icon successfully");
+            setReRender(true);
+        } else {
+            setMessage("Please try to get this image icon!");
+        }
     };
+    const [message, setMessage] = useState('');
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMessage('');
+        }, 5000);
+        return () => clearTimeout(timer);
+    }, [message]);
 
     const getIconByTitle = (title) => {
         switch (title) {
@@ -44,8 +57,13 @@ const BlogAchievementProfile = ({ achievements }) => {
 
     return (
         <Row>
+            {message && (
+                <Alert variant={message.includes('successfully') ? 'success' : 'danger'} onClose={() => setMessage('')} dismissible className="text-center">
+                    {message}
+                </Alert>
+            )}
             {achievements.map((achievement, index) => (
-                <Col xxs="12" lg="4" className="mb-5" key={`blogItem_${index}`}>
+                <Col xxs="12" lg="3" className="mb-3 pt-2" key={`blogItem_${index}`}>
                     <Card>
                         <div>
                             <div style={{ position: 'relative', display: 'flex' }}>
@@ -53,14 +71,14 @@ const BlogAchievementProfile = ({ achievements }) => {
                                     className="card-img-left"
                                     src="/ImageHung/blog_achie01.jpg"
                                     alt=""
-                                    style={{ width: '200px', height: '200px' }} // Set image width to 100% and maintain aspect ratio
+                                    style={{ width: '200px', height: '200px', borderRadius:"25%" }} // Set image width to 100% and maintain aspect ratio
                                 />
                                 {achievement.receivedBadge ? (
-                                    <Button disabled style={{ backgroundColor: 'green', color: 'white' }}>
+                                    <Button disabled style={{ backgroundColor: 'green', color: 'white', borderRadius:"30%" }}>
                                         Done
                                     </Button>
                                 ) : (
-                                    <Button disabled style={{ backgroundColor: 'brown', color: 'white' }}>
+                                    <Button disabled style={{ backgroundColor: 'brown', color: 'white', borderRadius:"30%"}}>
                                         Try
                                     </Button>
                                 )}
@@ -80,10 +98,10 @@ const BlogAchievementProfile = ({ achievements }) => {
                                     <Typography variant="body1">
                                         Received Badge: {achievement.receivedBadge ? 'Done' : 'Incomplete'}
                                     </Typography>
-                                    <Button 
-                                        type="button" 
+                                    <Button
+                                        type="button"
                                         color="primary"
-                                        onClick={() => handleSetImageIcon(achievement.badge)}
+                                        onClick={() => handleSetImageIcon(achievement.badge, achievement.receivedBadge)}
                                     >
                                         Set Image Icon
                                     </Button>
