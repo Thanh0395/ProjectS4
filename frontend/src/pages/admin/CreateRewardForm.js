@@ -18,7 +18,7 @@ function CreateRewardForm({ apiUrl, onClose, onRewardCreated }) {
     const formData = new FormData();
     formData.append("title", title);
     if (badge) {
-        console.log(badge);
+      console.log(badge);
       formData.append("badge", badge);
     }
 
@@ -28,12 +28,12 @@ function CreateRewardForm({ apiUrl, onClose, onRewardCreated }) {
         body: formData,
       });
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
       const result = await response.json();
       console.log("Reward created:", result);
-      onClose(); 
-      onRewardCreated();// Close the modal after successful creation
+      onClose();
+      onRewardCreated(); // Close the modal after successful creation
     } catch (error) {
       console.error("Error creating reward:", error);
     }
@@ -47,6 +47,7 @@ function CreateRewardForm({ apiUrl, onClose, onRewardCreated }) {
       <form onSubmit={handleSubmit}>
         <div>
           <TextField
+            required
             label="Insert New Reward Title"
             value={title}
             onChange={handleTitleChange}
@@ -55,6 +56,7 @@ function CreateRewardForm({ apiUrl, onClose, onRewardCreated }) {
         </div>
         <div>
           <input
+            required
             accept="image/*"
             type="file"
             onChange={handleBadgeChange}

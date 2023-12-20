@@ -78,7 +78,7 @@ function RewardAdmin(props) {
   };
 
   useEffect(() => {
-    fetchRewards();
+    fetchRewards(); 
   }, []);
 
   const fetchRewards = () => {
@@ -121,6 +121,8 @@ function RewardAdmin(props) {
         // Fetch the updated rewards list to reflect the change in the UI
         fetchRewards();
         window.location.reload(); 
+  
+
       })
       .catch((error) => {
         console.error("Error updating badge:", error);
