@@ -24,8 +24,6 @@ public interface AchievementRepository extends JpaRepository<AchievementEntity, 
 	
 	AchievementEntity findByAchievementId(int achievementId);
 	
-	//Nhan
-	 @Query("SELECT COUNT(ua) FROM UserAchievementEntity ua WHERE ua.user.userId = :userId")
-	    int countAchievementsByUserId(int userId);
+
 
 }

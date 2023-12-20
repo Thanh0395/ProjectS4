@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.CustomAuthenticationException;
 import com.example.demo.exception.EmptyFileException;
+import com.example.demo.exception.NotDeleteException;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.exception.ResourceAlreadyExistsException;
 import com.example.demo.exception.VerificationCodeMismatchException;
@@ -74,6 +75,14 @@ public class ApplicationExceptionHandler {
 	@ExceptionHandler(EmptyFileException.class)
 	public Map<String, String> handleEmptyFileException(EmptyFileException ex){
 		Map<String, String> errorMap = new HashMap<>();
+		errorMap.put("Error Message", ex.getMessage());
+		return errorMap;
+	}
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(NotDeleteException.class)
+	public Map<String, String> handleNotDeleteException (NotDeleteException ex){
+		Map<String, String> errorMap = new HashMap<String, String>();
 		errorMap.put("Error Message", ex.getMessage());
 		return errorMap;
 	}

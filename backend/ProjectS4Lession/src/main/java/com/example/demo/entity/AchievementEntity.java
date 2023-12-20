@@ -15,6 +15,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -41,6 +43,8 @@ public class AchievementEntity {
 	private String title;
 	
 	@Column(name = "score")
+	@Min(value = 0, message = "Score must be greater than or equal to 0")
+	@Max(value = 2000, message = "Score must be less than or equal to 2000")
 	private int score;
 	
 	@ManyToOne
