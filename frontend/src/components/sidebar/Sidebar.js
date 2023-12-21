@@ -5,7 +5,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import { NavLink } from 'react-router-dom';
-import { CallToAction, Language, Article, People, Class, LocalOffer, EmojiEvents, MilitaryTech } from '@mui/icons-material';
+import { CallToAction, Language, Article, People, Class, LocalOffer, EmojiEvents, MilitaryTech, Forum } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 
 
@@ -45,13 +45,6 @@ function Sidebar(props) {
                     <ListItemText primary="Exam" />
                 </ListItemButton> */}
 
-                <ListItemButton component={NavLink} to="users">
-                    <ListItemIcon>
-                        <People color='success' />
-                    </ListItemIcon>
-                    <ListItemText primary="User" />
-                </ListItemButton>
-
                 <ListItemButton component={NavLink} to="categories">
                     <ListItemIcon>
                         <Class color='primary' />
@@ -87,7 +80,20 @@ function Sidebar(props) {
                     </ul>
                 </Collapse> */}
 
-                <Divider className="sidebar-divider" textAlign="left">Game Items</Divider>
+                <Divider className="sidebar-divider" textAlign="left">Admin Items</Divider>
+                <ListItemButton component={NavLink} to="users">
+                    <ListItemIcon>
+                        <People color='success' />
+                    </ListItemIcon>
+                    <ListItemText primary="User" />
+                </ListItemButton>
+
+                <ListItemButton component={NavLink} to="comments">
+                    <ListItemIcon>
+                        <Forum style={{ color: 'violet' }} />
+                    </ListItemIcon>
+                    <ListItemText primary="Comment" />
+                </ListItemButton>
                 <ListItemButton component={NavLink} to="rewards">
                     <ListItemIcon>
                         <MilitaryTech color='error' />

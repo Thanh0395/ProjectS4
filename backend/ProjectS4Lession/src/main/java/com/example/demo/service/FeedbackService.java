@@ -16,7 +16,17 @@ public class FeedbackService {
 	private FeedbackRepository feedbackRepository;
 	//Thanh
 	public List<FeedbackEntity> getFeedbacksByPostId(int postId) {
+        return feedbackRepository.findByPostPostIdAndStatusOrderByCreatedAtDesc(postId, "approved");
+    }
+	
+	public List<FeedbackEntity> getAllFeedbacksByPostId(int postId) {
         return feedbackRepository.findByPostPostIdOrderByCreatedAtDesc(postId);
+    }
+	
+	public FeedbackEntity getFeedbackById(int feedbackId) {
+		FeedbackEntity feedback = feedbackRepository.findById(feedbackId).orElse(null);
+		if (feedback != null) return feedback;
+		else return null;
     }
 	
 	public FeedbackEntity addFeedback(String comment, PostEntity post, UserEntity user) {

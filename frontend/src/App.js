@@ -10,7 +10,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import {
   Login, Register, NotFound, Unauthorized,
   Dashboard, LessonAdmin, ExamAdmin, UserAdmin, CategoryAdmin, TagAdmin, RewardAdmin, AchievementAdmin, CategoryAdminCreate, CategoryAdminUpdate,
-  LessonAdminCreate, LessonAdminDetail, LessonAdminUpdate,
+  LessonAdminCreate, LessonAdminDetail, LessonAdminUpdate, CommentAdmin,
   ClientContact, ClientProducts, ClientDetailProduct, Home, Planning, ClientCourse, ClientCourseDetail
 } from "./pages"
 import { useEffect, useState } from "react";
@@ -21,6 +21,7 @@ import ClientProfile from "./pages/user_hung/ClientProfile";
 import UserAdminDetail from "./pages/admin/UserAdmin/UserAdminDetail";
 import UserAdminCreate from "./pages/admin/UserAdmin/UserAdminCreate";
 import ChangePassword from "./pages/ChangePassword";
+import ProtectedRoute from "./services/authority/ProtectedRoute";
 
 function App() {
   //Fix loi resize khi co form
@@ -97,19 +98,36 @@ function App() {
               </Route>
 
               <Route path="users/">
-              <Route index element={<UserAdmin />} />
+                <Route index element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <UserAdmin />
+                  </ProtectedRoute>
+                } />
                 <Route path="detail/:userId" element={<UserAdminDetail />} />
                 <Route path="create" element={<UserAdminCreate />} />
                 <Route path="update/:id" element={<LessonAdminUpdate />} />
               </Route>
-              
+
+              <Route path="comments" element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <CommentAdmin />
+                </ProtectedRoute>
+              } />
               <Route path="tags" element={<TagAdmin />} />
-              <Route path="rewards" element={<RewardAdmin />} />
-              <Route path="achievements" element={<AchievementAdmin />} />
+              <Route path="rewards" element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <RewardAdmin />
+                </ProtectedRoute>
+              } />
+              <Route path="achievements" element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <AchievementAdmin />
+                </ProtectedRoute>
+              } />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            
+
             {/* Hung add route */}
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
@@ -120,7 +138,7 @@ function App() {
 
           {/* Scroll TOP button */}
           {showButton && (
-            <button style={{paddingLeft:'14px'}} onClick={scrollToTop} className="back-to-top">
+            <button style={{ paddingLeft: '14px' }} onClick={scrollToTop} className="back-to-top">
               <FaAngleUp></FaAngleUp>
             </button>
           )}

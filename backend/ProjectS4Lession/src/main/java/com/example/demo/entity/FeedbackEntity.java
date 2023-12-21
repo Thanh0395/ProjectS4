@@ -32,6 +32,9 @@ public class FeedbackEntity extends BaseEntity{
 	@Column(name = "content", nullable = true)
 	private String content;
 	
+	@Column(name = "status", nullable = true)
+	private String status;
+	
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	@JsonBackReference

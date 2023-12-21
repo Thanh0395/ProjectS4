@@ -91,7 +91,7 @@ function LessonAdminUpdate(props) {
             }),
         newVideo: yup
             .mixed().nullable()
-            .test('filesize', `Video is too large >${limitVideo/1000000}MB`, function (file) {
+            .test('filesize', `Video is too large > 5MB`, function (file) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
