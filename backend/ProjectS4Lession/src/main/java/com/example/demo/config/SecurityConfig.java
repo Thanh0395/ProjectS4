@@ -34,6 +34,7 @@ public class SecurityConfig {
 	            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 	            .requestMatchers(DEV_DOMAIN_API + "/auth/login").permitAll()
 	            .requestMatchers(DEV_DOMAIN_API + "/auth/logout").permitAll()
+	            .requestMatchers(DEV_DOMAIN_API + "/auth/admin-add-user").hasAnyAuthority("ADMIN")
 	            .requestMatchers(DEV_DOMAIN_API + "/users/**").hasAnyAuthority("USER","ADMIN","TEACHER")
 	            .requestMatchers(DEV_DOMAIN_API + "/users/create-user").permitAll()
 	            .anyRequest().permitAll().and()

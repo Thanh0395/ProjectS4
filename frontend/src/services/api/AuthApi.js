@@ -73,3 +73,12 @@ export const UpdateUserAPI = async (userUpdate) => {
         throw error;
     }
 }
+//Admin add user
+export const AdminAddUserAPI = async (request) => {
+    try{
+        const response = await apiWithToken.post("/auth/admin-add-user", request);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

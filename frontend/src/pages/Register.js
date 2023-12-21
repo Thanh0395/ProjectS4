@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Button, Form, Spinner, Alert } from "react-bootstrap";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import { registerUser, sendVerifycodeMail } from '../services/api/userAPI';
 function Register(props) {
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(null);
-    const [variant, setVariant] = useState('info');
 
     const { Formik } = formik;
     const schema = yup.object().shape({
@@ -18,14 +17,16 @@ function Register(props) {
         dob: yup
             .date()
             .max(new Date(), 'Date of birth cannot be in the future')
-            .test('is-over-18', 'You must be at least 18 years old', function (value) {
-                const dob = new Date(value);
-                const today = new Date();
-                const age = today.getFullYear() - dob.getFullYear();
-                return age >= 18;
-            })
             .required('Date field is required'),
     });
+
+    const [message, setMessage] = useState('');
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMessage('');
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, [message]);
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
@@ -34,12 +35,16 @@ function Register(props) {
             if (isRegisted) {
                 await sendVerifycodeMail(values.email);
             }
-            setVariant('success');
-            setErrorMessage('Registered successfully, log in to your email to get the activation code. Or go to login to resend');
+            setMessage('Registered successfully');
+            setTimeout(() => {
+                setMessage(null);
+                navigate("/login");
+            }, 1500);
         } catch (error) {
             const errorObj = error.response.data;
-            setVariant('warning');
-            setErrorMessage(errorObj['Error Message']);
+            setMessage(errorObj['Error Message']);
+            console.log("errrr :", errorObj['Error Message']);
+            console.log("errrr :", errorObj);
         } finally {
             setIsLoading(false);
             setSubmitting(false);
@@ -139,9 +144,9 @@ function Register(props) {
                                     </Form.Group>
 
                                 </Row>
-                                {errorMessage && (
-                                    <Alert variant={variant}>
-                                        {errorMessage}
+                                {message && (
+                                    <Alert variant={message.includes('successfully') ? 'success' : 'danger'} onClose={() => setMessage('')} dismissible className="text-center">
+                                        {message}
                                     </Alert>
                                 )}
                                 <div className="d-grid">

@@ -240,7 +240,7 @@ public class AuthenticationService {
 				.dateOfBirth(request.getDateOfBirth())
 				.avatar("uploads/images/user/User_default.jpg")
 				.email(request.getEmail())
-				.isActive(request.isActive())
+				.isActive(Boolean.parseBoolean(request.getIsActive()))
 				.password(request.getPassword())
 				.build();
     	UserEntity userCreated = userService.createUser(user);

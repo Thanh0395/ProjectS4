@@ -11,9 +11,14 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
-const BlogAchievementProfile = ({ achievements, setReRender }) => {
+const BlogAchievementProfile = ({ achievements, setReRender, userId }) => {
 
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const handleSetImageIcon = (badge, receivedBadge) => {
+        if(currentUser.userId !== userId){
+            setMessage("Don't have permission!");
+            
+        }else
         if (receivedBadge) {
             localStorage.setItem("imageIcon", badge);
             setMessage("Set image icon successfully");
@@ -65,14 +70,14 @@ const BlogAchievementProfile = ({ achievements, setReRender }) => {
                 <Col xs="12" lg="3" className="mb-3 pt-0" key={`blogItem_${index}`}>
                     <Card>
                         <Row>
-                            <Col xs="5">
+                            <Col xs="6">
                                 <div style={{margin:"5px"}}>
                                     <div>
                                         <img
                                             className="card-img-left"
                                             src={`http://localhost:8080/${achievement.badge}`}
                                             alt=""
-                                            style={{ width: '200px', height: '200px', borderRadius: "25%" }} // Set image width to 100% and maintain aspect ratio
+                                            style={{ width: '200px', height: '200px', borderRadius: "20%" }} // Set image width to 100% and maintain aspect ratio
                                         />
                                         {achievement.receivedBadge ? (
                                             <Badge
@@ -95,7 +100,7 @@ const BlogAchievementProfile = ({ achievements, setReRender }) => {
                                     </div>
                                 </div>
                             </Col>
-                            <Col xs="7">
+                            <Col xs="6">
                                 <CardBody>
                                     <Typography variant="h6" gutterBottom>
                                         {getIconByTitle(achievement.title)} {achievement.title}
@@ -104,14 +109,14 @@ const BlogAchievementProfile = ({ achievements, setReRender }) => {
                                     <Typography variant="body1">
                                         Process: {achievement.process}%
                                     </Typography>
+                                    <Typography variant="body1">
+                                        Received: {achievement.receivedBadge ? 'Done' : 'Incomplete'}
+                                    </Typography>
                                     {achievement.receivedBadge ? (
                                         <ProgressBar variant="success" now={achievement.process} label={`${achievement.process}%`} />
                                     ) : (
                                         <ProgressBar variant="danger" now={achievement.process} label={`${achievement.process}%`} />
                                     )}
-                                    <Typography variant="body1">
-                                        Received Badge: {achievement.receivedBadge ? 'Done' : 'Incomplete'}
-                                    </Typography>
                                     <Button
                                         type="button"
                                         color="primary"
