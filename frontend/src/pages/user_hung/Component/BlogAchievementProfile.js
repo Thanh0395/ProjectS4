@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Card, CardBody, Col } from 'reactstrap';
+import { Row, Card, CardBody, Col, Badge } from 'reactstrap';
 import { Alert } from "react-bootstrap";
-import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
 import { Typography, LinearProgress } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
@@ -63,25 +62,40 @@ const BlogAchievementProfile = ({ achievements, setReRender }) => {
                 </Alert>
             )}
             {achievements.map((achievement, index) => (
-                <Col xs="12" lg="3" className="mb-3 pt-2" key={`blogItem_${index}`}>
+                <Col xs="12" lg="3" className="mb-3 pt-0" key={`blogItem_${index}`}>
                     <Card>
-                        <div>
-                            <div style={{ position: 'relative'}}>
-                                <img
-                                    className="card-img-left"
-                                    src={`http://localhost:8080/${achievement.badge}`}
-                                    alt=""
-                                    style={{ width: '200px', height: '200px', borderRadius:"25%" }} // Set image width to 100% and maintain aspect ratio
-                                />
-                                {achievement.receivedBadge ? (
-                                    <Button disabled style={{ backgroundColor: 'green', color: 'white'}}>
-                                        Done
-                                    </Button>
-                                ) : (
-                                    <Button disabled style={{ backgroundColor: 'brown', color: 'white'}}>
-                                        Try
-                                    </Button>
-                                )}
+                        <Row>
+                            <Col xs="5">
+                                <div style={{margin:"5px"}}>
+                                    <div>
+                                        <img
+                                            className="card-img-left"
+                                            src={`http://localhost:8080/${achievement.badge}`}
+                                            alt=""
+                                            style={{ width: '200px', height: '200px', borderRadius: "25%" }} // Set image width to 100% and maintain aspect ratio
+                                        />
+                                        {achievement.receivedBadge ? (
+                                            <Badge
+                                                className="position-absolute badge-top-left"
+                                                pill
+                                                style={{ backgroundColor: 'grren', color: 'white' }}
+                                            >
+                                                DONE
+                                            </Badge>
+                                        ) : (
+                                            <Badge
+                                                className="position-absolute badge-top-left2"
+                                                pill
+                                                style={{ backgroundColor: 'grren', color: 'white' }}
+                                            >
+                                                TRY
+                                            </Badge>
+                                        )}
+
+                                    </div>
+                                </div>
+                            </Col>
+                            <Col xs="7">
                                 <CardBody>
                                     <Typography variant="h6" gutterBottom>
                                         {getIconByTitle(achievement.title)} {achievement.title}
@@ -106,8 +120,8 @@ const BlogAchievementProfile = ({ achievements, setReRender }) => {
                                         Set Image Icon
                                     </Button>
                                 </CardBody>
-                            </div>
-                        </div>
+                            </Col>
+                        </Row>
                     </Card>
                 </Col>
             ))}

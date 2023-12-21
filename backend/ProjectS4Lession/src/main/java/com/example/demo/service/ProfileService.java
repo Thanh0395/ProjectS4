@@ -16,12 +16,14 @@ import com.example.demo.dto.HungDto.UserDto;
 import com.example.demo.dto.HungDto.UserLevelDto;
 import com.example.demo.dto.HungDto.ProfileDto.ProfileResponse;
 import com.example.demo.entity.AchievementEntity;
+import com.example.demo.entity.FeedbackEntity;
 import com.example.demo.entity.GemEntity;
 import com.example.demo.entity.PostEntity;
 import com.example.demo.entity.UserAchievementEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.UserLevelEntity;
 import com.example.demo.exception.NotFoundException;
+import com.example.demo.thanh.dto.FeedbackDto;
 
 @Service
 public class ProfileService {
@@ -40,6 +42,8 @@ public class ProfileService {
 	private AchievementService achievementService;
 	@Autowired
 	private UserAchievementService userAchievementService;
+	@Autowired
+	private FeedbackService feedbackService;
 
 
 	public ProfileResponse profile(int userId) throws NotFoundException {
@@ -94,5 +98,19 @@ public class ProfileService {
 				.top5PostsByPrize(top5PostsByPrizeDto)
 				.build();
 		return profileResponse;
+	}
+	
+	public List<FeedbackDto> getFeedbacksByPostId(int postId){
+		List<FeedbackDto> feedbackDtos = new ArrayList<>();
+		List<FeedbackEntity> feedbacks = feedbackService.getFeedbacksByPostId(postId);
+		if (feedbacks != null && !feedbacks.isEmpty()) {
+			feedbackDtos = feedbacks.stream()
+					.map(feedback -> new FeedbackDto(feedback.getFeedbackId(), feedback.getContent(),
+							feedback.getUser() != null ? feedback.getUser().getName() : "Anonymous",
+							feedback.getUser() != null ? feedback.getUser().getAvatar() : "uploads/images/user/User_default.jpg",
+							feedback.getCreatedAt()))
+					.collect(Collectors.toList());
+		}
+		return feedbackDtos;
 	}
 }

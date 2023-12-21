@@ -193,7 +193,7 @@ function RewardAdmin(props) {
                   style={{ display: "flex", alignItems: "center", gap: "10px" }}
                 >
                   <img
-                    src={`${urlMedia}uploads/images/reward/${reward.badge}?v=${Date.now()}`}
+                    src={`${urlMedia}${reward.badge}`}
                     alt="Badge"
                     style={{ width: "50px", height: "50px" }}
                   />

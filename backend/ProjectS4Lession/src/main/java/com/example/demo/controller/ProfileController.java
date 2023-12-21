@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.HungDto.ProfileDto.ProfileResponse;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.service.ProfileService;
+import com.example.demo.thanh.dto.FeedbackDto;
+
 import static com.example.demo.constans.GlobalStorage.DEV_DOMAIN_API;
+
+import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,5 +32,11 @@ public class ProfileController {
 	{
 		ProfileResponse response = profileService.profile(userId);
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping("/get-feedbacks/{postId}")
+	public ResponseEntity<List<FeedbackDto>> getFeedbacksByPostId(@PathVariable int postId){
+		List<FeedbackDto> response = profileService.getFeedbacksByPostId(postId);
+		return new ResponseEntity<List<FeedbackDto>>(response, HttpStatus.OK);
 	}
 }

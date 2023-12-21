@@ -25,6 +25,7 @@ public class PostDto {
 	private String authorName;
 	private String categoryName;
 	private int countFeedback;
+	private String avatar;
 	@Builder.Default
 	private boolean isSetTopPrize = false;
 	@Builder.Default
