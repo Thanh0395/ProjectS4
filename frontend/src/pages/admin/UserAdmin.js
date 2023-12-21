@@ -12,10 +12,14 @@ import {
   TableSortLabel,
   Switch,
   Chip,
+  Button,
+  Modal,
+  Box,
+  Typography
 } from "@mui/material";
 
-import env from '../../environment.json'
-
+import env from "../../environment.json";
+import AdminAddUser from "./AdminAddUser";
 
 function UserAdmin(props) {
   const [users, setUsers] = useState([]);
@@ -29,8 +33,31 @@ function UserAdmin(props) {
   const [roleOptions, setRoleOptions] = useState([]);
   const userHasAdminRole = (userRoles) => userRoles.includes("ADMIN");
   const urlMedia = env.urls.media;
-  const loggedInUserId = JSON.parse(localStorage.getItem('currentUser')).userId;
+  const loggedInUserId = JSON.parse(localStorage.getItem("currentUser")).userId;
 
+
+
+  const buttonLinkStyle = {
+    display: "inline-block",
+    padding: "10px 20px",
+    backgroundColor: "#007bff", // Change this to your desired button color
+    color: "#ffffff",
+    textDecoration: "none",
+    borderRadius: "5px",
+    border: "none",
+    cursor: "pointer",
+    textAlign: "center",
+  };
+
+  const [openModal, setOpenModal] = useState(false); // State to control modal visibility
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
 
   // Fetch users data
   useEffect(() => {
@@ -173,6 +200,38 @@ function UserAdmin(props) {
   return (
     <div>
       <h1>User List</h1>
+      <Button
+        align="center"
+        variant="contained"
+        color="primary"
+        onClick={handleOpenModal}
+      >
+        Create New User
+      </Button>
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="create-user-modal-title"
+        aria-describedby="create-user-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography id="create-user-modal-title" variant="h6" component="h2">
+            Create New User
+          </Typography>
+          <AdminAddUser onClose={handleCloseModal} />
+        </Box>
+      </Modal>
       <TextField
         label="Search"
         variant="outlined"
@@ -234,8 +293,8 @@ function UserAdmin(props) {
                         isActive: e.target.checked,
                       })
                     }
-                    disabled={user.userId === loggedInUserId}
-                  />
+                    disabled={user.userId === loggedInUserId || userHasAdminRole(user.userRoles)} // Disabled if it's the current user or if the user has an 'ADMIN' role
+                    />
                 </TableCell>
                 <TableCell>
                   {user.userRoles.map((role, index) => (
@@ -244,11 +303,17 @@ function UserAdmin(props) {
                 </TableCell>
                 <TableCell>
                   {user.userRoles && !userHasAdminRole(user.userRoles) && (
-                    <button onClick={() => deleteUser(user.userId)}>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => deleteUser(user.userId)}
+                    >
                       Delete
-                    </button>
+                    </Button>
                   )}
-                  <Link to={`detail/${user.userId}`}>View Detail</Link>
+                  <Link style={buttonLinkStyle} to={`detail/${user.userId}`}>
+                    View Detail
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
