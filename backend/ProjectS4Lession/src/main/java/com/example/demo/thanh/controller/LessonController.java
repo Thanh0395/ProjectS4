@@ -620,6 +620,7 @@ public class LessonController {
 			if (userBuy != null) {				
 				FeedbackEntity feedbackEntity = feedbackService.addFeedback(feedbackDto.getContent(), lesson, user);
 				feedbackDto.setFeedbackId(feedbackEntity.getFeedbackId());
+				feedbackDto.setStatus("approved");
 				feedbackDto.setCreatatedAt(feedbackEntity.getCreatedAt());
 				feedbackDto.setUserName(user.getUsername());
 				return new ResponseEntity<>(feedbackDto, HttpStatus.OK);
