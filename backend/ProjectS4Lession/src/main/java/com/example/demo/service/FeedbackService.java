@@ -33,6 +33,7 @@ public class FeedbackService {
 		FeedbackEntity feedback = new FeedbackEntity();
 		feedback.setContent(comment);
 		feedback.setPost(post);
+		feedback.setStatus("approved");
 		feedback.setUser(user);
 		feedbackRepository.save(feedback);
 		return feedback;
