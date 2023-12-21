@@ -10,6 +10,7 @@ export { default as LessonAdmin } from './admin/lesson/LessonAdmin';
 export { default as LessonAdminCreate } from './admin/lesson/LessonAdminCreate';
 export { default as LessonAdminDetail } from './admin/lesson/LessonAdminDetail';
 export { default as LessonAdminUpdate } from './admin/lesson/LessonAdminUpdate';
+export { default as CommentAdmin } from './admin/CommentAdmin';
 export { default as ExamAdmin } from './admin/ExamAdmin';
 export { default as UserAdmin } from './admin/UserAdmin';
 export { default as CategoryAdmin } from './admin/category/CategoryAdmin';

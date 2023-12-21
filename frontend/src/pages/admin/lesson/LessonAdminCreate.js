@@ -80,7 +80,7 @@ function LessonAdminCreate(props) {
             }),
         newVideo: yup
             .mixed()
-            .test('filesize', 'Video is too large >100MB', function (file) {
+            .test('filesize', 'Video is too large >5Mb', function (file) {
                 if (!file) {
                     return true; // Allow for empty or undefined values
                 }
