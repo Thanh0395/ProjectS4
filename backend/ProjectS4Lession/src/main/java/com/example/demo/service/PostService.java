@@ -118,6 +118,7 @@ public class PostService {
 				String authorName = (postEntity.getUser() != null) ? postEntity.getUser().getName() : "Anonymous";
 				String categoryName = (postEntity.getCategory() != null) ? postEntity.getCategory().getCategoryName()
 						: "Uncategory";
+				postDto.setAvatar(postEntity.getUser().getAvatar());
 				postDto.setAuthorName(authorName);
 				postDto.setCategoryName(categoryName);
 				return postDto;

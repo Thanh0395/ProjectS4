@@ -106,7 +106,7 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
                                         <Field type="email" name="email" className="form-control" disabled />
                                     </FormGroup>
                                     <FormGroup>
-                                        <Label>Profile Picture</Label>
+                                        <Label>Avatar</Label>
                                         <input
                                             type="file"
                                             name="file"
@@ -114,12 +114,14 @@ const ProfileUpdateForm = ({ user, setReRender, setMessage }) => {
                                             onChange={handleFileChange}
                                         />
                                     </FormGroup>
-                                    <Button variant="secondary" onClick={handleClose}>
+                                    <div style={{ margin: '10px' }}>
+                                    <Button variant="secondary" onClick={handleClose} style={{ marginRight: '10px' }} >
                                         Close
                                     </Button>
                                     <Button variant="primary" type="submit" disabled={isSubmitting}>
                                         submit
                                     </Button>
+                                    </div>
                                 </Form>
                             )}
                         </Formik>
