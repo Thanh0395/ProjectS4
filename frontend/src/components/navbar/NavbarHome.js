@@ -77,6 +77,9 @@ function NavbarHome(props) {
                             <NavDropdown.Item href="/change-password">
                                 Changge Password
                             </NavDropdown.Item>
+                            <NavDropdown.Item href="/forgot-password">
+                                Forgot Password
+                            </NavDropdown.Item>
                             {isLoggedIn && currentUser.roles.some(role => role.name === 'TEACHER' || role.name === 'ADMIN') && (
                                 <NavDropdown.Item href="/admin/lessons">
                                     Lesson Dashboard
