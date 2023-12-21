@@ -11,6 +11,8 @@ public class FeedbackDto {
 	
 	private String avatar;
 	
+	private String status;
+	
 	private Timestamp creatatedAt;
 	
 	private Timestamp updatedAt;
@@ -18,7 +20,7 @@ public class FeedbackDto {
 	public FeedbackDto() {
 		super();
 	}
-
+	//list comment cho user
 	public FeedbackDto(int feedbackId, String content, String userName, String avatar, Timestamp creatatedAt) {
 		super();
 		this.feedbackId = feedbackId;
@@ -27,7 +29,16 @@ public class FeedbackDto {
 		this.avatar = avatar;
 		this.creatatedAt = creatatedAt;
 	}
-
+	//list comment cho admin
+	public FeedbackDto(int feedbackId, String content, String userName, String avatar, String status, Timestamp creatatedAt) {
+		super();
+		this.feedbackId = feedbackId;
+		this.content = content;
+		this.userName = userName;
+		this.avatar = avatar;
+		this.status = status;
+		this.creatatedAt = creatatedAt;
+	}
 
 	public int getFeedbackId() {
 		return feedbackId;
@@ -61,6 +72,14 @@ public class FeedbackDto {
 		this.avatar = avatar;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+	
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	public Timestamp getCreatatedAt() {
 		return creatatedAt;
 	}

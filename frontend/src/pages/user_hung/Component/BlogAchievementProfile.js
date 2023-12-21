@@ -63,22 +63,22 @@ const BlogAchievementProfile = ({ achievements, setReRender }) => {
                 </Alert>
             )}
             {achievements.map((achievement, index) => (
-                <Col xxs="12" lg="3" className="mb-3 pt-2" key={`blogItem_${index}`}>
+                <Col xs="12" lg="3" className="mb-3 pt-2" key={`blogItem_${index}`}>
                     <Card>
                         <div>
-                            <div style={{ position: 'relative', display: 'flex' }}>
+                            <div style={{ position: 'relative'}}>
                                 <img
                                     className="card-img-left"
-                                    src="/ImageHung/blog_achie01.jpg"
+                                    src={`http://localhost:8080/${achievement.badge}`}
                                     alt=""
                                     style={{ width: '200px', height: '200px', borderRadius:"25%" }} // Set image width to 100% and maintain aspect ratio
                                 />
                                 {achievement.receivedBadge ? (
-                                    <Button disabled style={{ backgroundColor: 'green', color: 'white', borderRadius:"30%" }}>
+                                    <Button disabled style={{ backgroundColor: 'green', color: 'white'}}>
                                         Done
                                     </Button>
                                 ) : (
-                                    <Button disabled style={{ backgroundColor: 'brown', color: 'white', borderRadius:"30%"}}>
+                                    <Button disabled style={{ backgroundColor: 'brown', color: 'white'}}>
                                         Try
                                     </Button>
                                 )}

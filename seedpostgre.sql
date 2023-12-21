@@ -200,8 +200,8 @@ BEGIN
 					FOR i IN 1..30 LOOP
 						comment := comment || substr(chars, floor(random() * length(chars) + 1)::integer, 1);
 					END LOOP;
-				INSERT INTO feedback_tbl (post_id,user_id,"content",created_at)
-				VALUES (RecordNumber,commenter,comment,date);
+				INSERT INTO feedback_tbl (post_id,user_id,"content",status,created_at)
+				VALUES (RecordNumber,commenter,comment,'approved',date);
 			END LOOP;
 
         RecordNumber := RecordNumber + 1;

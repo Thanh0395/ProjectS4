@@ -24,6 +24,7 @@ function Unauthorized(props) {
             }}>
                 <h1>Unauthorized Access</h1>
                 <p>Please <Link to="/login">login</Link> to access this page or go back to the <Link to="/">home page</Link>.</p>
+                <p>Or if your are a teacher <Link to="/admin/lessons">Dashboard lesson</Link>.</p>
             </div>
         </div>
     );
