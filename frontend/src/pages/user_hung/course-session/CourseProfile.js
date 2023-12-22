@@ -100,13 +100,6 @@ const CourseSessionProfile = ({ posts }) => {
                       {course.price}{" "}
                       <i class="bi bi-gem px-2 text-primary"></i>
                     </h6>
-                    <div
-                      className="course-list_card_title_progress"
-                      style={{
-                        width: `${progress}%`,
-                      }}
-                    />
-                    <div className="course-list_card_title_progress_line"></div>
                   </div>
                   <button
                     className="course-list_card_button_detail"

@@ -17,11 +17,13 @@ import com.example.demo.auth.AuthenticationRequest;
 import com.example.demo.auth.AuthenticationResponse;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.dto.AuthDto.ActiveUserRequestDto;
+import com.example.demo.dto.AuthDto.AdminAddPermission;
 import com.example.demo.dto.AuthDto.AdminAddUserRequestDto;
 import com.example.demo.dto.AuthDto.ChangePasswordRequest;
 import com.example.demo.dto.AuthDto.ResetPasswordRequestDto;
 import com.example.demo.dto.AuthDto.VerifyEmailResponseDto;
 import com.example.demo.entity.EmailEntity;
+import com.example.demo.entity.PostEntity;
 import com.example.demo.entity.RoleEntity;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.entity.UserRoleEntity;
@@ -32,7 +34,9 @@ import com.example.demo.exception.NotFoundException;
 import com.example.demo.exception.ResourceAlreadyExistsException;
 import com.example.demo.exception.VerificationCodeMismatchException;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.UserPostRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.UserRoleRepository;
 import com.example.demo.service.EmailService;
@@ -58,12 +62,14 @@ public class AuthenticationService {
 	private final RoleRepository roleRepository;
 	@Autowired
 	private UserRoleRepository userRoleRepository;
-	
 	@Autowired
 	private UserMapper userMapper;
-	
 	@Autowired
 	private final VerifyEmailService verifyEmailService;
+	@Autowired
+	private PostRepository postRepository;
+	@Autowired
+	private UserPostRepository userPostRepository;
 	
 	public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest)
 			throws NotFoundException, CustomAuthenticationException, BadRequestException 
@@ -250,5 +256,56 @@ public class AuthenticationService {
     		userService.createUserWithRoles(userCreated, roles);
     	}
     	return userResponseDto;
+	}
+	
+	public UserResponseDto AdminDeleteUser(int userId) throws NotFoundException, BadRequestException {
+		UserEntity userDb = userRepository.findById(userId)
+				.orElseThrow(() -> new NotFoundException("Not found user with id :" + userId));
+		List<PostEntity> postExist = postRepository.findByUserUserIdAndDeletedAtIsNull(userDb.getUserId());
+		List<PostEntity> postBought = userPostRepository.findLesonsBoughtUserId(userDb.getUserId());
+		List<RoleEntity> roles = userService.getRolesByUserRole(userDb);
+		for (RoleEntity role : roles) {
+	        if ("ADMIN".equals(role.getName())) {
+	            throw new BadRequestException("Couldn't delete user with role Admin");
+	        }
+	    }
+		if (!postExist.isEmpty()) {
+	        throw new BadRequestException("Couldn't delete user with existing course!");
+	    }
+		if(!postBought.isEmpty()) {
+			throw new BadRequestException("Couldn't delete user bought course!");
+		}
+		UserResponseDto userDeletedReponse = userMapper.UserEntityToUserResponse(userDb);
+		userRepository.deleteById(userId);
+		return userDeletedReponse;
+	}
+	
+	public UserResponseDto AdminAddPermission(AdminAddPermission request) throws NotFoundException, BadRequestException {
+		UserEntity userDb = userRepository.findByEmail(request.getEmail())
+				.orElseThrow(() -> new NotFoundException("Not found user with email :" + request.getEmail()));;
+		if(request.getListNameRole() == null) {
+			throw new BadRequestException("Role Name cound't empty!");
+		}
+		if(request.getListNameRole().isEmpty()) {
+			throw new BadRequestException("Role cound't empty!");
+		}
+		List<RoleEntity> rolesToAdd = new ArrayList<>();;
+		List<RoleEntity> userRoles = userService.getRolesByUserRole(userDb);
+		List<String> rolesNameRequest = request.getListNameRole();
+		for (String roleName : rolesNameRequest) {
+	        // Check if the role is not already associated with the user, then add it
+	        boolean roleExists = userRoles.stream().anyMatch(role -> role.getName().equals(roleName));
+	        if (!roleExists) {
+	            RoleEntity role = roleRepository.findByName(roleName);
+	            if (role != null) {
+	            	rolesToAdd.add(role);
+	            } else {
+	                throw new NotFoundException("Role with name " + roleName + " not found.");
+	            }
+	        }
+	    }
+		userService.createUserWithRoles(userDb, rolesToAdd);
+		UserResponseDto userResponse = userMapper.UserEntityToUserResponse(userDb);
+		return userResponse;
 	}
 }

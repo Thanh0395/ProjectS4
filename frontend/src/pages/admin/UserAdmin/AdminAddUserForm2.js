@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from 'formik';
 import { FormGroup, Button } from "react-bootstrap";
 import DatePicker from "react-datepicker";
@@ -6,9 +6,11 @@ import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
 import "./CheckBox.css"
 import { AdminAddUserAPI } from "../../../services/api/AuthApi";
+import { Alert } from "react-bootstrap";
 
 const AdminAddUserForm2 = ({ setOpenModal, setIsLoad, setMessage }) => {
 
+  const [messageForm, setMessageForm] = useState('');
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Field is required"),
     email: Yup.string().email().required(),
@@ -32,13 +34,18 @@ const AdminAddUserForm2 = ({ setOpenModal, setIsLoad, setMessage }) => {
       setMessage('Create User successfully');
   } catch (error) {
       const errorObj = error.response.data;
-      setMessage(errorObj['Error Message']);
+      setMessageForm(errorObj['Error Message']);
   }
   };
 
 
   return (
     <div>
+      {messageForm && (
+        <Alert variant={messageForm.includes('successfully') ? 'success' : 'danger'} onClose={() => setMessageForm('')} dismissible className="text-center">
+          {messageForm}
+        </Alert>
+      )}
       <Formik
         initialValues={{
           name: '',

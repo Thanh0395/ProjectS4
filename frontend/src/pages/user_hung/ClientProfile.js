@@ -58,8 +58,12 @@ function ClientProfile(props) {
         setReRender(false);
         console.log("User data profile:", rs);
         console.log("badge :", rs.achievements.badge);
+        console.log("userrrr", user);
       })
-      .catch(err => console.log("Err fetch api profile data:", err));
+      .catch(err => {
+        setUser(null);
+        console.log("Err fetch api profile data:", err);
+      });
   }, [userId, reRender]);
 
   return (
