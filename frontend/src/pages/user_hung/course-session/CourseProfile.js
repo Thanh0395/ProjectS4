@@ -4,7 +4,6 @@ import ReactPaginate from "react-paginate";
 import { Spinner, Nav } from "react-bootstrap";
 import { Rating } from "@mui/material";
 import "./CourseProfile.css";
-import Author_01 from "../../../assets/author-01.jpg";
 import CourseHeaderProfile from "./CourseHeaderProfile";
 
 const CourseSessionProfile = ({ posts }) => {
@@ -46,6 +45,12 @@ const CourseSessionProfile = ({ posts }) => {
       setItemOffset(newOffset);
     }
   };
+  
+  const handleClickAvatarAuthor = (userId) => {
+    navigate('/profile', {
+      state: { userId: userId } 
+    });
+  }
 
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = Array.isArray(posts) ? posts.slice(itemOffset, endOffset) : [];
@@ -54,7 +59,6 @@ const CourseSessionProfile = ({ posts }) => {
 
   return (
     <>
-      <CourseHeaderProfile header={"Your Course"} />
       {posts.length === 0 ? (
         <div className="text-center">No data a to show</div>
       ) : (
@@ -64,7 +68,7 @@ const CourseSessionProfile = ({ posts }) => {
           ) : (
             currentItems.map((course) => (
               <div className="card course-list_card" key={course.id}>
-                <div className="card-body">
+                <div className="card-body" style={{ margin: "10px" }}>
                   <div className="course-list_card_image">
                     <img
                       className="course-list_card_image_course"
@@ -74,9 +78,16 @@ const CourseSessionProfile = ({ posts }) => {
                   </div>
                   <div className="course-list_card_title">{course.title}</div>
                   <div className="course-list_card_title_author">
-                    <div className="course-list_card_title_author_image">
-                      <img src={Author_01} alt="course-01" />
-                    </div>
+                    <button
+                      href="#"
+                      onClick={() => handleClickAvatarAuthor(course.userId)}
+                      className="course-list_card_title_author_image"
+                    >
+                      <img
+                        src={`http://localhost:8080/${course.avatar}`}
+                        alt="course-01"
+                      />
+                    </button>
                     <div className="course-list_card_title_author_detail">
                       <h6>
                         {course.authorName} <i class="bi bi-pause"></i>{" "}

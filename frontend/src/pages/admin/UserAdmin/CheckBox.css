@@ -1,0 +1,21 @@
+/* CSS for checkbox */
+input[type="checkbox"] {
+    margin-right: 5px; /* Adjust spacing between the checkbox and label */
+    /* Add more styles as needed */
+  }
+  .checkbox-is-active{
+    margin-right: 5px;
+  }
+  /* CSS for checkbox group */
+  #checkbox-group {
+    margin-bottom: 10px; /* Add space below the checkbox group */
+    font-weight: bold; /* Make the checkbox group label bold */
+    /* Add more styles as needed */
+  }
+  
+  #checkbox-group label {
+    display: block; /* Display checkboxes in a vertical list */
+    margin-bottom: 5px; /* Add space between each checkbox */
+    /* Add more styles as needed */
+  }
+  

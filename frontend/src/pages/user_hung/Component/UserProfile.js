@@ -10,6 +10,7 @@ import ProfileCard2 from "./ProfileCard2";
 const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5PostsByFeedbackCount, top5PostsByPrize }) => {
 
     const [activeTab, setActiveTab] = useState('1');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const toggle = (tab) => {
         if (activeTab !== tab) {
             setActiveTab(tab);  
@@ -37,7 +38,9 @@ const UserProfile = ({ user, gem, userLevel, setReRender, recentTop5Posts, top5P
                             <Col xs="6">
                                 {/* <ProfileCard user={user} gem={gem} userLevel={userLevel} /> */}
                                 <ProfileCard2 user={user} gem={gem} userLevel={userLevel} />
-                                <ProfileUpdateForm user={user} setReRender={setReRender} setMessage={setMessage} />
+                                {currentUser.userId === user.userId && (
+                                    <ProfileUpdateForm user={user} setReRender={setReRender} setMessage={setMessage} />
+                                )}
                             </Col>
                             <Col xs="6">
                                 <Nav tabs>

@@ -31,7 +31,7 @@ function ResetPassword() {
             setTimeout(() => {
                 setErrorMessage(null);
                 navigate("/login");
-            }, 3000);
+            }, 1500);
         } catch (error) {
             const errorObj = error.response.data;
             console.log("err reset :", errorObj);

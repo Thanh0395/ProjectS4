@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {
   Table,
@@ -15,17 +16,20 @@ import {
   Button,
   Modal,
   Box,
-  Typography
+  Typography,
+  Pagination
 } from "@mui/material";
 
 import env from "../../environment.json";
 import AdminAddUser from "./AdminAddUser";
+import AdminAddUserForm2 from "./UserAdmin/AdminAddUserForm2";
 
 function UserAdmin(props) {
   const [users, setUsers] = useState([]);
   const [reRender, setRerender] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoad, setIsLoad] = useState(false);
   const [sortCriteria, setSortCriteria] = useState({
     column: "userId",
     direction: "asc",
@@ -39,7 +43,7 @@ function UserAdmin(props) {
 
   const buttonLinkStyle = {
     display: "inline-block",
-    padding: "10px 20px",
+    padding: "9px 6px",
     backgroundColor: "#007bff", // Change this to your desired button color
     color: "#ffffff",
     textDecoration: "none",
@@ -85,12 +89,14 @@ function UserAdmin(props) {
             });
           });
           setRoleOptions(Array.from(extractedRoles));
+          setRerender(false);
+          setIsLoad(false);
         } else {
           throw new Error("Data received is not an array");
         }
       })
       .catch((error) => console.error("Error fetching users:", error));
-  }, [reRender]);
+  }, [reRender, isLoad]);
 
   //Handle search functionality
   const handleSearch = (event) => {
@@ -197,8 +203,24 @@ function UserAdmin(props) {
   };
 
   // Render the component
+  const [message, setMessage] = useState('');
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMessage('');
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [message]);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage] = useState(10);
+  const startIndex = (page - 1) * rowsPerPage;
+  const endIndex = page * rowsPerPage;
   return (
     <div>
+      {message && (
+        <Alert variant={message.includes('successfully') ? 'success' : 'danger'} onClose={() => setMessage('')} dismissible className="text-center">
+          {message}
+        </Alert>
+      )}
       <h1>User List</h1>
       <Button
         align="center"
@@ -220,7 +242,7 @@ function UserAdmin(props) {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            width: 500,
             bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
@@ -229,7 +251,8 @@ function UserAdmin(props) {
           <Typography id="create-user-modal-title" variant="h6" component="h2">
             Create New User
           </Typography>
-          <AdminAddUser onClose={handleCloseModal} />
+          {/* <AdminAddUser onClose={handleCloseModal} /> */}
+          <AdminAddUserForm2 setOpenModal={setOpenModal} setIsLoad={setIsLoad} setMessage={setMessage} />
         </Box>
       </Modal>
       <TextField
@@ -270,7 +293,7 @@ function UserAdmin(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredUsers.map((user) => (
+            {filteredUsers.slice(startIndex, endIndex).map((user) => (
               <TableRow key={user.userId}>
                 {/* Render user data */}
                 <TableCell>{user.userId}</TableCell>
@@ -294,7 +317,7 @@ function UserAdmin(props) {
                       })
                     }
                     disabled={user.userId === loggedInUserId || userHasAdminRole(user.userRoles)} // Disabled if it's the current user or if the user has an 'ADMIN' role
-                    />
+                  />
                 </TableCell>
                 <TableCell>
                   {user.userRoles.map((role, index) => (
@@ -320,6 +343,14 @@ function UserAdmin(props) {
           </TableBody>
         </Table>
       </TableContainer>
+      <Pagination
+        count={Math.ceil(filteredUsers.length / rowsPerPage)}
+        page={page}
+        onChange={(event, value) => setPage(value)}
+        variant="outlined"
+        shape="rounded"
+        size="large"
+      />
     </div>
   );
 }

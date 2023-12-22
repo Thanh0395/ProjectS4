@@ -94,8 +94,8 @@ function ClientProfile(props) {
           {achievements.length !== 0 ? (
             <Row>
               <Colxx xxs="12">
-                <CourseHeader header={"Your Achievements"} />
-                <BlogAchievementProfile achievements={achievements} setReRender={setReRender} />
+                <CourseHeader header={`${user.name}'s Achievements`} />
+                <BlogAchievementProfile achievements={achievements} setReRender={setReRender} userId={userId} />
               </Colxx>
             </Row>
           ) : (
@@ -106,6 +106,7 @@ function ClientProfile(props) {
           )}
           {posts ? (
             <Row>
+              <CourseHeader header={`${user.name}'s Courses`} />
               <CourseSessionProfile posts={posts} />
             </Row>
           ) : <MovingButton />}

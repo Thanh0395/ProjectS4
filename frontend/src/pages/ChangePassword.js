@@ -36,7 +36,7 @@ function ChangePassword() {
             setTimeout(() => {
                 setMessage(null);
                 navigate("/login");
-            }, 3000);
+            }, 1500);
         } catch (error) {
             const errorObj = error.response ? error.response.data : error.message;
             setVariant('warning');

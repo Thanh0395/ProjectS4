@@ -34,6 +34,5 @@ public class AdminAddUserRequestDto {
 	
 	private Date dateOfBirth;
 	
-	@Builder.Default
-	private boolean isActive = false;
+	private String isActive;
 }
