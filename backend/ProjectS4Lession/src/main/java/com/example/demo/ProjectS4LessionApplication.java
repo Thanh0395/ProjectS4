@@ -105,19 +105,19 @@ public class ProjectS4LessionApplication {
 								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 100, 100, "title01", "content01", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 200, 200, "title02", "content02", "test", new Timestamp(new java.util.Date().getTime())));
+								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 200, 200, "title02", "content02", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
 								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 300, 300, "title03", "content03", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 400, 400, "title04", "content04", "test", new Timestamp(new java.util.Date().getTime())));
+								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 400, 400, "title04", "content04", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
 								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 500, 500, "title05", "content05", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 600, 600, "title06", "content06", "test", new Timestamp(new java.util.Date().getTime())));
+								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 600, 600, "title06", "content06", "lesson", new Timestamp(new java.util.Date().getTime())));
 			}
 	        if(!fileService.checkAnyPostExist()) 
 	        {
