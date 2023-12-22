@@ -62,11 +62,11 @@ public class ProjectS4LessionApplication {
 				userService.createUser(new UserEntity("tanhung02@gmail.com", "Tan Hung 02" ,Date.valueOf("1999-07-27"), "uploads/images/user/user_default.jpg", "1234567", true));
 				userService.createUser(new UserEntity("tanhung03@gmail.com", "Tan Hung 03", Date.valueOf("1999-07-27"), "uploads/images/user/user_default.jpg", "1234567", true));
 				
-				userService.createUser(new UserEntity("tranphamduythanh@gmail.com", "Duy Thanh 01", Date.valueOf("1999-07-27"),"avt", "1234567", true));
+				userService.createUser(new UserEntity("tranphamduythanh@gmail.com", "Duy Thanh 01", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
 				userService.createUser(new UserEntity("duythanh02@gmail.com", "Duy Thanh 02", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
 				userService.createUser(new UserEntity("duythanh03@gmail.com", "Duy Thanh 03", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
 				
-				userService.createUser(new UserEntity("Phamtrungnhan15dqt22@gmail.com", "Trung Nhan 01", Date.valueOf("1999-07-27"),"avt", "1234567", true));
+				userService.createUser(new UserEntity("Phamtrungnhan15dqt22@gmail.com", "Trung Nhan 01", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
 				userService.createUser(new UserEntity("trungnhan02@gmail.com", "Trung Nhan 02", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
 				userService.createUser(new UserEntity("trungnhan03@gmail.com", "Trung Nhan 03", Date.valueOf("1999-07-27"),"uploads/images/user/user_default.jpg", "1234567", true));
 				
@@ -102,22 +102,22 @@ public class ProjectS4LessionApplication {
 	        if(!checkPostExist(postService)) {
 				postService.createPost(
 						new PostEntity(
-								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 100, 100, "title01", "content01", "lesson", new Timestamp(new java.util.Date().getTime())));
+								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 100, 100, "title01", "content01", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 200, 200, "title02", "content02", "test", new Timestamp(new java.util.Date().getTime())));
+								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 200, 200, "title02", "content02", "test", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 300, 300, "title03", "content03", "lesson", new Timestamp(new java.util.Date().getTime())));
+								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 300, 300, "title03", "content03", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 400, 400, "title04", "content04", "test", new Timestamp(new java.util.Date().getTime())));
+								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 400, 400, "title04", "content04", "test", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 500, 500, "title05", "content05", "lesson", new Timestamp(new java.util.Date().getTime())));
+								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 500, 500, "title05", "content05", "lesson", new Timestamp(new java.util.Date().getTime())));
 				postService.createPost(
 						new PostEntity(
-								"uploads/video/post/video_post_default.mp4", "uploads/images/post/post_default.jpg", 600, 600, "title06", "content06", "test", new Timestamp(new java.util.Date().getTime())));
+								"uploads/images/post/post_default.jpg", "uploads/video/post/video_post_default.mp4", 600, 600, "title06", "content06", "test", new Timestamp(new java.util.Date().getTime())));
 			}
 	        if(!fileService.checkAnyPostExist()) 
 	        {

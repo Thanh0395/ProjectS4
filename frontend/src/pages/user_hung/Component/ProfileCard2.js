@@ -72,11 +72,11 @@ export default function ProfileCard2({ user, gem, userLevel }) {
                     <MDBRow className="pt-1">
                       <MDBCol size="12" className="mb-3">
                         <MDBTypography tag="h6"><Diamond /> Gem</MDBTypography>
-                        <MDBCardText className="text-muted">{gem.current}</MDBCardText>
+                        {gem && (<MDBCardText className="text-muted">{gem.current}</MDBCardText>)}
                       </MDBCol>
                       <MDBCol size="12" className="mb-3">
                         <MDBTypography tag="h6"><StarIcon /> Level</MDBTypography>
-                        <MDBCardText className="text-muted">{userLevel.level}</MDBCardText>
+                        {userLevel && (<MDBCardText className="text-muted">{userLevel.level}</MDBCardText>)}
                       </MDBCol>
                     </MDBRow>
 

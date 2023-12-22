@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import com.example.demo.auth.AuthenticationResponse;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.dto.AuthDto.ActiveUserRequestDto;
 import com.example.demo.dto.AuthDto.AddPermissionDto;
+import com.example.demo.dto.AuthDto.AdminAddPermission;
 import com.example.demo.dto.AuthDto.AdminAddUserRequestDto;
 import com.example.demo.dto.AuthDto.ChangePasswordRequest;
 import com.example.demo.dto.AuthDto.RegisterRequestDto;
@@ -104,7 +106,7 @@ public class AuthenticationController {
     
     
     @PostMapping("/active-user")
-    public ResponseEntity<String> activeLogin(@RequestBody ActiveUserRequestDto activeLoginRequestDto) 
+    public ResponseEntity<String> activeLogin(@Valid @RequestBody ActiveUserRequestDto activeLoginRequestDto) 
     		throws NotFoundException, VerificationCodeMismatchException, BadRequestException 
     {
     	authenticationService.ActiveUser(activeLoginRequestDto);
@@ -126,7 +128,7 @@ public class AuthenticationController {
     }     
     
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequestDto request) 
+    public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordRequestDto request) 
     		throws NotFoundException, BadRequestException, VerificationCodeMismatchException   		
     {
     	authenticationService.resestPassword(request);
@@ -134,7 +136,7 @@ public class AuthenticationController {
     }
     
     @PostMapping("/change-password")
-    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request)
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request)
     		throws NotFoundException, BadRequestException
     {
     	authenticationService.changePassword(request);
@@ -145,6 +147,22 @@ public class AuthenticationController {
     public ResponseEntity<UserResponseDto> adminAddUser(@Valid @RequestBody AdminAddUserRequestDto request) 
     {
     	UserResponseDto response = authenticationService.adminAddUser(request);
+    	return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/admin-delete-user/{userId}")
+    public ResponseEntity<UserResponseDto> adminDeleteUser(@PathVariable int userId) 
+    		throws NotFoundException, BadRequestException 
+    {
+    	UserResponseDto response = authenticationService.AdminDeleteUser(userId);
+    	return new ResponseEntity<UserResponseDto>(response, HttpStatus.OK);
+    }
+    
+    @PostMapping("/admin-add-role")
+    public ResponseEntity<UserResponseDto> adminAddPermission(@Valid @RequestBody AdminAddPermission request)
+    		throws NotFoundException, BadRequestException
+    {
+    	UserResponseDto response = authenticationService.AdminAddPermission(request);
     	return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

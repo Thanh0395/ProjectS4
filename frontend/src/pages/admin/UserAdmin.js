@@ -23,6 +23,8 @@ import {
 import env from "../../environment.json";
 import AdminAddUser from "./AdminAddUser";
 import AdminAddUserForm2 from "./UserAdmin/AdminAddUserForm2";
+import { AdminDeleteUserAPI } from "../../services/api/AuthApi";
+import AdminAddRoleForm from "./UserAdmin/AdminAddRoleForm";
 
 function UserAdmin(props) {
   const [users, setUsers] = useState([]);
@@ -56,6 +58,8 @@ function UserAdmin(props) {
   const [openModal, setOpenModal] = useState(false); // State to control modal visibility
 
   const handleOpenModal = () => {
+    setIsAddRole(false);
+    setActionForm("Create New User");
     setOpenModal(true);
   };
 
@@ -91,6 +95,7 @@ function UserAdmin(props) {
           setRoleOptions(Array.from(extractedRoles));
           setRerender(false);
           setIsLoad(false);
+          setEmailAddRole('');
         } else {
           throw new Error("Data received is not an array");
         }
@@ -177,29 +182,16 @@ function UserAdmin(props) {
 
   // Function to delete a user by ID
   const deleteUser = (userId) => {
-    // Find the user by ID
-    const user = users.find((user) => user.userId === userId);
-    // Check if the user has the 'Admin' role
-    if (userHasAdminRole(user.userRoles)) {
-      alert("Cannot delete an admin user."); // Alert, or handle this message appropriately in your UI
-      return; // Prevent deletion
-    }
-    fetch(`http://localhost:8080/api/project4/nhan/users/delete/${userId}`, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
+    AdminDeleteUserAPI(userId)
+      .then(rs => {
+        console.log("delete user res :", rs);
+        setMessage("Delete user successfully");
+        setRerender(true);
       })
-      .then(() => {
-        // Filter out the deleted user and update the state
-        const updatedUsers = users.filter((user) => user.userId !== userId);
-        setUsers(updatedUsers);
-        setFilteredUsers(updatedUsers);
+      .catch(error => {
+        const errorObj = error.response ? error.response.data : error.message;
+        setMessage(errorObj['Error Message'] || 'An error occurred.');
       })
-      .catch((error) => console.error("Error deleting user:", error));
   };
 
   // Render the component
@@ -211,16 +203,20 @@ function UserAdmin(props) {
     return () => clearTimeout(timer);
   }, [message]);
   const [page, setPage] = useState(1);
-  const [rowsPerPage] = useState(10);
+  const [rowsPerPage] = useState(7);
   const startIndex = (page - 1) * rowsPerPage;
   const endIndex = page * rowsPerPage;
+  const [isAddRole, setIsAddRole] = useState(true);
+  const [actionForm, setActionForm] = useState('');
+  const [emailAddRole, setEmailAddRole] = useState('');
+  const handleAddRole = (email) => {
+    setIsAddRole(true);
+    setActionForm("Add Role Form");
+    setEmailAddRole(email);
+    setOpenModal(true);
+  }
   return (
     <div>
-      {message && (
-        <Alert variant={message.includes('successfully') ? 'success' : 'danger'} onClose={() => setMessage('')} dismissible className="text-center">
-          {message}
-        </Alert>
-      )}
       <h1>User List</h1>
       <Button
         align="center"
@@ -249,10 +245,14 @@ function UserAdmin(props) {
           }}
         >
           <Typography id="create-user-modal-title" variant="h6" component="h2">
-            Create New User
+            {actionForm}
           </Typography>
           {/* <AdminAddUser onClose={handleCloseModal} /> */}
-          <AdminAddUserForm2 setOpenModal={setOpenModal} setIsLoad={setIsLoad} setMessage={setMessage} />
+          {isAddRole === true ? (
+            <AdminAddRoleForm setOpenModal={setOpenModal} setIsLoad={setIsLoad} setMessage={setMessage} emailAddRole={emailAddRole}/>
+          ) : (
+            <AdminAddUserForm2 setOpenModal={setOpenModal} setIsLoad={setIsLoad} setMessage={setMessage} />
+          )}
         </Box>
       </Modal>
       <TextField
@@ -262,6 +262,11 @@ function UserAdmin(props) {
         onChange={handleSearch}
         style={{ marginBottom: "20px" }}
       />
+      {message && (
+        <Alert variant={message.includes('successfully') ? 'success' : 'danger'} onClose={() => setMessage('')} dismissible className="text-center">
+          {message}
+        </Alert>
+      )}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -325,15 +330,21 @@ function UserAdmin(props) {
                   ))}
                 </TableCell>
                 <TableCell>
-                  {user.userRoles && !userHasAdminRole(user.userRoles) && (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => deleteUser(user.userId)}
-                    >
-                      Delete
-                    </Button>
-                  )}
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => deleteUser(user.userId)}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{ backgroundColor: 'green', color: 'white' }}
+                    onClick={() => handleAddRole(user.email)}
+                  >
+                    Add Role
+                  </Button>
                   <Link style={buttonLinkStyle} to={`detail/${user.userId}`}>
                     View Detail
                   </Link>

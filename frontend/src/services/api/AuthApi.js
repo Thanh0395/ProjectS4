@@ -82,3 +82,21 @@ export const AdminAddUserAPI = async (request) => {
         throw error;
     }
 }
+//Admin delete user
+export const AdminDeleteUserAPI = async (userId) => {
+    try{
+        const response = await apiWithToken.delete(`/auth/admin-delete-user/${userId}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+//Admin add role
+export const AdminAddRole = async (request) => {
+    try{
+        const response = await apiWithToken.post("/auth/admin-add-role", request);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
